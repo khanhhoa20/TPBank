@@ -36,3 +36,4 @@ build/
 /bin
 .metadata
 .worksheet
+application.properties
