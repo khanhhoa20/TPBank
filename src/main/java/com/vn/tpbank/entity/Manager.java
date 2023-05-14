@@ -115,5 +115,13 @@ public class Manager {
 	public void setDepartment(Department department) {
 		this.department = department;
 	}
+	
+	public String getManagerStatus() {
+		return managerStatus;
+	}
+
+	public void setManagerStatus(String managerStatus) {
+		this.managerStatus = managerStatus;
+	}
 
 }
