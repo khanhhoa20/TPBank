@@ -31,6 +31,9 @@ public class Manager {
 
 	@Column(name = "man_name")
 	private String managerName;
+	
+	@Column(name="manager_status")
+	private String managerStatus;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -44,7 +47,7 @@ public class Manager {
 
 	}
 
-	public Manager(Long managerID, String managerPhone, String managerAddress, String managerEmail, String managerName,
+	public Manager(Long managerID, String managerPhone, String managerAddress, String managerEmail, String managerName, String managerStatus,
 			User user, Department department) {
 		super();
 		this.managerID = managerID;
@@ -54,6 +57,7 @@ public class Manager {
 		this.managerName = managerName;
 		this.user = user;
 		this.department = department;
+		this.managerStatus = managerStatus;
 	}
 
 	public Long getManagerID() {

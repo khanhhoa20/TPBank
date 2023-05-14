@@ -29,6 +29,9 @@ public class Operator {
 
 	@Column(name = "oper_name")
 	private String operName;
+	
+	@Column(name="operator_status")
+	private String operatorStatus;
 
 	@OneToOne(targetEntity = User.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -42,7 +45,7 @@ public class Operator {
 
 	}
 
-	public Operator(Long operatorID, String operPhone, String operAddress, String operName, User user,
+	public Operator(Long operatorID, String operPhone, String operAddress, String operName, User user, String operatorStatus,
 			Department department) {
 		super();
 		this.operatorID = operatorID;
@@ -51,6 +54,7 @@ public class Operator {
 		this.operName = operName;
 		this.user = user;
 		this.department = department;
+		this.operatorStatus = operatorStatus;
 	}
 
 	public Long getOperatorID() {
@@ -99,6 +103,14 @@ public class Operator {
 
 	public void setDepartment(Department department) {
 		this.department = department;
+	}
+
+	public String getOperatorStatus() {
+		return operatorStatus;
+	}
+
+	public void setOperatorStatus(String operatorStatus) {
+		this.operatorStatus = operatorStatus;
 	}
 
 }
