@@ -1,28 +1,59 @@
 package com.vn.tpbank.entity;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "manager")
 public class Manager {
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MANAGER_SEQ")
+	@SequenceGenerator(name = "MANAGER_SEQ", sequenceName = "MANAGER_SEQ", allocationSize = 1)
+	@Column(name = "id")
 	private Long managerID;
+
+	@Column(name = "man_phone")
 	private String managerPhone;
+
+	@Column(name = "man_address")
 	private String managerAddress;
+
+	@Column(name = "man_email")
 	private String managerEmail;
+
+	@Column(name = "man_name")
 	private String managerName;
-	private Long userId;
-	private Long departmentId;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private User user;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "department_id", referencedColumnName = "id")
+	private Department department;
 
 	public Manager() {
 
 	}
 
 	public Manager(Long managerID, String managerPhone, String managerAddress, String managerEmail, String managerName,
-			Long userId, Long departmentId) {
-
+			User user, Department department) {
+		super();
 		this.managerID = managerID;
 		this.managerPhone = managerPhone;
 		this.managerAddress = managerAddress;
 		this.managerEmail = managerEmail;
 		this.managerName = managerName;
-		this.userId = userId;
-		this.departmentId = departmentId;
+		this.user = user;
+		this.department = department;
 	}
 
 	public Long getManagerID() {
@@ -65,20 +96,20 @@ public class Manager {
 		this.managerName = managerName;
 	}
 
-	public Long getUserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public Long getDepartmentId() {
-		return departmentId;
+	public Department getDepartment() {
+		return department;
 	}
 
-	public void setDepartmentId(Long departmentId) {
-		this.departmentId = departmentId;
+	public void setDepartment(Department department) {
+		this.department = department;
 	}
 
 }

@@ -3,15 +3,21 @@ package com.vn.tpbank.entity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "operator")
 public class Operator {
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "OPERATOR_SEQ")
+	@SequenceGenerator(name = "OPERATOR_SEQ", sequenceName = "OPERATOR_SEQ", allocationSize = 1)
 	@Column(name = "id")
 	private Long operatorID;
 
@@ -25,26 +31,26 @@ public class Operator {
 	private String operName;
 
 	@OneToOne(targetEntity = User.class, cascade = CascadeType.ALL)
-	@JoinColumn(name="user_id", referencedColumnName = "id")
-	private String userId;
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private User user;
 
-	@OneToOne(targetEntity = Department.class, cascade = CascadeType.ALL)
-	@JoinColumn(name="department_id", referencedColumnName = "id")
-	private Long departmentId;
+	@ManyToOne(targetEntity = Department.class, cascade = CascadeType.ALL)
+	@JoinColumn(name = "department_id", referencedColumnName = "id")
+	private Department department;
 
 	public Operator() {
 
 	}
 
-	public Operator(Long operatorID, String operPhone, String operAddress, String operName, String userId,
-			Long departmentId) {
-
+	public Operator(Long operatorID, String operPhone, String operAddress, String operName, User user,
+			Department department) {
+		super();
 		this.operatorID = operatorID;
 		this.operPhone = operPhone;
 		this.operAddress = operAddress;
 		this.operName = operName;
-		this.userId = userId;
-		this.departmentId = departmentId;
+		this.user = user;
+		this.department = department;
 	}
 
 	public Long getOperatorID() {
@@ -79,20 +85,20 @@ public class Operator {
 		this.operName = operName;
 	}
 
-	public String getUserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public Long getDepartmentId() {
-		return departmentId;
+	public Department getDepartment() {
+		return department;
 	}
 
-	public void setDepartmentId(Long departmentId) {
-		this.departmentId = departmentId;
+	public void setDepartment(Department department) {
+		this.department = department;
 	}
 
 }

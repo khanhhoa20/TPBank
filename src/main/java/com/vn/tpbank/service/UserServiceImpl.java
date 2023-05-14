@@ -15,7 +15,6 @@ public class UserServiceImpl implements IUserService{
 	UserRepository userRepository;
 	
 	@Override
-	
 	public Optional<User> getUserForTest() {
 		return	userRepository.findById(1l);
 	}

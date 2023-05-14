@@ -2,29 +2,62 @@ package com.vn.tpbank.entity;
 
 import java.util.Date;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
+@Entity
+@Table(name = "transaction_bank")
 public class Transaction {
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TRANSACTION_BANK_SEQ")
+	@SequenceGenerator(name = "TRANSACTION_BANK_SEQ", sequenceName = "TRANSACTION_BANK_SEQ", allocationSize = 1)
 	private Long transactionId;
+
+	@Column(name = "transaction_type")
 	private String transactionType;
+
+	@Column(name = "transaction_amount")
 	private double transactionAmount;
+
+	@Temporal(value = TemporalType.TIMESTAMP)
+	@Column(name = "transaction_date")
 	private Date transactionDate;
+
+	@Column(name = "before_transaction")
 	private double beforeTransaction;
+
+	@Column(name = "after_transaction")
 	private double afterTransaction;
-	private Long bankAccountId;
+
+	@ManyToOne(targetEntity = BankAccount.class, cascade = CascadeType.ALL)
+	@JoinColumn(name = "bank_account_id", referencedColumnName = "id")
+	private BankAccount bankAccount;
 
 	public Transaction() {
 
 	}
 
 	public Transaction(Long transactionId, String transactionType, double transactionAmount, Date transactionDate,
-			double beforeTransaction, double afterTransaction, Long bankAccountId) {
-
+			double beforeTransaction, double afterTransaction, BankAccount bankAccount) {
+		super();
 		this.transactionId = transactionId;
 		this.transactionType = transactionType;
 		this.transactionAmount = transactionAmount;
 		this.transactionDate = transactionDate;
 		this.beforeTransaction = beforeTransaction;
 		this.afterTransaction = afterTransaction;
-		this.bankAccountId = bankAccountId;
+		this.bankAccount = bankAccount;
 	}
 
 	public Long getTransactionId() {
@@ -75,12 +108,12 @@ public class Transaction {
 		this.afterTransaction = afterTransaction;
 	}
 
-	public Long getBankAccountId() {
-		return bankAccountId;
+	public BankAccount getBankAccount() {
+		return bankAccount;
 	}
 
-	public void setBankAccountId(Long bankAccountId) {
-		this.bankAccountId = bankAccountId;
+	public void setBankAccount(BankAccount bankAccount) {
+		this.bankAccount = bankAccount;
 	}
 
 }

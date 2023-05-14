@@ -5,9 +5,12 @@ import java.util.Date;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -18,6 +21,8 @@ import jakarta.persistence.TemporalType;
 @Table(name="customer")
 public class Customer {
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CUSTOMER_SEQ")
+	@SequenceGenerator(name = "CUSTOMER_SEQ", sequenceName = "CUSTOMER_SEQ", allocationSize = 1)
 	@Column(name="id")
 	private Long customerId;
 	
@@ -49,20 +54,8 @@ public class Customer {
 	}
 
 	public Customer(Long customerId, String customerName, String customerAddress, String customerPhone,
-			String customerEmail, Long customerNationalId, Date customerDob) {
-
-		this.customerId = customerId;
-		this.customerName = customerName;
-		this.customerAddress = customerAddress;
-		this.customerPhone = customerPhone;
-		this.customerEmail = customerEmail;
-		this.customerNationalId = customerNationalId;
-		this.customerDob = customerDob;
-	}
-
-	public Customer(Long customerId, String customerName, String customerAddress, String customerPhone,
 			String customerEmail, Long customerNationalId, Date customerDob, User user) {
-
+		super();
 		this.customerId = customerId;
 		this.customerName = customerName;
 		this.customerAddress = customerAddress;
@@ -136,5 +129,7 @@ public class Customer {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	
 
 }
