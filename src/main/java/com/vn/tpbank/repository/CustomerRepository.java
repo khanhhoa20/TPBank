@@ -7,6 +7,6 @@ import com.vn.tpbank.entity.Customer;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long>{
-
+	public Customer findByCustomerPhone(String phone);
 	
 }
