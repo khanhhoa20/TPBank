@@ -28,6 +28,9 @@ public class BankAccount {
 
 	@Column(name = "bank_name")
 	private String bankName;
+	
+	@Column(name = "lock_status")
+	private String lockStatus;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cus_id", referencedColumnName = "id")
@@ -40,12 +43,13 @@ public class BankAccount {
 
 	}
 
-	public BankAccount(Long bankAccountId, Long balance, String bankName, Customer customer,
+	public BankAccount(Long bankAccountId, Long balance, String bankName, String lockStatus, Customer customer,
 			List<Transaction> listTransactions) {
 		super();
 		this.bankAccountId = bankAccountId;
 		this.balance = balance;
 		this.bankName = bankName;
+		this.lockStatus = lockStatus;
 		this.customer = customer;
 		this.listTransactions = listTransactions;
 	}
@@ -88,6 +92,14 @@ public class BankAccount {
 
 	public void setListTransactions(List<Transaction> listTransactions) {
 		this.listTransactions = listTransactions;
+	}
+
+	public String getLockStatus() {
+		return lockStatus;
+	}
+
+	public void setLockStatus(String lockStatus) {
+		this.lockStatus = lockStatus;
 	}
 
 }

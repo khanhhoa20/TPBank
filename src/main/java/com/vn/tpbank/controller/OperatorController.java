@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vn.tpbank.entity.Customer;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.service.IOperatorService;
 
@@ -16,15 +17,26 @@ public class OperatorController {
 	IOperatorService iOperatorService;
 
 	/**
-	 * @URL http://localhoat:9090/tpbank/operator/login
-	 * @param user
+	 * @URL http://localhost:9090/tpbank/operator/login
+	 * @param userName, userPass
 	 * @return message login success or not
 	 * @author khánh hòa
 	 */
 	@PostMapping("login")
 	public String login(@RequestBody User user) {
-		System.out.println("user "+user.getUserName());
 		return iOperatorService.login(user.getUserName(),user.getUserPass());
 		
 	}
+	
+	/**
+	 * @URL http://localhost:9090/tpbank/operator/unlock-bank-account
+	 * @param customerPhone
+	 * @return message unlock success or not
+	 * @author khánh hòa
+	 */
+	@PostMapping("unlock-bank-account")
+	public String login(@RequestBody Customer customer) {
+		 return iOperatorService.unlockBankAccount(customer.getCustomerPhone());
+	}
+	
 }
