@@ -47,5 +47,43 @@ public class OperatorServiceImpl implements IOperatorService {
 		}
 
 	}
+	@Override
+	public String lockBankAccount(String cusPhone) {
+		String check = null;
+		Customer customer = customerRepository.findByCustomerPhone(cusPhone);
+		if (customer != null) {
+			BankAccount account = bankAccountRepository.findByCustomer(customer);
+			if (account.getLockStatus().equals("Locked")) {
+				check = "Account has Locked Before";
+			} else {
+				account.setLockStatus("Locked");
+				bankAccountRepository.save(account);
+				if (account.getLockStatus().equals("Locked")) {
+					check = "Account is now Locked";
+				}
+			}
+		} else {
+			check = "Can't find the Customer";
+		}
+
+		return check;
+	}
+
+	@Override
+	public String createBankAccount(BankAccount account) {
+		Customer customer = null;
+		customer = account.getCustomer();
+		customer = customerRepository.findByCustomerPhone(customer.getCustomerPhone());
+		String check = null;
+		if (customer == null) {
+				bankAccountRepository.save(account);
+				check = "Bank Account Create Susscess";
+		}
+		else {
+			check = "Your Phone Type is Exits";
+		}
+				
+		return check;
+	}
 
 }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.service.IOperatorService;
@@ -38,5 +39,14 @@ public class OperatorController {
 	public String login(@RequestBody Customer customer) {
 		 return iOperatorService.unlockBankAccount(customer.getCustomerPhone());
 	}
-	
+	@PostMapping("create-bank-account")
+	public String create(@RequestBody BankAccount account)
+	{
+		return iOperatorService.createBankAccount(account);
+	}
+	@PostMapping("lock-bank-account")
+	public String lockBank(@RequestBody Customer cusPhone)
+	{
+		return iOperatorService.lockBankAccount(cusPhone.getCustomerPhone());
+	}
 }
