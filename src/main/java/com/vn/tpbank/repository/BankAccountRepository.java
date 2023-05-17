@@ -19,4 +19,4 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, Long>{
 //	@Modifying
 //	@Query("UPDATE BankAccount b SET b.lockStatus='inactive' WHERE b.customer.customerId=3")
 //	public void unlockBankAccount();
-
+}
