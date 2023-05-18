@@ -47,6 +47,7 @@ public class OperatorServiceImpl implements IOperatorService {
 		}
 
 	}
+
 	@Override
 	public String lockBankAccount(String cusPhone) {
 		String check = null;
@@ -73,19 +74,21 @@ public class OperatorServiceImpl implements IOperatorService {
 	public String createBankAccount(BankAccount account) {
 		Customer customer = null;
 		customer = account.getCustomer();
-		customer = customerRepository.findByCustomerPhoneOrCustomerEmailOrCustomerNationalId(account.getCustomer().getCustomerPhone(), account.getCustomer().getCustomerEmail(), account.getCustomer().getCustomerNationalId());
-		User user =null;
+		customer = customerRepository.findByCustomerPhoneOrCustomerEmailOrCustomerNationalId(
+				account.getCustomer().getCustomerPhone(), account.getCustomer().getCustomerEmail(),
+				account.getCustomer().getCustomerNationalId());
+		User user = null;
 		user = userRepository.findByUserName(account.getCustomer().getUser().getUserName());
 		String check = null;
-		if (customer == null && user ==null ) {
-				bankAccountRepository.save(account);
-				check = "Bank Account Create Susscess";
-		}
-		else {
+		if (customer == null && user == null) {
+			bankAccountRepository.save(account);
+			check = "Bank Account Create Susscess";
+		} else {
 			check = "Bank Account Already Exits";
 		}
-				
+
 		return check;
+
 	}
 
 }
