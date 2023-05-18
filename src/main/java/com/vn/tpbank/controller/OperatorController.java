@@ -39,11 +39,43 @@ public class OperatorController {
 	public String login(@RequestBody Customer customer) {
 		 return iOperatorService.unlockBankAccount(customer.getCustomerPhone());
 	}
+	/**
+	 * @URL http://localhost:9090/tpbank/operator/create-bank-account
+	 * @param BankAccount property
+	 * {
+    "balance":5000,
+    "bankName":"TPBank",
+    "lockStatus":"Active",
+    "customer":{
+        "customerName":"abc",
+        "customerAddress":"xyz",
+        "customerPhone":"9152224",
+        "customerEmail":"1224@gmail.com",
+        "customerNationalId":602254,
+        "customerDob": null,
+        "user": {
+           
+            "userName":"du43",
+            "userPass":"1234",
+            "role" :"user"
+        }
+    }
+
+}
+	 * @return true?Bank Account Create Susscess:Bank Account Already Exits
+	 * @author Dat
+	 */
 	@PostMapping("create-bank-account")
 	public String create(@RequestBody BankAccount account)
 	{
 		return iOperatorService.createBankAccount(account);
 	}
+	/**
+	 * @URL http://localhost:9090/tpbank/operator/lock-bank-account
+	 * @param customerPhone
+	 * @return Account has Locked Before if account is lock before else Account is now Locked.
+	 * @author Dat
+	 */
 	@PostMapping("lock-bank-account")
 	public String lockBank(@RequestBody Customer cusPhone)
 	{
