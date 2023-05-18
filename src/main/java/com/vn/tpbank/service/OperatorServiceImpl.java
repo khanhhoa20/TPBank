@@ -90,5 +90,48 @@ public class OperatorServiceImpl implements IOperatorService {
 		return check;
 
 	}
+	
+	@Override
+	public Customer viewCustomer(String customerPhone)
+	{
+		Customer a = new Customer();
+		return a;
+	}
+	
+	@Override 
+	public boolean updateCustomer(Customer customer)
+	{
+		Customer cus = null;
+		cus = customerRepository.findByCustomerPhone(customer.getCustomerPhone());
+		if(cus == null)
+		{
+			return false;
+		}
+		else
+		{
+			BankAccount account = null;
+			account = bankAccountRepository.findByCustomer(cus);
+			if(account!=null)
+			{
+				if(account.getLockStatus().equalsIgnoreCase("Locked"))
+				{
+					return false;
+				}
+				else
+				{
+					Customer newCus = cus;
+					newCus.setCustomerAddress(customer.getCustomerAddress());
+					newCus.setCustomerEmail(customer.getCustomerEmail());
+					newCus.setCustomerDob(customer.getCustomerDob());
+					customerRepository.save(newCus);
+					return true;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
 
 }

@@ -2,6 +2,7 @@ package com.vn.tpbank.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -81,6 +82,31 @@ public class OperatorController {
 	@PostMapping("lock-bank-account")
 	public String lockBank(@RequestBody Customer cusPhone) {
 		return iOperatorService.lockBankAccount(cusPhone.getCustomerPhone());
+	}
+	
+	
+	/**
+	 * @URL http://localhost:9090/tpbank/operator/view-customer-list
+	 * @param customerPhone
+	 * @return customer
+	 * @author Phuoc Sang
+	 */
+	@PostMapping("/view-customer-list")
+	public Customer viewListCustomer(@RequestBody Customer customer)
+	{
+		return iOperatorService.viewCustomer(customer.getCustomerPhone());
+	}
+	
+	/**
+	 * @URL http://localhost:9090/tpbank/operator/update-customer
+	 * @param customerPhone
+	 * @return trueOrFalse
+	 * @author Phuoc Sang
+	 */
+	@PutMapping("/update-customer")
+	public boolean updateNewCustomer(@RequestBody Customer customer)
+	{
+		return iOperatorService.updateCustomer(customer);
 	}
 
 }
