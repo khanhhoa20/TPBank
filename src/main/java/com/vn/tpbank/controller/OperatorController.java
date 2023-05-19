@@ -1,10 +1,12 @@
 package com.vn.tpbank.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vn.tpbank.entity.BankAccount;
@@ -109,4 +111,27 @@ public class OperatorController {
 		return iOperatorService.updateCustomer(customer);
 	}
 
+	/**
+	 * @URL http://localhost:9090/tpbank/operator/deposit
+	 * @param cusPhone
+	 * @param amount
+	 * @return trueOrFalse
+	 * @author ngochuan
+	 */
+	@PutMapping("deposit")
+	public boolean depositMoney(@RequestParam String cusPhone, long amount) {
+		return iOperatorService.depositMoney(cusPhone, amount);
+	}
+	
+	/**
+	 * @URL http://localhost:9090/tpbank/operator/withdraw
+	 * @param cusPhone
+	 * @param amount
+	 * @return true or false
+	 * @author ngochuan
+	 */
+	@PutMapping("withdraw")
+	public boolean withdrawMoney(@RequestParam String cusPhone, long amount) {
+		return iOperatorService.withdrawMoney(cusPhone, amount);
+	}
 }
