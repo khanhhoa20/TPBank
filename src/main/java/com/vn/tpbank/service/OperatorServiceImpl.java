@@ -1,13 +1,17 @@
 package com.vn.tpbank.service;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
+import com.vn.tpbank.entity.Transaction;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.repository.BankAccountRepository;
 import com.vn.tpbank.repository.CustomerRepository;
+import com.vn.tpbank.repository.TransactionRepository;
 import com.vn.tpbank.repository.UserRepository;
 
 @Service
@@ -20,6 +24,9 @@ public class OperatorServiceImpl implements IOperatorService {
 
 	@Autowired
 	BankAccountRepository bankAccountRepository;
+	
+	@Autowired
+	TransactionRepository transactionRepository;
 
 	@Override
 	public String login(String username, String pass) {
@@ -81,6 +88,7 @@ public class OperatorServiceImpl implements IOperatorService {
 		user = userRepository.findByUserName(account.getCustomer().getUser().getUserName());
 		String check = null;
 		if (customer == null && user == null) {
+			account.setLockStatus("Active");
 			bankAccountRepository.save(account);
 			check = "Bank Account Create Susscess";
 		} else {
@@ -94,8 +102,7 @@ public class OperatorServiceImpl implements IOperatorService {
 	@Override
 	public Customer viewCustomer(String customerPhone)
 	{
-		Customer a = new Customer();
-		return a;
+		return customerRepository.findByCustomerPhone(customerPhone);
 	}
 	
 	@Override 
@@ -137,9 +144,17 @@ public class OperatorServiceImpl implements IOperatorService {
 	@Override
 	public boolean depositMoney(String cusPhone, long amount) {
 		BankAccount account = bankAccountRepository.findByCustomer(customerRepository.findByCustomerPhone(cusPhone));
-		if(account!=null) {
+		if(account!=null && !account.getLockStatus().equalsIgnoreCase("Locked")) {
+			Transaction transaction = new Transaction();
+			transaction.setTransactionType("Deposit");
+			transaction.setTransactionDate(new Date());
+			transaction.setTransactionAmount(amount);
+			transaction.setBeforeTransaction(account.getBalance());
 			account.setBalance(account.getBalance()+amount);
 			bankAccountRepository.save(account);
+			transaction.setAfterTransaction(account.getBalance());
+			transaction.setBankAccount(account);
+			transactionRepository.save(transaction);
 			return true;
 		}
 		return false;
@@ -148,11 +163,19 @@ public class OperatorServiceImpl implements IOperatorService {
 	@Override
 	public boolean withdrawMoney(String cusPhone, long amount) {
 		BankAccount account = bankAccountRepository.findByCustomer(customerRepository.findByCustomerPhone(cusPhone));
-		if(account!=null) {
+		if(account!=null && !account.getLockStatus().equalsIgnoreCase("Locked")) {
 			if(account.getBalance()<50000 || account.getBalance()<50000)
 				return false;
+			Transaction transaction = new Transaction();
+			transaction.setTransactionType("Deposit");
+			transaction.setTransactionDate(new Date());
+			transaction.setTransactionAmount(amount);
+			transaction.setBeforeTransaction(account.getBalance());
 			account.setBalance(account.getBalance()-amount);
 			bankAccountRepository.save(account);
+			transaction.setAfterTransaction(account.getBalance());
+			transaction.setBankAccount(account);
+			transactionRepository.save(transaction);
 			return true;
 		}
 		return false;
