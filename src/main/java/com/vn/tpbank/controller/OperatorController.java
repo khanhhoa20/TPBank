@@ -88,18 +88,18 @@ public class OperatorController {
 	/**
 	 * @URL http://localhost:9090/tpbank/operator/view-customer-list
 	 * @param customerPhone
-	 * @return customer
+	 * @return information
 	 * @author Phuoc Sang
 	 */
 	@PostMapping("/view-customer-list")
-	public Customer viewListCustomer(@RequestBody Customer customer)
+	public String viewListCustomer(@RequestBody Customer customer)
 	{
 		return iOperatorService.viewCustomer(customer.getCustomerPhone());
 	}
 	
 	/**
 	 * @URL http://localhost:9090/tpbank/operator/update-customer
-	 * @param customerPhone
+	 * @param customer
 	 * @return trueOrFalse
 	 * @author Phuoc Sang
 	 */

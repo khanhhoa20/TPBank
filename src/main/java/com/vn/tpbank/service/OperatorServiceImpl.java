@@ -1,5 +1,6 @@
 package com.vn.tpbank.service;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class OperatorServiceImpl implements IOperatorService {
 
 	@Autowired
 	BankAccountRepository bankAccountRepository;
-
+	
 	@Override
 	public String login(String username, String pass) {
 		User user = userRepository.findByUserNameAndUserPass(username, pass);
@@ -92,10 +93,38 @@ public class OperatorServiceImpl implements IOperatorService {
 	}
 	
 	@Override
-	public Customer viewCustomer(String customerPhone)
+	public String viewCustomer(String customerPhone)
 	{
+		StringBuffer  str = new StringBuffer();
 		Customer a = new Customer();
-		return a;
+		a = customerRepository.findByCustomerPhone(customerPhone);
+		if(a==null)
+		{
+			return "Khach hang khong ton tai";
+		}
+		else
+		{
+			User user = new User();
+			user = a.getUser();
+			
+			BankAccount bank = new BankAccount();
+			bank = bankAccountRepository.findByCustomer(a);
+			
+			str.append(a.getCustomerPhone());
+			str.append(a.getCustomerAddress());
+			str.append(a.getCustomerNationalId());
+			str.append(a.getCustomerDob());
+			str.append(a.getCustomerEmail());
+			str.append(a.getCustomerName());
+			str.append(user.getUserName());
+			if(bank!=null)
+			{
+				str.append(bank.getBankName());
+				str.append(bank.getLockStatus());
+				str.append(bank.getBalance());
+			}
+		}
+		return str.toString();
 	}
 	
 	@Override 

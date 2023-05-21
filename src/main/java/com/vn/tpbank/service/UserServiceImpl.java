@@ -18,5 +18,4 @@ public class UserServiceImpl implements IUserService{
 	public Optional<User> getUserForTest() {
 		return	userRepository.findById(1l);
 	}
-
 }
