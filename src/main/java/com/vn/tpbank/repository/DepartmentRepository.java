@@ -8,5 +8,5 @@ import com.vn.tpbank.entity.Department;
 
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
-	Department findByDepartmentId(Long departmentId);
+	public Department findByDepartmentId(Long departmentId);
 }

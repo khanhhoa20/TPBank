@@ -16,9 +16,9 @@ import jakarta.persistence.Table;
 @Table(name = "operator")
 public class Operator {
 	@Id
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "OPERATOR_SEQ")
 	@SequenceGenerator(name = "OPERATOR_SEQ", sequenceName = "OPERATOR_SEQ", allocationSize = 1)
-	@Column(name = "id")
 	private Long operatorID;
 
 	@Column(name = "oper_phone")
@@ -116,6 +116,14 @@ public class Operator {
 
 	public void setOperatorStatus(String operatorStatus) {
 		this.operatorStatus = operatorStatus;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }
