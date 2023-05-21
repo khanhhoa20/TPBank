@@ -1,6 +1,7 @@
 package com.vn.tpbank.service;
 
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,11 +13,17 @@ import com.vn.tpbank.entity.Transaction;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.repository.BankAccountRepository;
 import com.vn.tpbank.entity.BankAccount;
+@Service
 public class BankAccountServiceImpl implements IBankAccountService{
-	@Autowired
+
 	BankAccountController bankAccountController;
 	@Autowired
-	BankAccountRepository bankAccountRepository;
+	private BankAccountRepository bankAccountRepository;
+
+	@Autowired
+	public BankAccountServiceImpl(BankAccountRepository bankAccountRepository) {
+	    this.bankAccountRepository = bankAccountRepository;
+	}
 	@Override
 	public String createAccount(Long bankAccountId, Long balance, String bankName, String lockStatus, Customer customer,
 			List<Transaction> listTransactions) {

@@ -25,9 +25,8 @@ public class BankAccountController {
 	
 	@PostMapping("create")
 	public String CreateAccount(@RequestBody BankAccount bankAccount) {
-		iAccountService.createAccount(bankAccount.getBankAccountId(), bankAccount.getBalance(), bankAccount.getBankName(),
+		return iAccountService.createAccount(bankAccount.getBankAccountId(), bankAccount.getBalance(), bankAccount.getBankName(),
 				bankAccount.getLockStatus(), bankAccount.getCustomer(), bankAccount.getListTransactions());
-		return "Created";
 	}
 	@DeleteMapping("/delete/{id}")
 	public boolean deleteUsers(@PathVariable Long id) {
