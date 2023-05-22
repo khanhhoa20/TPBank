@@ -47,18 +47,19 @@ public class OperatorServiceImpl implements IOperatorService {
 		}
 
 	}
+
 	@Override
 	public String lockBankAccount(String cusPhone) {
 		String check = null;
 		Customer customer = customerRepository.findByCustomerPhone(cusPhone);
 		if (customer != null) {
 			BankAccount account = bankAccountRepository.findByCustomer(customer);
-			if (account.getLockStatus().equals("Locked")) {
+			if (account.getLockStatus().equalsIgnoreCase("inactive")) {
 				check = "Account has Locked Before";
 			} else {
-				account.setLockStatus("Locked");
+				account.setLockStatus("inactive");
 				bankAccountRepository.save(account);
-				if (account.getLockStatus().equals("Locked")) {
+				if (account.getLockStatus().equals("inactive")) {
 					check = "Account is now Locked";
 				}
 			}
@@ -73,7 +74,7 @@ public class OperatorServiceImpl implements IOperatorService {
 	public String createBankAccount(BankAccount account) {
 		Customer customer = null;
 		customer = account.getCustomer();
-		customer = customerRepository.findByCustomerPhoneOrCustomerEmailOrCustomerNationalId(account.getCustomer().getCustomerPhone(), account.getCustomer().getCustomerEmail(), account.getCustomer().getCustomerNationalId());
+		customer = customerRepository.findByCustomerEmailAndCustomerNationalIdAndCustomerPhone(customer.getCustomerEmail(),customer.getCustomerNationalId(),customer.getCustomerPhone());
 		User user =null;
 		user = userRepository.findByUserName(account.getCustomer().getUser().getUserName());
 		String check = null;
@@ -82,10 +83,54 @@ public class OperatorServiceImpl implements IOperatorService {
 				check = "Bank Account Create Susscess";
 		}
 		else {
-			check = "Bank Account Already Exits";
+			check = "Bank Account Already Exits or Some Detail Not Right ";
 		}
-				
+
 		return check;
+
+	}
+	
+	@Override
+	public Customer viewCustomer(String customerPhone)
+	{
+		Customer a = new Customer();
+		return a;
+	}
+	
+	@Override 
+	public boolean updateCustomer(Customer customer)
+	{
+		Customer cus = null;
+		cus = customerRepository.findByCustomerPhone(customer.getCustomerPhone());
+		if(cus == null)
+		{
+			return false;
+		}
+		else
+		{
+			BankAccount account = null;
+			account = bankAccountRepository.findByCustomer(cus);
+			if(account!=null)
+			{
+				if(account.getLockStatus().equalsIgnoreCase("Locked"))
+				{
+					return false;
+				}
+				else
+				{
+					Customer newCus = cus;
+					newCus.setCustomerAddress(customer.getCustomerAddress());
+					newCus.setCustomerEmail(customer.getCustomerEmail());
+					newCus.setCustomerDob(customer.getCustomerDob());
+					customerRepository.save(newCus);
+					return true;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		}
 	}
 
 }
