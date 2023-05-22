@@ -82,8 +82,8 @@ public class OperatorController {
 	 * @author Dat
 	 */
 	@PostMapping("lock-bank-account")
-	public String lockBank(@RequestBody Customer cusPhone) {
-		return iOperatorService.lockBankAccount(cusPhone.getCustomerPhone());
+	public String lockBank(@RequestBody Customer customerPhone) {
+		return iOperatorService.lockBankAccount(customerPhone.getCustomerPhone());
 	}
 	
 	
@@ -113,25 +113,25 @@ public class OperatorController {
 
 	/**
 	 * @URL http://localhost:9090/tpbank/operator/deposit
-	 * @param cusPhone
+	 * @param customerPhone
 	 * @param amount
 	 * @return trueOrFalse
 	 * @author ngochuan
 	 */
 	@PutMapping("deposit")
-	public boolean depositMoney(@RequestBody String cusPhone,@RequestBody long amount) {
-		return iOperatorService.depositMoney(cusPhone, amount);
+	public String depositMoney(@RequestBody String customerPhone,@RequestBody long amount) {
+		return iOperatorService.depositMoney(customerPhone, amount);
 	}
 	
 	/**
 	 * @URL http://localhost:9090/tpbank/operator/withdraw
-	 * @param cusPhone
+	 * @param customerPhone
 	 * @param amount
 	 * @return true or false
 	 * @author ngochuan
 	 */
 	@PutMapping("withdraw")
-	public boolean withdrawMoney(@RequestBody String cusPhone,@RequestBody long amount) {
-		return iOperatorService.withdrawMoney(cusPhone, amount);
+	public String withdrawMoney(@RequestBody String customerPhone,@RequestBody long amount) {
+		return iOperatorService.withdrawMoney(customerPhone, amount);
 	}
 }

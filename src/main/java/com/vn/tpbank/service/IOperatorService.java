@@ -17,8 +17,8 @@ public interface IOperatorService {
 	
 	public boolean updateCustomer(Customer customer);
 	
-	public boolean depositMoney(String cusPhone, long amount);
+	public String depositMoney(String cusPhone, long amount);
 	
-	public boolean withdrawMoney(String cusPhone, long amount);
+	public String withdrawMoney(String cusPhone, long amount);
 
 }

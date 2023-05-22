@@ -38,8 +38,8 @@ public class OperatorServiceImpl implements IOperatorService {
 	}
 
 	@Override
-	public String unlockBankAccount(String cusPhone) {
-		Customer cus = customerRepository.findByCustomerPhone(cusPhone);
+	public String unlockBankAccount(String customerPhone) {
+		Customer cus = customerRepository.findByCustomerPhone(customerPhone);
 		if (cus != null) {
 			BankAccount bankAccount = bankAccountRepository.findByCustomer(cus);
 			if (bankAccount.getLockStatus().equals("active")) {
@@ -56,9 +56,9 @@ public class OperatorServiceImpl implements IOperatorService {
 	}
 
 	@Override
-	public String lockBankAccount(String cusPhone) {
+	public String lockBankAccount(String customerPhone) {
 		String check = null;
-		Customer customer = customerRepository.findByCustomerPhone(cusPhone);
+		Customer customer = customerRepository.findByCustomerPhone(customerPhone);
 		if (customer != null) {
 			BankAccount account = bankAccountRepository.findByCustomer(customer);
 			if (account.getLockStatus().equals("Locked")) {
@@ -142,8 +142,8 @@ public class OperatorServiceImpl implements IOperatorService {
 	}
 
 	@Override
-	public boolean depositMoney(String cusPhone, long amount) {
-		BankAccount account = bankAccountRepository.findByCustomer(customerRepository.findByCustomerPhone(cusPhone));
+	public String depositMoney(String customerPhone, long amount) {
+		BankAccount account = bankAccountRepository.findByCustomer(customerRepository.findByCustomerPhone(customerPhone));
 		if(account!=null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
 			Transaction transaction = new Transaction();
 			transaction.setTransactionType("Deposit");
@@ -155,17 +155,19 @@ public class OperatorServiceImpl implements IOperatorService {
 			transaction.setAfterTransaction(account.getBalance());
 			transaction.setBankAccount(account);
 			transactionRepository.save(transaction);
-			return true;
+			return "Transaction has been made successfully.";
 		}
-		return false;
+		return "Account is not available or has been locked.";
 	}
 
 	@Override
-	public boolean withdrawMoney(String cusPhone, long amount) {
-		BankAccount account = bankAccountRepository.findByCustomer(customerRepository.findByCustomerPhone(cusPhone));
+	public String withdrawMoney(String customerPhone, long amount) {
+		if(amount<=0)
+			return "Invalid input amount.";
+		BankAccount account = bankAccountRepository.findByCustomer(customerRepository.findByCustomerPhone(customerPhone));
 		if(account!=null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
 			if(account.getBalance()<50000 || account.getBalance()<50000)
-				return false;
+				return "Balance is not high enough for this transaction.";
 			Transaction transaction = new Transaction();
 			transaction.setTransactionType("Deposit");
 			transaction.setTransactionDate(new Date());
@@ -176,9 +178,9 @@ public class OperatorServiceImpl implements IOperatorService {
 			transaction.setAfterTransaction(account.getBalance());
 			transaction.setBankAccount(account);
 			transactionRepository.save(transaction);
-			return true;
+			return "Transaction has been made successfully.";
 		}
-		return false;
+		return "Account is not available or has been locked.";
 	}
 
 
