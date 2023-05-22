@@ -1,6 +1,8 @@
 package com.vn.tpbank.service;
 
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,7 +80,7 @@ public class OperatorServiceImpl implements IOperatorService {
 		customer = customerRepository.findByCustomerPhoneOrCustomerEmailOrCustomerNationalId(
 				account.getCustomer().getCustomerPhone(), account.getCustomer().getCustomerEmail(),
 				account.getCustomer().getCustomerNationalId());
-		User user = null;
+		Optional<User> user = null;
 		user = userRepository.findByUserName(account.getCustomer().getUser().getUserName());
 		String check = null;
 		if (customer == null && user == null) {
@@ -100,7 +102,7 @@ public class OperatorServiceImpl implements IOperatorService {
 		a = customerRepository.findByCustomerPhone(customerPhone);
 		if(a==null)
 		{
-			return "Khach hang khong ton tai";
+			return "Customer Not Exits";
 		}
 		else
 		{
@@ -110,18 +112,19 @@ public class OperatorServiceImpl implements IOperatorService {
 			BankAccount bank = new BankAccount();
 			bank = bankAccountRepository.findByCustomer(a);
 			
-			str.append(a.getCustomerPhone());
-			str.append(a.getCustomerAddress());
-			str.append(a.getCustomerNationalId());
-			str.append(a.getCustomerDob());
-			str.append(a.getCustomerEmail());
-			str.append(a.getCustomerName());
-			str.append(user.getUserName());
+			str.append(a.getCustomerPhone()+"\n");
+			str.append(a.getCustomerAddress()+"\n");
+			str.append(a.getCustomerNationalId()+"\n");
+			str.append(a.getCustomerDob()+"\n");
+			str.append(a.getCustomerEmail()+"\n");
+			str.append(a.getCustomerName()+"\n");
+			str.append(user.getUserName()+"\n");
+	
 			if(bank!=null)
 			{
-				str.append(bank.getBankName());
-				str.append(bank.getLockStatus());
-				str.append(bank.getBalance());
+				str.append(bank.getBankName()+"\n");
+				str.append(bank.getLockStatus()+"\n");
+				str.append(bank.getBalance()+"\n");
 			}
 		}
 		return str.toString();
