@@ -1,9 +1,11 @@
 package com.vn.tpbank.controller;
 
 import java.util.List;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -108,9 +110,9 @@ public class OperatorController {
 	 * @author Phuoc Sang
 	 */
 	@PutMapping("/update-customer")
-	public boolean updateNewCustomer(@RequestBody Customer customer)
+	public boolean updateNewCustomer(@RequestBody Customer customer )
 	{
-		return iOperatorService.updateCustomer(customer);
+		return iOperatorService.updateCustomer(customer.getCustomerName(),customer.getCustomerDob(),  customer.getCustomerAddress(),customer.getCustomerPhone());
 	}
 
 }

@@ -1,6 +1,8 @@
 package com.vn.tpbank.service;
 
+
 import java.util.List;
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,28 +95,29 @@ public class OperatorServiceImpl implements IOperatorService {
 	}
 
 	@Override
+<<<<<<< HEAD
 	public List<Customer> viewCustomers() {
 		return customerRepository.findAll();
 	}
-
-	@Override
-	public boolean updateCustomer(Customer customer) {
+	public boolean updateCustomer(String name, Date birth, String address, String phone) {
 		Customer cus = null;
-		cus = customerRepository.findByCustomerPhone(customer.getCustomerPhone());
+		cus = customerRepository.findByCustomerPhone(phone);
 		if (cus == null) {
 			return false;
 		} else {
 			BankAccount account = null;
 			account = bankAccountRepository.findByCustomer(cus);
 			if (account != null) {
-				if (account.getLockStatus().equalsIgnoreCase("Locked")) {
+				if (account.getLockStatus().equalsIgnoreCase("Inactive")) {
 					return false;
 				} else {
-					Customer newCus = cus;
-					newCus.setCustomerAddress(customer.getCustomerAddress());
-					newCus.setCustomerEmail(customer.getCustomerEmail());
-					newCus.setCustomerDob(customer.getCustomerDob());
-					customerRepository.save(newCus);
+
+					cus.setCustomerAddress(address);
+
+					cus.setCustomerDob(birth);
+
+					cus.setCustomerName(name);
+					cus = customerRepository.save(cus);
 					return true;
 				}
 			} else {
@@ -122,5 +125,6 @@ public class OperatorServiceImpl implements IOperatorService {
 			}
 		}
 	}
+
 
 }
