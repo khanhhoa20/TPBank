@@ -76,48 +76,65 @@ public class OperatorServiceImpl implements IOperatorService {
 	public String createBankAccount(BankAccount account) {
 		Customer customer = null;
 		customer = account.getCustomer();
-		customer = customerRepository.findByCustomerEmailAndCustomerNationalIdAndCustomerPhone(customer.getCustomerEmail(),customer.getCustomerNationalId(),customer.getCustomerPhone());
+		customer = customerRepository.findByCustomerEmailAndCustomerNationalIdAndCustomerPhone(
+				customer.getCustomerEmail(), customer.getCustomerNationalId(), customer.getCustomerPhone());
 		Optional<User> user = userRepository.findByUserName(account.getCustomer().getUser().getUserName());
 		String check = null;
-		if (customer == null && user ==null ) {
-				bankAccountRepository.save(account);
-				check = "Bank Account Create Susscess";
-		}
-		else {
+		if (customer == null && user.isEmpty()) {
+			bankAccountRepository.save(account);
+			check = "Bank Account Create Susscess";
+		} else {
 			check = "Bank Account Already Exits or Some Detail Not Right ";
 		}
 
 		return check;
 
 	}
-	
+
 	@Override
-	public String viewCustomer(String customerPhone)
-	{
-		return null;
+	public String viewCustomer(String customerPhone) {
+		StringBuffer str = new StringBuffer();
+		Customer a = new Customer();
+		a = customerRepository.findByCustomerPhone(customerPhone);
+		if (a == null) {
+			return "Customer Not Exits";
+		} else {
+			User user = new User();
+			user = a.getUser();
+
+			BankAccount bank = new BankAccount();
+			bank = bankAccountRepository.findByCustomer(a);
+
+			str.append(a.getCustomerPhone() + "\n");
+			str.append(a.getCustomerAddress() + "\n");
+			str.append(a.getCustomerNationalId() + "\n");
+			str.append(a.getCustomerDob() + "\n");
+			str.append(a.getCustomerEmail() + "\n");
+			str.append(a.getCustomerName() + "\n");
+			str.append(user.getUserName() + "\n");
+
+			if (bank != null) {
+				str.append(bank.getBankName() + "\n");
+				str.append(bank.getLockStatus() + "\n");
+				str.append(bank.getBalance() + "\n");
+			}
+		}
+		return str.toString();
 	}
-	
-	@Override 
-	public boolean updateCustomer(Customer customer)
-	{
+
+	@Override
+	public boolean updateCustomer(Customer customer) {
 		Customer cus = null;
 		cus = customerRepository.findByCustomerPhone(customer.getCustomerPhone());
-		if(cus == null)
-		{
+		if (cus == null) {
 			return false;
-		}
-		else
-		{
+		} else {
 			BankAccount account = null;
 			account = bankAccountRepository.findByCustomer(cus);
-			if(account!=null)
-			{
-				if(account.getLockStatus().equalsIgnoreCase("Locked"))
-				{
+			if (account != null) {
+				if (account.getLockStatus().equalsIgnoreCase("Locked")) {
 					return false;
-				}
-				else
-				{
+				} else {
 					Customer newCus = cus;
 					newCus.setCustomerAddress(customer.getCustomerAddress());
 					newCus.setCustomerEmail(customer.getCustomerEmail());
@@ -125,9 +142,7 @@ public class OperatorServiceImpl implements IOperatorService {
 					customerRepository.save(newCus);
 					return true;
 				}
-			}
-			else
-			{
+			} else {
 				return false;
 			}
 		}

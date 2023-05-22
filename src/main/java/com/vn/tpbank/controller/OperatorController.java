@@ -89,7 +89,7 @@ public class OperatorController {
 	/**
 	 * @URL http://localhost:9090/tpbank/operator/view-customer-list
 	 * @param customerPhone
-	 * @return customer
+	 * @return information
 	 * @author Phuoc Sang
 	 */
 	@GetMapping("/view-customer-list")
@@ -100,7 +100,7 @@ public class OperatorController {
 	
 	/**
 	 * @URL http://localhost:9090/tpbank/operator/update-customer
-	 * @param customerPhone
+	 * @param customer
 	 * @return trueOrFalse
 	 * @author Phuoc Sang
 	 */
