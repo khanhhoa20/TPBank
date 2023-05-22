@@ -16,9 +16,9 @@ import jakarta.persistence.Table;
 @Table(name = "operator")
 public class Operator {
 	@Id
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "OPERATOR_SEQ")
 	@SequenceGenerator(name = "OPERATOR_SEQ", sequenceName = "OPERATOR_SEQ", allocationSize = 1)
-	@Column(name = "id")
 	private Long operatorID;
 
 	@Column(name = "oper_phone")
@@ -32,6 +32,10 @@ public class Operator {
 	
 	@Column(name="operator_status")
 	private String operatorStatus;
+	
+	@Column(name="oper_email")
+	private String email;
+	
 
 	@OneToOne(targetEntity = User.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -45,12 +49,13 @@ public class Operator {
 
 	}
 
-	public Operator(Long operatorID, String operPhone, String operAddress, String operName, User user, String operatorStatus,
+	public Operator(Long operatorID, String operPhone, String operAddress, String email, String operName, User user, String operatorStatus,
 			Department department) {
 		super();
 		this.operatorID = operatorID;
 		this.operPhone = operPhone;
 		this.operAddress = operAddress;
+		this.email = email;
 		this.operName = operName;
 		this.user = user;
 		this.department = department;
@@ -111,6 +116,14 @@ public class Operator {
 
 	public void setOperatorStatus(String operatorStatus) {
 		this.operatorStatus = operatorStatus;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }
