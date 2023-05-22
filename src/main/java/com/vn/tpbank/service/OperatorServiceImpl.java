@@ -74,17 +74,16 @@ public class OperatorServiceImpl implements IOperatorService {
 	public String createBankAccount(BankAccount account) {
 		Customer customer = null;
 		customer = account.getCustomer();
-		customer = customerRepository.findByCustomerPhoneOrCustomerEmailOrCustomerNationalId(
-				account.getCustomer().getCustomerPhone(), account.getCustomer().getCustomerEmail(),
-				account.getCustomer().getCustomerNationalId());
-		User user = null;
+		customer = customerRepository.findByCustomerEmailAndCustomerNationalIdAndCustomerPhone(customer.getCustomerEmail(),customer.getCustomerNationalId(),customer.getCustomerPhone());
+		User user =null;
 		user = userRepository.findByUserName(account.getCustomer().getUser().getUserName());
 		String check = null;
-		if (customer == null && user == null) {
-			bankAccountRepository.save(account);
-			check = "Bank Account Create Susscess";
-		} else {
-			check = "Bank Account Already Exits";
+		if (customer == null && user ==null ) {
+				bankAccountRepository.save(account);
+				check = "Bank Account Create Susscess";
+		}
+		else {
+			check = "Bank Account Already Exits or Some Detail Not Right ";
 		}
 
 		return check;

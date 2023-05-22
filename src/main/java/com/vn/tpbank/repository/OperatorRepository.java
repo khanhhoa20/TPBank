@@ -7,5 +7,4 @@ import com.vn.tpbank.entity.Operator;
 
 @Repository
 public interface OperatorRepository extends JpaRepository<Operator, Long>{
-
 }
