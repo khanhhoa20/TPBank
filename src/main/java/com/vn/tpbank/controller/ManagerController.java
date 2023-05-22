@@ -1,6 +1,9 @@
 package com.vn.tpbank.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,9 +40,9 @@ public class ManagerController {
 		return iManagerService.disableOperator(username);
 	}
 	
-//	@GetMapping("/listAllOperator")
-//	public List<Operator> listAllOperator(){
-//		List<Operator> operator = (List<Operator>) iManagerService.listAllOperator();
-//		return operator;
-//	}
+	@GetMapping("/listAllOperator")
+	public List<Operator> listAllOperator(){
+		List<Operator> operator = (List<Operator>) iManagerService.listAllOperator();
+		return operator;
+	}
 }

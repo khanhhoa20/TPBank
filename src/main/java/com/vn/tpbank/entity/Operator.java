@@ -1,5 +1,7 @@
 package com.vn.tpbank.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,7 +42,8 @@ public class Operator {
 	@OneToOne(targetEntity = User.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
-
+	
+	@JsonManagedReference
 	@ManyToOne(targetEntity = Department.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "department_id", referencedColumnName = "id")
 	private Department department;
