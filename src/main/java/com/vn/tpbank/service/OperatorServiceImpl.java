@@ -54,12 +54,12 @@ public class OperatorServiceImpl implements IOperatorService {
 		Customer customer = customerRepository.findByCustomerPhone(cusPhone);
 		if (customer != null) {
 			BankAccount account = bankAccountRepository.findByCustomer(customer);
-			if (account.getLockStatus().equals("Locked")) {
+			if (account.getLockStatus().equalsIgnoreCase("inactive")) {
 				check = "Account has Locked Before";
 			} else {
 				account.setLockStatus("Locked");
 				bankAccountRepository.save(account);
-				if (account.getLockStatus().equals("Locked")) {
+				if (account.getLockStatus().equals("inactive")) {
 					check = "Account is now Locked";
 				}
 			}
