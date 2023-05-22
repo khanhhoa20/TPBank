@@ -11,5 +11,5 @@ import com.vn.tpbank.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
 	public User findByUserNameAndUserPass(String userName, String userPass);
-	public User findByUserName(String userName);
+	public Optional<User> findByUserName(String userName);
 }

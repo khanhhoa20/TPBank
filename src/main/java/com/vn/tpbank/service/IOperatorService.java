@@ -13,7 +13,7 @@ public interface IOperatorService {
 
 	public String createBankAccount(BankAccount account);
 	
-	public Customer viewCustomer(String customerPhone);
+	public String viewCustomer(String customerPhone);
 	
 	public boolean updateCustomer(Customer customer);
 
