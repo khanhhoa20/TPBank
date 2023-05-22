@@ -1,5 +1,7 @@
 package com.vn.tpbank.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,10 +77,10 @@ public class OperatorServiceImpl implements IOperatorService {
 		Customer customer = null;
 		customer = account.getCustomer();
 		customer = customerRepository.findByCustomerEmailAndCustomerNationalIdAndCustomerPhone(customer.getCustomerEmail(),customer.getCustomerNationalId(),customer.getCustomerPhone());
-		User user =null;
-		user = userRepository.findByUserName(account.getCustomer().getUser().getUserName());
+		
+		Optional<User> user = userRepository.findByUserName(account.getCustomer().getUser().getUserName());
 		String check = null;
-		if (customer == null && user ==null ) {
+		if (customer == null && user.isEmpty() ) {
 				bankAccountRepository.save(account);
 				check = "Bank Account Create Susscess";
 		}
@@ -90,12 +92,6 @@ public class OperatorServiceImpl implements IOperatorService {
 
 	}
 	
-	@Override
-	public Customer viewCustomer(String customerPhone)
-	{
-		Customer a = new Customer();
-		return a;
-	}
 	
 	@Override 
 	public boolean updateCustomer(Customer customer)
