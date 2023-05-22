@@ -1,6 +1,7 @@
 package com.vn.tpbank.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,7 @@ import com.vn.tpbank.entity.Customer;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.service.IOperatorService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/tpbank/operator")
 public class OperatorController {
