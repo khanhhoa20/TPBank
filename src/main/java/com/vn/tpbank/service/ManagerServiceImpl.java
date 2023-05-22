@@ -6,9 +6,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vn.tpbank.entity.BankAccount;
+import com.vn.tpbank.entity.Customer;
 import com.vn.tpbank.entity.Department;
 import com.vn.tpbank.entity.Operator;
+import com.vn.tpbank.entity.Transaction;
 import com.vn.tpbank.entity.User;
+import com.vn.tpbank.repository.BankAccountRepository;
+import com.vn.tpbank.repository.CustomerRepository;
 import com.vn.tpbank.repository.DepartmentRepository;
 import com.vn.tpbank.repository.OperatorRepository;
 import com.vn.tpbank.repository.UserRepository;
@@ -21,7 +26,11 @@ public class ManagerServiceImpl implements IManagerService {
 	UserRepository userRepository;
 	@Autowired
 	DepartmentRepository departmentRepository;
-	
+	@Autowired
+	BankAccountRepository bankAccountRepository;
+	@Autowired
+	CustomerRepository customerRepository;
+
 	@Override
 	public String login(String username, String password) {
 		User user = userRepository.findByUserNameAndUserPass(username, password);
@@ -92,6 +101,32 @@ public class ManagerServiceImpl implements IManagerService {
 		List<Operator> listOperator = (List<Operator>) operatorRepository.findAll();
 		
 		return listOperator;
+	}
+	
+	@Override
+	public String createAccount(Long balance, String bankName, String lockStatus, Customer customer) {
+		// TODO Auto-generated method stub
+		User user = customer.getUser();
+		if(userRepository.findByUserName(user.getUserName()).isEmpty()) {
+			userRepository.save(user);
+			customerRepository.save(customer);
+			BankAccount bankAccount = new BankAccount(null, balance, bankName, lockStatus, customer,
+					null);
+			bankAccountRepository.save(bankAccount);
+			return "Create account successfully";
+		}else {
+			return "Account is existed";
+		}
+	}
+
+	@Override
+	public boolean deleteAccount(Long id) {
+		if (bankAccountRepository.existsById(id)) {
+			bankAccountRepository.deleteById(id);
+			return true;
+		}	
+		else 
+			return false;
 	}
 
 }
