@@ -57,7 +57,7 @@ public class OperatorServiceImpl implements IOperatorService {
 			if (account.getLockStatus().equalsIgnoreCase("inactive")) {
 				check = "Account has Locked Before";
 			} else {
-				account.setLockStatus("Locked");
+				account.setLockStatus("inactive");
 				bankAccountRepository.save(account);
 				if (account.getLockStatus().equals("inactive")) {
 					check = "Account is now Locked";
