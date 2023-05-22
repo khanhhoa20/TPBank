@@ -64,9 +64,9 @@ public class OperatorServiceImpl implements IOperatorService {
 			if (account.getLockStatus().equals("Locked")) {
 				check = "Account has Locked Before";
 			} else {
-				account.setLockStatus("Locked");
+				account.setLockStatus("inactive");
 				bankAccountRepository.save(account);
-				if (account.getLockStatus().equals("Locked")) {
+				if (account.getLockStatus().equals("inactive")) {
 					check = "Account is now Locked";
 				}
 			}
@@ -144,7 +144,7 @@ public class OperatorServiceImpl implements IOperatorService {
 	@Override
 	public boolean depositMoney(String cusPhone, long amount) {
 		BankAccount account = bankAccountRepository.findByCustomer(customerRepository.findByCustomerPhone(cusPhone));
-		if(account!=null && !account.getLockStatus().equalsIgnoreCase("Locked")) {
+		if(account!=null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
 			Transaction transaction = new Transaction();
 			transaction.setTransactionType("Deposit");
 			transaction.setTransactionDate(new Date());
@@ -163,7 +163,7 @@ public class OperatorServiceImpl implements IOperatorService {
 	@Override
 	public boolean withdrawMoney(String cusPhone, long amount) {
 		BankAccount account = bankAccountRepository.findByCustomer(customerRepository.findByCustomerPhone(cusPhone));
-		if(account!=null && !account.getLockStatus().equalsIgnoreCase("Locked")) {
+		if(account!=null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
 			if(account.getBalance()<50000 || account.getBalance()<50000)
 				return false;
 			Transaction transaction = new Transaction();

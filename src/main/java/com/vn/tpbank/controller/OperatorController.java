@@ -119,7 +119,7 @@ public class OperatorController {
 	 * @author ngochuan
 	 */
 	@PutMapping("deposit")
-	public boolean depositMoney(@RequestParam String cusPhone, long amount) {
+	public boolean depositMoney(@RequestBody String cusPhone,@RequestParam long amount) {
 		return iOperatorService.depositMoney(cusPhone, amount);
 	}
 	
@@ -131,7 +131,7 @@ public class OperatorController {
 	 * @author ngochuan
 	 */
 	@PutMapping("withdraw")
-	public boolean withdrawMoney(@RequestParam String cusPhone, long amount) {
+	public boolean withdrawMoney(@RequestBody String cusPhone,@RequestParam long amount) {
 		return iOperatorService.withdrawMoney(cusPhone, amount);
 	}
 }
