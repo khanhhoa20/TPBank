@@ -1,6 +1,5 @@
 package com.vn.tpbank.service;
 
-
 import java.util.List;
 import java.util.Date;
 import java.util.Optional;
@@ -95,14 +94,15 @@ public class OperatorServiceImpl implements IOperatorService {
 	}
 
 	@Override
-<<<<<<< HEAD
 	public List<Customer> viewCustomers() {
 		return customerRepository.findAll();
 	}
-	public boolean updateCustomer(String name, Date birth, String address, String phone) {
+
+	public boolean updateCustomer(String email, String address, String phone) {
 		Customer cus = null;
 		cus = customerRepository.findByCustomerPhone(phone);
-		if (cus == null) {
+		Customer customer = customerRepository.findByCustomerEmail(email);
+		if (cus == null || customer != null) {
 			return false;
 		} else {
 			BankAccount account = null;
@@ -113,18 +113,15 @@ public class OperatorServiceImpl implements IOperatorService {
 				} else {
 
 					cus.setCustomerAddress(address);
-
-					cus.setCustomerDob(birth);
-
-					cus.setCustomerName(name);
+					cus.setCustomerEmail(email);
 					cus = customerRepository.save(cus);
 					return true;
+
 				}
 			} else {
 				return false;
 			}
 		}
 	}
-
 
 }

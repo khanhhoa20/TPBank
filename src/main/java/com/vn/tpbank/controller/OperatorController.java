@@ -112,7 +112,7 @@ public class OperatorController {
 	@PutMapping("/update-customer")
 	public boolean updateNewCustomer(@RequestBody Customer customer )
 	{
-		return iOperatorService.updateCustomer(customer.getCustomerName(),customer.getCustomerDob(),  customer.getCustomerAddress(),customer.getCustomerPhone());
+		return iOperatorService.updateCustomer(customer.getCustomerEmail(),customer.getCustomerAddress(),customer.getCustomerPhone());
 	}
 
 }
