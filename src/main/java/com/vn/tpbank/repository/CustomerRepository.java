@@ -8,6 +8,6 @@ import com.vn.tpbank.entity.Customer;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long>{
 	public Customer findByCustomerPhone(String phone);
-	public Customer findByCustomerPhoneOrCustomerEmailOrCustomerNationalId(String phone,String cusEmail,Long cusNational);
+	public Customer findByCustomerEmailAndCustomerNationalIdAndCustomerPhone(String cusEmail,Long cusNational,String phone);
 	
 }
