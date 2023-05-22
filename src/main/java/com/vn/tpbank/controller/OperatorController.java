@@ -1,5 +1,7 @@
 package com.vn.tpbank.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
+import com.vn.tpbank.entity.Operator;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.service.IOperatorService;
 
@@ -88,14 +91,14 @@ public class OperatorController {
 	
 	/**
 	 * @URL http://localhost:9090/tpbank/operator/view-customer-list
-	 * @param customerPhone
-	 * @return information
-	 * @author Phuoc Sang
+	 * @param 
+	 * @return 
+	 * @author Khánh Hòa
 	 */
 	@GetMapping("/view-customer-list")
-	public String viewListCustomer(@RequestBody Customer customer)
+	public List<Customer> viewListCustomer()
 	{
-		return iOperatorService.viewCustomer(customer.getCustomerPhone());
+		return iOperatorService.viewCustomers();
 	}
 	
 	/**

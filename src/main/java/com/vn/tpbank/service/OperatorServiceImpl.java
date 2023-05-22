@@ -1,5 +1,6 @@
 package com.vn.tpbank.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,34 +93,8 @@ public class OperatorServiceImpl implements IOperatorService {
 	}
 
 	@Override
-	public String viewCustomer(String customerPhone) {
-		StringBuffer str = new StringBuffer();
-		Customer a = new Customer();
-		a = customerRepository.findByCustomerPhone(customerPhone);
-		if (a == null) {
-			return "Customer Not Exits";
-		} else {
-			User user = new User();
-			user = a.getUser();
-
-			BankAccount bank = new BankAccount();
-			bank = bankAccountRepository.findByCustomer(a);
-
-			str.append(a.getCustomerPhone() + "\n");
-			str.append(a.getCustomerAddress() + "\n");
-			str.append(a.getCustomerNationalId() + "\n");
-			str.append(a.getCustomerDob() + "\n");
-			str.append(a.getCustomerEmail() + "\n");
-			str.append(a.getCustomerName() + "\n");
-			str.append(user.getUserName() + "\n");
-
-			if (bank != null) {
-				str.append(bank.getBankName() + "\n");
-				str.append(bank.getLockStatus() + "\n");
-				str.append(bank.getBalance() + "\n");
-			}
-		}
-		return str.toString();
+	public List<Customer> viewCustomers() {
+		return customerRepository.findAll();
 	}
 
 	@Override
