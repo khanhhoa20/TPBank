@@ -44,7 +44,7 @@ public class OperatorController {
 	 * @return message unlock success or not
 	 * @author khánh hòa
 	 */
-	@PostMapping("unlock-bank-account")
+	@PutMapping("unlock-bank-account")
 	public String login(@RequestBody Customer customer) {
 		return iOperatorService.unlockBankAccount(customer.getCustomerPhone());
 	}
