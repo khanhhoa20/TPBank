@@ -33,7 +33,7 @@ public class ManagerServiceImpl implements IManagerService {
 
 	@Override
 	public String createOperator(String username, String password, String phoneNumber, String address, String email, String name, String status, Long departmentId) {
-		if (userRepository.findByUserName(username)==null) {
+		if (userRepository.findByUserName(username).isEmpty()) {
 			User user = new User(null, username, password, "operator");
 			Department department = departmentRepository.findByDepartmentId(departmentId);
 			userRepository.save(user);
