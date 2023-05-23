@@ -19,7 +19,7 @@ public interface IOperatorService {
 
 	public String createBankAccount(BankAccount account);
 	
-	public List<Customer> viewCustomers();
+	public List<BankAccount> viewCustomers();
 
 	
 	public boolean updateCustomer(String email, String address,String phone);

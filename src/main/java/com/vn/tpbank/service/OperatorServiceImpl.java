@@ -94,8 +94,8 @@ public class OperatorServiceImpl implements IOperatorService {
 	}
 
 	@Override
-	public List<Customer> viewCustomers() {
-		return customerRepository.findAll();
+	public List<BankAccount> viewCustomers() {
+		return bankAccountRepository.findAll();
 	}
 
 	public boolean updateCustomer(String email, String address, String phone) {
