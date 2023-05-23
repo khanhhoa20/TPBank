@@ -11,9 +11,5 @@ import com.vn.tpbank.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
 	public User findByUserNameAndUserPass(String userName, String userPass);
-<<<<<<< HEAD
-	public Optional<User>  findByUserName(String userName);
-=======
 	public Optional<User> findByUserName(String userName);
->>>>>>> parent of a235bd2 (ok)
 }
