@@ -103,7 +103,7 @@ public class OperatorController {
 	 * @author Khánh Hòa
 	 */
 	@GetMapping("/view-customer-list")
-	public List<Customer> viewListCustomer()
+	public List<BankAccount> viewListCustomer()
 	{
 		return iOperatorService.viewCustomers();
 	}

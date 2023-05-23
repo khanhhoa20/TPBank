@@ -26,7 +26,7 @@ public class OperatorServiceImpl implements IOperatorService {
 
 	@Autowired
 	BankAccountRepository bankAccountRepository;
-	
+
 	@Autowired
 	TransactionRepository transactionRepository;
 
@@ -99,10 +99,11 @@ public class OperatorServiceImpl implements IOperatorService {
 	}
 
 	@Override
-	public List<Customer> viewCustomers() {
-		return customerRepository.findAll();
+	public List<BankAccount> viewCustomers() {
+		return bankAccountRepository.findAll();
 	}
 
+	@Override
 	public boolean updateCustomer(String email, String address, String phone) {
 		Customer cus = null;
 		cus = customerRepository.findByCustomerPhone(phone);
@@ -143,42 +144,44 @@ public class OperatorServiceImpl implements IOperatorService {
 
 	@Override
 	public String depositMoney(Transaction transaction) {
-		BankAccount account = bankAccountRepository.getReferenceById(transaction.getBankAccount().getBankAccountId());
-		if(account==null)
+		BankAccount account = bankAccountRepository.findByCustomer(
+				customerRepository.findByCustomerPhone(transaction.getBankAccount().getCustomer().getCustomerPhone()));
+		if (account == null)
 			return "Account not found.";
-		if(account.getLockStatus().equalsIgnoreCase("inactive"))
+		if (account.getLockStatus().equalsIgnoreCase("inactive"))
 			return "Your bank account is locked (INACTIVE).";
-		if(account!=null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
+		if (account != null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
 			transaction.setTransactionType("Deposit");
 			transaction.setTransactionDate(new Date());
 			transaction.setBeforeTransaction(account.getBalance());
-			account.setBalance((account.getBalance()+transaction.getTransactionAmount()));
+			account.setBalance((account.getBalance() + transaction.getTransactionAmount()));
 			bankAccountRepository.save(account);
 			transaction.setAfterTransaction(account.getBalance());
 			transaction.setBankAccount(account);
 			transactionRepository.save(transaction);
 			return "Transaction has been made successfully.";
 		}
-		
+
 		return "Account is not available.";
 	}
 
 	@Override
 	public String withdrawMoney(Transaction transaction) {
-		if(transaction.getTransactionAmount()<=0)
+		if (transaction.getTransactionAmount() <= 0)
 			return "Invalid input amount.";
-		BankAccount account = bankAccountRepository.getReferenceById(transaction.getBankAccount().getBankAccountId());
-		if(account==null)
+		BankAccount account = bankAccountRepository.findByCustomer(
+				customerRepository.findByCustomerPhone(transaction.getBankAccount().getCustomer().getCustomerPhone()));
+		if (account == null)
 			return "Account not found.";
-		if(account.getLockStatus().equalsIgnoreCase("inactive"))
+		if (account.getLockStatus().equalsIgnoreCase("inactive"))
 			return "Your bank account is locked (INACTIVE).";
-		if(account!=null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
-			if(account.getBalance()<50000 || (account.getBalance()-transaction.getTransactionAmount())<50000)
+		if (account != null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
+			if (account.getBalance() < 50000 || (account.getBalance() - transaction.getTransactionAmount()) < 50000)
 				return "Balance is not enough for this transaction.";
 			transaction.setTransactionType("Deposit");
 			transaction.setTransactionDate(new Date());
 			transaction.setBeforeTransaction(account.getBalance());
-			long tempbalance=account.getBalance()-transaction.getTransactionAmount();
+			long tempbalance = account.getBalance() - transaction.getTransactionAmount();
 			account.setBalance(tempbalance);
 			bankAccountRepository.save(account);
 			transaction.setAfterTransaction(account.getBalance());
