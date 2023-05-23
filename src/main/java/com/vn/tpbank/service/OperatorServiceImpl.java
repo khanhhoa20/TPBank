@@ -142,19 +142,17 @@ public class OperatorServiceImpl implements IOperatorService {
 	}
 
 	@Override
-	public String depositMoney(String customerPhone, Long amount) {
-		BankAccount account = bankAccountRepository.findByCustomer(customerRepository.findByCustomerPhone(customerPhone));
+	public String depositMoney(Transaction transaction) {
+		BankAccount account = bankAccountRepository.getReferenceById(transaction.getBankAccount().getBankAccountId());
 		if(account==null)
 			return "Account not found.";
 		if(account.getLockStatus().equalsIgnoreCase("inactive"))
 			return "Your bank account is locked (INACTIVE).";
 		if(account!=null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
-			Transaction transaction = new Transaction();
 			transaction.setTransactionType("Deposit");
 			transaction.setTransactionDate(new Date());
-			transaction.setTransactionAmount(amount);
 			transaction.setBeforeTransaction(account.getBalance());
-			account.setBalance(account.getBalance()+amount);
+			account.setBalance((account.getBalance()+transaction.getTransactionAmount()));
 			bankAccountRepository.save(account);
 			transaction.setAfterTransaction(account.getBalance());
 			transaction.setBankAccount(account);
@@ -166,23 +164,22 @@ public class OperatorServiceImpl implements IOperatorService {
 	}
 
 	@Override
-	public String withdrawMoney(String customerPhone, Long amount) {
-		if(amount<=0)
+	public String withdrawMoney(Transaction transaction) {
+		if(transaction.getTransactionAmount()<=0)
 			return "Invalid input amount.";
-		BankAccount account = bankAccountRepository.findByCustomer(customerRepository.findByCustomerPhone(customerPhone));
+		BankAccount account = bankAccountRepository.getReferenceById(transaction.getBankAccount().getBankAccountId());
 		if(account==null)
 			return "Account not found.";
 		if(account.getLockStatus().equalsIgnoreCase("inactive"))
 			return "Your bank account is locked (INACTIVE).";
 		if(account!=null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
-			if(account.getBalance()<50000 || (account.getBalance()-amount)<50000)
+			if(account.getBalance()<50000 || (account.getBalance()-transaction.getTransactionAmount())<50000)
 				return "Balance is not enough for this transaction.";
-			Transaction transaction = new Transaction();
 			transaction.setTransactionType("Deposit");
 			transaction.setTransactionDate(new Date());
-			transaction.setTransactionAmount(amount);
 			transaction.setBeforeTransaction(account.getBalance());
-			account.setBalance(account.getBalance()-amount);
+			long tempbalance=account.getBalance()-transaction.getTransactionAmount();
+			account.setBalance(tempbalance);
 			bankAccountRepository.save(account);
 			transaction.setAfterTransaction(account.getBalance());
 			transaction.setBankAccount(account);

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
 import com.vn.tpbank.entity.Operator;
+import com.vn.tpbank.entity.Transaction;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.service.IOperatorService;
 
@@ -120,13 +121,13 @@ public class OperatorController {
 	}
 	
 	@PutMapping(value="/deposit")
-	public String depositMoney(@RequestBody String customerPhone, @RequestParam Long amount) {
-		return iOperatorService.depositMoney(customerPhone, amount);
+	public String depositMoney(@RequestBody Transaction transaction) {
+		return iOperatorService.depositMoney(transaction);
 	}
 	
 	@PutMapping(value="/withdraw")
-	public String withdrawMoney(@RequestBody String customerPhone,@RequestParam Long amount) {
-		return iOperatorService.withdrawMoney(customerPhone, amount);
+	public String withdrawMoney(@RequestBody Transaction transaction) {
+		return iOperatorService.withdrawMoney(transaction);
 	}
 
 }
