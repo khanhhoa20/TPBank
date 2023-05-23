@@ -1,19 +1,27 @@
 package com.vn.tpbank.controller;
 
+import java.util.List;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
+import com.vn.tpbank.entity.Operator;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.service.IOperatorService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/tpbank/operator")
 public class OperatorController {
@@ -82,56 +90,43 @@ public class OperatorController {
 	 * @author Dat
 	 */
 	@PostMapping("lock-bank-account")
-	public String lockBank(@RequestBody Customer customerPhone) {
-		return iOperatorService.lockBankAccount(customerPhone.getCustomerPhone());
+	public String lockBank(@RequestBody Customer cusPhone) {
+		return iOperatorService.lockBankAccount(cusPhone.getCustomerPhone());
 	}
 	
 	
 	/**
 	 * @URL http://localhost:9090/tpbank/operator/view-customer-list
-	 * @param customerPhone
-	 * @return customer
-	 * @author Phuoc Sang
+	 * @param 
+	 * @return 
+	 * @author Khánh Hòa
 	 */
-	@PostMapping("/view-customer-list")
-	public Customer viewListCustomer(@RequestBody Customer customer)
+	@GetMapping("/view-customer-list")
+	public List<Customer> viewListCustomer()
 	{
-		return iOperatorService.viewCustomer(customer.getCustomerPhone());
+		return iOperatorService.viewCustomers();
 	}
 	
 	/**
 	 * @URL http://localhost:9090/tpbank/operator/update-customer
-	 * @param customerPhone
+	 * @param customer
 	 * @return trueOrFalse
 	 * @author Phuoc Sang
 	 */
 	@PutMapping("/update-customer")
-	public boolean updateNewCustomer(@RequestBody Customer customer)
+	public boolean updateNewCustomer(@RequestBody Customer customer )
 	{
-		return iOperatorService.updateCustomer(customer);
+		return iOperatorService.updateCustomer(customer.getCustomerEmail(),customer.getCustomerAddress(),customer.getCustomerPhone());
 	}
-
-	/**
-	 * @URL http://localhost:9090/tpbank/operator/deposit
-	 * @param customerPhone
-	 * @param amount
-	 * @return trueOrFalse
-	 * @author ngochuan
-	 */
-	@PutMapping("deposit")
-	public String depositMoney(@RequestBody String customerPhone,@RequestBody long amount) {
+	
+	@PutMapping(value="/deposit")
+	public String depositMoney(@RequestBody String customerPhone, @RequestParam Long amount) {
 		return iOperatorService.depositMoney(customerPhone, amount);
 	}
 	
-	/**
-	 * @URL http://localhost:9090/tpbank/operator/withdraw
-	 * @param customerPhone
-	 * @param amount
-	 * @return true or false
-	 * @author ngochuan
-	 */
-	@PutMapping("withdraw")
-	public String withdrawMoney(@RequestBody String customerPhone,@RequestBody long amount) {
+	@PutMapping(value="/withdraw")
+	public String withdrawMoney(@RequestBody String customerPhone,@RequestParam Long amount) {
 		return iOperatorService.withdrawMoney(customerPhone, amount);
 	}
+
 }

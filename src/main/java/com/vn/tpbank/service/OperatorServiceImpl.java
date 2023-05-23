@@ -1,6 +1,8 @@
 package com.vn.tpbank.service;
 
+import java.util.List;
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,8 +40,8 @@ public class OperatorServiceImpl implements IOperatorService {
 	}
 
 	@Override
-	public String unlockBankAccount(String customerPhone) {
-		Customer cus = customerRepository.findByCustomerPhone(customerPhone);
+	public String unlockBankAccount(String cusPhone) {
+		Customer cus = customerRepository.findByCustomerPhone(cusPhone);
 		if (cus != null) {
 			BankAccount bankAccount = bankAccountRepository.findByCustomer(cus);
 			if (bankAccount.getLockStatus().equals("active")) {
@@ -56,12 +58,12 @@ public class OperatorServiceImpl implements IOperatorService {
 	}
 
 	@Override
-	public String lockBankAccount(String customerPhone) {
+	public String lockBankAccount(String cusPhone) {
 		String check = null;
-		Customer customer = customerRepository.findByCustomerPhone(customerPhone);
+		Customer customer = customerRepository.findByCustomerPhone(cusPhone);
 		if (customer != null) {
 			BankAccount account = bankAccountRepository.findByCustomer(customer);
-			if (account.getLockStatus().equals("Locked")) {
+			if (account.getLockStatus().equalsIgnoreCase("inactive")) {
 				check = "Account has Locked Before";
 			} else {
 				account.setLockStatus("inactive");
@@ -81,69 +83,71 @@ public class OperatorServiceImpl implements IOperatorService {
 	public String createBankAccount(BankAccount account) {
 		Customer customer = null;
 		customer = account.getCustomer();
-		customer = customerRepository.findByCustomerPhoneOrCustomerEmailOrCustomerNationalId(
-				account.getCustomer().getCustomerPhone(), account.getCustomer().getCustomerEmail(),
-				account.getCustomer().getCustomerNationalId());
-		User user = null;
-		user = userRepository.findByUserName(account.getCustomer().getUser().getUserName());
+		customer = customerRepository.findByCustomerEmailAndCustomerNationalIdAndCustomerPhone(
+				customer.getCustomerEmail(), customer.getCustomerNationalId(), customer.getCustomerPhone());
+		Optional<User> user = userRepository.findByUserName(account.getCustomer().getUser().getUserName());
 		String check = null;
-		if (customer == null && user == null) {
-			account.setLockStatus("Active");
+		if (customer == null && user.isEmpty()) {
 			bankAccountRepository.save(account);
 			check = "Bank Account Create Susscess";
 		} else {
-			check = "Bank Account Already Exits";
+			check = "Bank Account Already Exits or Some Detail Not Right ";
 		}
 
 		return check;
 
 	}
-	
+
 	@Override
-	public Customer viewCustomer(String customerPhone)
-	{
-		return customerRepository.findByCustomerPhone(customerPhone);
+	public List<Customer> viewCustomers() {
+		return customerRepository.findAll();
 	}
-	
-	@Override 
-	public boolean updateCustomer(Customer customer)
-	{
+
+	public boolean updateCustomer(String email, String address, String phone) {
 		Customer cus = null;
-		cus = customerRepository.findByCustomerPhone(customer.getCustomerPhone());
-		if(cus == null)
-		{
+		cus = customerRepository.findByCustomerPhone(phone);
+		Customer customer = customerRepository.findByCustomerEmail(email);
+		if (cus == null || customer != null) {
 			return false;
-		}
-		else
-		{
+		} else {
 			BankAccount account = null;
 			account = bankAccountRepository.findByCustomer(cus);
-			if(account!=null)
-			{
-				if(account.getLockStatus().equalsIgnoreCase("Locked"))
-				{
+			if (account != null) {
+				if (account.getLockStatus().equalsIgnoreCase("Inactive")) {
 					return false;
-				}
-				else
-				{
-					Customer newCus = cus;
-					newCus.setCustomerAddress(customer.getCustomerAddress());
-					newCus.setCustomerEmail(customer.getCustomerEmail());
-					newCus.setCustomerDob(customer.getCustomerDob());
-					customerRepository.save(newCus);
+				} else {
+
+					cus.setCustomerAddress(address);
+					cus.setCustomerEmail(email);
+					cus = customerRepository.save(cus);
 					return true;
+
 				}
-			}
-			else
-			{
+			} else {
 				return false;
 			}
 		}
 	}
 
 	@Override
-	public String depositMoney(String customerPhone, long amount) {
+	public Customer viewCustomer(String customerPhone) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean updateCustomer(Customer customer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String depositMoney(String customerPhone, Long amount) {
 		BankAccount account = bankAccountRepository.findByCustomer(customerRepository.findByCustomerPhone(customerPhone));
+		if(account==null)
+			return "Account not found.";
+		if(account.getLockStatus().equalsIgnoreCase("inactive"))
+			return "Your bank account is locked (INACTIVE).";
 		if(account!=null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
 			Transaction transaction = new Transaction();
 			transaction.setTransactionType("Deposit");
@@ -157,17 +161,22 @@ public class OperatorServiceImpl implements IOperatorService {
 			transactionRepository.save(transaction);
 			return "Transaction has been made successfully.";
 		}
-		return "Account is not available or has been locked.";
+		
+		return "Account is not available.";
 	}
 
 	@Override
-	public String withdrawMoney(String customerPhone, long amount) {
+	public String withdrawMoney(String customerPhone, Long amount) {
 		if(amount<=0)
 			return "Invalid input amount.";
 		BankAccount account = bankAccountRepository.findByCustomer(customerRepository.findByCustomerPhone(customerPhone));
+		if(account==null)
+			return "Account not found.";
+		if(account.getLockStatus().equalsIgnoreCase("inactive"))
+			return "Your bank account is locked (INACTIVE).";
 		if(account!=null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
-			if(account.getBalance()<50000 || account.getBalance()<50000)
-				return "Balance is not high enough for this transaction.";
+			if(account.getBalance()<50000 || (account.getBalance()-amount)<50000)
+				return "Balance is not enough for this transaction.";
 			Transaction transaction = new Transaction();
 			transaction.setTransactionType("Deposit");
 			transaction.setTransactionDate(new Date());
@@ -180,8 +189,7 @@ public class OperatorServiceImpl implements IOperatorService {
 			transactionRepository.save(transaction);
 			return "Transaction has been made successfully.";
 		}
-		return "Account is not available or has been locked.";
+		return "Account is not available.";
 	}
-
 
 }
