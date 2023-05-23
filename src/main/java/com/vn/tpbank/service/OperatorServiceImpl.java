@@ -1,5 +1,8 @@
 package com.vn.tpbank.service;
 
+import java.util.Date;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +49,83 @@ public class OperatorServiceImpl implements IOperatorService {
 			return "Phone is not in the system";
 		}
 
+	}
+
+	@Override
+	public String lockBankAccount(String cusPhone) {
+		String check = null;
+		Customer customer = customerRepository.findByCustomerPhone(cusPhone);
+		if (customer != null) {
+			BankAccount account = bankAccountRepository.findByCustomer(customer);
+			if (account.getLockStatus().equalsIgnoreCase("inactive")) {
+				check = "Account has Locked Before";
+			} else {
+				account.setLockStatus("inactive");
+				bankAccountRepository.save(account);
+				if (account.getLockStatus().equals("inactive")) {
+					check = "Account is now Locked";
+				}
+			}
+		} else {
+			check = "Can't find the Customer";
+		}
+
+		return check;
+	}
+
+	@Override
+	public String createBankAccount(BankAccount account) {
+		Customer customer = null;
+		customer = account.getCustomer();
+		customer = customerRepository.findByCustomerEmailAndCustomerNationalIdAndCustomerPhone(
+				customer.getCustomerEmail(), customer.getCustomerNationalId(), customer.getCustomerPhone());
+
+		Optional<User> user = userRepository.findByUserName(account.getCustomer().getUser().getUserName());
+		String check = null;
+		if (customer == null && user.isEmpty()) {
+			bankAccountRepository.save(account);
+			check = "Bank Account Create Susscess";
+		} else {
+			check = "Bank Account Already Exits or Some Detail Not Right ";
+		}
+
+		return check;
+
+	}
+
+	@Override
+	public boolean updateCustomer(String name, Date birth, String address, String phone) {
+		Customer cus = null;
+		cus = customerRepository.findByCustomerPhone(phone);
+		if (cus == null) {
+			return false;
+		} else {
+			BankAccount account = null;
+			account = bankAccountRepository.findByCustomer(cus);
+			if (account != null) {
+				if (account.getLockStatus().equalsIgnoreCase("Inactive")) {
+					return false;
+				} else {
+
+					cus.setCustomerAddress(address);
+
+					cus.setCustomerDob(birth);
+
+					cus.setCustomerName(name);
+					cus = customerRepository.save(cus);
+
+					return true;
+				}
+			} else {
+				return false;
+			}
+		}
+	}
+
+	@Override
+	public String viewCustomer(String customerPhone) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
