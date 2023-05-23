@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vn.tpbank.entity.Department;
 import com.vn.tpbank.entity.Manager;
 import com.vn.tpbank.entity.Operator;
 import com.vn.tpbank.entity.User;
@@ -83,5 +84,10 @@ public class ManagerController {
 		}	
 		else 
 			return false;
+	}
+	
+	@GetMapping("/showDepartment/{id}")
+	public Department getDepartment(@PathVariable Long id) {
+		return iManagerService.getDepartment(id);
 	}
 }

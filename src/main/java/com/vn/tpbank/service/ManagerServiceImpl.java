@@ -36,6 +36,7 @@ public class ManagerServiceImpl implements IManagerService {
 		if (userRepository.findByUserName(username).isEmpty()) {
 			User user = new User(null, username, password, "operator");
 			Department department = departmentRepository.findByDepartmentId(departmentId);
+			System.out.println("-----------"+department.getDepartmentId());
 			userRepository.save(user);
 			Operator operator = new Operator(null, phoneNumber, address, email, name, userRepository.findByUserName(username).get(), "active", department);
 			operatorRepository.save(operator);
@@ -94,4 +95,8 @@ public class ManagerServiceImpl implements IManagerService {
 		return listOperator;
 	}
 
+	@Override
+	public Department getDepartment(Long departmentId) {
+		return departmentRepository.findByDepartmentId(departmentId);
+	}
 }
