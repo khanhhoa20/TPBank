@@ -3,6 +3,7 @@ package com.vn.tpbank.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import com.vn.tpbank.service.IManagerService;
 
 @RestController
 @RequestMapping("/tpbank/manager")
+@CrossOrigin
 public class ManagerController {
 	@Autowired
 	IManagerService iManagerService; 
