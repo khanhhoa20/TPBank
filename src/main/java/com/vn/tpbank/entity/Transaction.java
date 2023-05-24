@@ -76,20 +76,14 @@ public class Transaction {
 		this.transactionType = transactionType;
 	}
 
+	
+
 	public Long getTransactionAmount() {
 		return transactionAmount;
 	}
 
 	public void setTransactionAmount(Long transactionAmount) {
 		this.transactionAmount = transactionAmount;
-	}
-
-	public Date getTransactionDate() {
-		return transactionDate;
-	}
-
-	public void setTransactionDate(Date transactionDate) {
-		this.transactionDate = transactionDate;
 	}
 
 	public Long getBeforeTransaction() {
@@ -107,6 +101,16 @@ public class Transaction {
 	public void setAfterTransaction(Long afterTransaction) {
 		this.afterTransaction = afterTransaction;
 	}
+
+	public Date getTransactionDate() {
+		return transactionDate;
+	}
+
+	public void setTransactionDate(Date transactionDate) {
+		this.transactionDate = transactionDate;
+	}
+
+	
 
 	public BankAccount getBankAccount() {
 		return bankAccount;

@@ -24,13 +24,8 @@ public interface IOperatorService {
 
 	
 	public boolean updateCustomer(String email, String address,String phone);
-
-	String depositMoney(Transaction transaction);
-
-	String withdrawMoney(Transaction transaction);
-
-	boolean updateCustomer(Customer customer);
-
-	Customer viewCustomer(String customerPhone);
+	
+	public String withdrawMoney(Transaction transaction);
+	public String depositMoney(Transaction transaction);
 
 }

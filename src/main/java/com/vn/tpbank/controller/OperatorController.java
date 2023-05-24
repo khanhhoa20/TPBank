@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vn.tpbank.entity.BankAccount;
@@ -47,7 +45,7 @@ public class OperatorController {
 	 * @return message unlock success or not
 	 * @author khánh hòa
 	 */
-	@PostMapping("unlock-bank-account")
+	@PutMapping("unlock-bank-account")
 	public String login(@RequestBody Customer customer) {
 		return iOperatorService.unlockBankAccount(customer.getCustomerPhone());
 	}
@@ -119,6 +117,7 @@ public class OperatorController {
 	{
 		return iOperatorService.updateCustomer(customer.getCustomerEmail(),customer.getCustomerAddress(),customer.getCustomerPhone());
 	}
+
 	
 	@PutMapping(value="/deposit")
 	public String depositMoney(@RequestBody Transaction transaction) {
@@ -129,5 +128,4 @@ public class OperatorController {
 	public String withdrawMoney(@RequestBody Transaction transaction) {
 		return iOperatorService.withdrawMoney(transaction);
 	}
-
 }

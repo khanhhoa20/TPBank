@@ -26,7 +26,7 @@ public class OperatorServiceImpl implements IOperatorService {
 
 	@Autowired
 	BankAccountRepository bankAccountRepository;
-
+	
 	@Autowired
 	TransactionRepository transactionRepository;
 
@@ -103,7 +103,6 @@ public class OperatorServiceImpl implements IOperatorService {
 		return bankAccountRepository.findAll();
 	}
 
-	@Override
 	public boolean updateCustomer(String email, String address, String phone) {
 		Customer cus = null;
 		cus = customerRepository.findByCustomerPhone(phone);
@@ -129,19 +128,7 @@ public class OperatorServiceImpl implements IOperatorService {
 			}
 		}
 	}
-
-	@Override
-	public Customer viewCustomer(String customerPhone) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean updateCustomer(Customer customer) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	
 	@Override
 	public String depositMoney(Transaction transaction) {
 		BankAccount account = bankAccountRepository.findByCustomer(
