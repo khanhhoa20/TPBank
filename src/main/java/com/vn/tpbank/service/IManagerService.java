@@ -1,9 +1,11 @@
 package com.vn.tpbank.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
 import com.vn.tpbank.entity.Operator;
 import com.vn.tpbank.entity.Transaction;
@@ -16,4 +18,6 @@ public interface IManagerService {
 	public List<Operator> listAllOperator();
 	public String createAccount(Long balance, String bankName, String lockStatus, Customer customer);
 	public boolean deleteAccount(Long id);
+	public List<BankAccount> getAllBankAccount();
+	public Optional<BankAccount> findAccountByID(Long id);
 }

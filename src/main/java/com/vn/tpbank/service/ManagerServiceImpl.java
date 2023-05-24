@@ -107,6 +107,7 @@ public class ManagerServiceImpl implements IManagerService {
 	public String createAccount(Long balance, String bankName, String lockStatus, Customer customer) {
 		// TODO Auto-generated method stub
 		User user = customer.getUser();
+//		Optional<User> user2 = userRepository.findByUserName(user.getUserName());
 		if(userRepository.findByUserName(user.getUserName()).isEmpty()) {
 			userRepository.save(user);
 			customerRepository.save(customer);
@@ -128,5 +129,19 @@ public class ManagerServiceImpl implements IManagerService {
 		else 
 			return false;
 	}
+
+	@Override
+	public List<BankAccount> getAllBankAccount() {
+		// TODO Auto-generated method stub
+		return bankAccountRepository.findAll();
+	}
+
+	@Override
+	public Optional<BankAccount> findAccountByID(Long id) {
+		// TODO Auto-generated method stub
+		
+		return bankAccountRepository.findById(id);
+	}
+	
 
 }

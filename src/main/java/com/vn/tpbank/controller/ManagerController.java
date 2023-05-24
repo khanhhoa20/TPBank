@@ -1,7 +1,12 @@
 package com.vn.tpbank.controller;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +17,7 @@ import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Operator;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.service.IManagerService;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/tpbank/manager")
 public class ManagerController {
@@ -47,6 +52,16 @@ public class ManagerController {
 	@DeleteMapping("/deleteBankAccount/{id}")
 	public boolean deleteUsers(@PathVariable Long id) {
 		return iManagerService.deleteAccount(id);
+	}
+	
+	@GetMapping("getAllBankAccount")
+	public List<BankAccount> getAllBankAccount() {
+		return iManagerService.getAllBankAccount();
+	}
+	
+	@GetMapping("findAccountById/{id}")
+	public Optional<BankAccount> findBankAccountById(@PathVariable Long id) {
+		return iManagerService.findAccountByID(id);
 	}
 	
 //	@GetMapping("/listAllOperator")
