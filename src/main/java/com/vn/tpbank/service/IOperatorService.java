@@ -8,6 +8,7 @@ import java.util.Date;
 
 import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
+import com.vn.tpbank.entity.Transaction;
 
 
 public interface IOperatorService {
@@ -23,5 +24,8 @@ public interface IOperatorService {
 
 	
 	public boolean updateCustomer(String email, String address,String phone);
+	
+	public String withdrawMoney(Transaction transaction);
+	public String depositMoney(Transaction transaction);
 
 }
