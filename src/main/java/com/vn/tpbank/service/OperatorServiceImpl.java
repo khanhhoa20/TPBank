@@ -138,7 +138,7 @@ public class OperatorServiceImpl implements IOperatorService {
 		if (account.getLockStatus().equalsIgnoreCase("inactive"))
 			return "Your bank account is locked (INACTIVE).";
 		if (account != null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
-			transaction.setTransactionType("Deposit");
+			transaction.setTransactionType("deposit");
 			transaction.setTransactionDate(new Date());
 			transaction.setBeforeTransaction(account.getBalance());
 			account.setBalance((account.getBalance() + transaction.getTransactionAmount()));
@@ -165,7 +165,7 @@ public class OperatorServiceImpl implements IOperatorService {
 		if (account != null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
 			if (account.getBalance() < 50000 || (account.getBalance() - transaction.getTransactionAmount()) < 50000)
 				return "Balance is not enough for this transaction.";
-			transaction.setTransactionType("Deposit");
+			transaction.setTransactionType("withdraw");
 			transaction.setTransactionDate(new Date());
 			transaction.setBeforeTransaction(account.getBalance());
 			long tempbalance = account.getBalance() - transaction.getTransactionAmount();
