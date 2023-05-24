@@ -37,3 +37,4 @@ build/
 .metadata
 .worksheet
 *.properties
+src/main/resources/application.properties
