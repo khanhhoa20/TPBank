@@ -1,5 +1,8 @@
 package com.vn.tpbank.service;
 
+import java.util.Date;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,63 +77,55 @@ public class OperatorServiceImpl implements IOperatorService {
 	public String createBankAccount(BankAccount account) {
 		Customer customer = null;
 		customer = account.getCustomer();
-		customer = customerRepository.findByCustomerEmailAndCustomerNationalIdAndCustomerPhone(customer.getCustomerEmail(),customer.getCustomerNationalId(),customer.getCustomerPhone());
-		User user =null;
-		user = userRepository.findByUserName(account.getCustomer().getUser().getUserName());
+		customer = customerRepository.findByCustomerEmailAndCustomerNationalIdAndCustomerPhone(
+				customer.getCustomerEmail(), customer.getCustomerNationalId(), customer.getCustomerPhone());
+
+		Optional<User> user = userRepository.findByUserName(account.getCustomer().getUser().getUserName());
 		String check = null;
-		if (customer == null && user ==null ) {
-				bankAccountRepository.save(account);
-				check = "Bank Account Create Susscess";
-		}
-		else {
+		if (customer == null && user.isEmpty()) {
+			bankAccountRepository.save(account);
+			check = "Bank Account Create Susscess";
+		} else {
 			check = "Bank Account Already Exits or Some Detail Not Right ";
 		}
 
 		return check;
 
 	}
-	
+
 	@Override
-	public Customer viewCustomer(String customerPhone)
-	{
-		Customer a = new Customer();
-		return a;
-	}
-	
-	@Override 
-	public boolean updateCustomer(Customer customer)
-	{
+	public boolean updateCustomer(String name, Date birth, String address, String phone) {
 		Customer cus = null;
-		cus = customerRepository.findByCustomerPhone(customer.getCustomerPhone());
-		if(cus == null)
-		{
+		cus = customerRepository.findByCustomerPhone(phone);
+		if (cus == null) {
 			return false;
-		}
-		else
-		{
+		} else {
 			BankAccount account = null;
 			account = bankAccountRepository.findByCustomer(cus);
-			if(account!=null)
-			{
-				if(account.getLockStatus().equalsIgnoreCase("Locked"))
-				{
+			if (account != null) {
+				if (account.getLockStatus().equalsIgnoreCase("Inactive")) {
 					return false;
-				}
-				else
-				{
-					Customer newCus = cus;
-					newCus.setCustomerAddress(customer.getCustomerAddress());
-					newCus.setCustomerEmail(customer.getCustomerEmail());
-					newCus.setCustomerDob(customer.getCustomerDob());
-					customerRepository.save(newCus);
+				} else {
+
+					cus.setCustomerAddress(address);
+
+					cus.setCustomerDob(birth);
+
+					cus.setCustomerName(name);
+					cus = customerRepository.save(cus);
+
 					return true;
 				}
-			}
-			else
-			{
+			} else {
 				return false;
 			}
 		}
+	}
+
+	@Override
+	public String viewCustomer(String customerPhone) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

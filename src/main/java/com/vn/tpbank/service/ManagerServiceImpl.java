@@ -6,9 +6,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vn.tpbank.entity.BankAccount;
+import com.vn.tpbank.entity.Customer;
 import com.vn.tpbank.entity.Department;
 import com.vn.tpbank.entity.Operator;
+import com.vn.tpbank.entity.Transaction;
 import com.vn.tpbank.entity.User;
+import com.vn.tpbank.repository.BankAccountRepository;
+import com.vn.tpbank.repository.CustomerRepository;
 import com.vn.tpbank.repository.DepartmentRepository;
 import com.vn.tpbank.repository.OperatorRepository;
 import com.vn.tpbank.repository.UserRepository;
@@ -21,7 +26,11 @@ public class ManagerServiceImpl implements IManagerService {
 	UserRepository userRepository;
 	@Autowired
 	DepartmentRepository departmentRepository;
-	
+	@Autowired
+	BankAccountRepository bankAccountRepository;
+	@Autowired
+	CustomerRepository customerRepository;
+
 	@Override
 	public String login(String username, String password) {
 		User user = userRepository.findByUserNameAndUserPass(username, password);
@@ -33,7 +42,7 @@ public class ManagerServiceImpl implements IManagerService {
 
 	@Override
 	public String createOperator(String username, String password, String phoneNumber, String address, String email, String name, String status, Long departmentId) {
-		if (userRepository.findByUserName(username)==null) {
+		if (userRepository.findByUserName(username).isEmpty()) {
 			User user = new User(null, username, password, "operator");
 			Department department = departmentRepository.findByDepartmentId(departmentId);
 			userRepository.save(user);
@@ -93,5 +102,46 @@ public class ManagerServiceImpl implements IManagerService {
 		
 		return listOperator;
 	}
+	
+	@Override
+	public String createAccount(Long balance, String bankName, String lockStatus, Customer customer) {
+		// TODO Auto-generated method stub
+		User user = customer.getUser();
+//		Optional<User> user2 = userRepository.findByUserName(user.getUserName());
+		if(userRepository.findByUserName(user.getUserName()).isEmpty()) {
+			userRepository.save(user);
+			customerRepository.save(customer);
+			BankAccount bankAccount = new BankAccount(null, balance, bankName, lockStatus, customer,
+					null);
+			bankAccountRepository.save(bankAccount);
+			return "Create account successfully";
+		}else {
+			return "Account is existed";
+		}
+	}
+
+	@Override
+	public boolean deleteAccount(Long id) {
+		if (bankAccountRepository.existsById(id)) {
+			bankAccountRepository.deleteById(id);
+			return true;
+		}	
+		else 
+			return false;
+	}
+
+	@Override
+	public List<BankAccount> getAllBankAccount() {
+		// TODO Auto-generated method stub
+		return bankAccountRepository.findAll();
+	}
+
+	@Override
+	public Optional<BankAccount> findAccountByID(Long id) {
+		// TODO Auto-generated method stub
+		
+		return bankAccountRepository.findById(id);
+	}
+	
 
 }
