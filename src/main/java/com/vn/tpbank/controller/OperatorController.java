@@ -63,12 +63,12 @@ public class OperatorController {
 	 *                    "customerPhone":"9152224",
 	 *                    "customerEmail":"1224@gmail.com",
 	 *                    "customerNationalId":602254,
-	 *                    "customerDob": null,
+	 *                    "customerDob": "2023-05-25",
 	 *                    "user": {
 	 * 
-	 *                    "userName":"du43",
-	 *                    "userPass":"1234",
-	 *                    "role" :"user"
+	 *                    "userName":"9152224",
+	 *                    "userPass":"123",
+	 *                    "role" :"customer"
 	 *                    }
 	 *                    }
 	 * 
