@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.ResourceAccessException;
 
 import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Operator;
@@ -49,9 +52,19 @@ public class ManagerController {
 		return iManagerService.createAccount(bankAccount.getBalance(), bankAccount.getBankName(),
 				bankAccount.getLockStatus(), bankAccount.getCustomer());
 	}
+	
 	@DeleteMapping("/deleteBankAccount/{id}")
-	public boolean deleteUsers(@PathVariable Long id) {
-		return iManagerService.deleteAccount(id);
+	public ResponseEntity<String> deleteUsers(@PathVariable Long id) {
+	    try {
+	        boolean deletionStatus = iManagerService.deleteAccount(id);
+	        if (deletionStatus) {
+	            return ResponseEntity.ok("Bank account deleted successfully");
+	        } else {
+	            return ResponseEntity.notFound().build();
+	        }
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting bank account: " + e.getMessage());
+	    }
 	}
 	
 	@GetMapping("getAllBankAccount")
@@ -60,10 +73,18 @@ public class ManagerController {
 	}
 	
 	@GetMapping("findAccountById/{id}")
-	public Optional<BankAccount> findBankAccountById(@PathVariable Long id) {
-		return iManagerService.findAccountByID(id);
+	public ResponseEntity<BankAccount> findBankAccountById(@PathVariable Long id) {
+	    try {
+	        Optional<BankAccount> bankAccount = iManagerService.findAccountByID(id);
+	        if (bankAccount.isPresent()) {
+	            return ResponseEntity.ok(bankAccount.get());
+	        } else {
+	            return ResponseEntity.notFound().build();
+	        }
+	    } catch (ResourceAccessException e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    }
 	}
-	
 //	@GetMapping("/listAllOperator")
 //	public List<Operator> listAllOperator(){
 //		List<Operator> operator = (List<Operator>) iManagerService.listAllOperator();

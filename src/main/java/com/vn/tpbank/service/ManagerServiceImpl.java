@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
 import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
@@ -106,18 +107,18 @@ public class ManagerServiceImpl implements IManagerService {
 	@Override
 	public String createAccount(Long balance, String bankName, String lockStatus, Customer customer) {
 		// TODO Auto-generated method stub
-		User user = customer.getUser();
-//		Optional<User> user2 = userRepository.findByUserName(user.getUserName());
-		if(userRepository.findByUserName(user.getUserName()).isEmpty()) {
-			userRepository.save(user);
-			customerRepository.save(customer);
-			BankAccount bankAccount = new BankAccount(null, balance, bankName, lockStatus, customer,
-					null);
-			bankAccountRepository.save(bankAccount);
-			return "Create account successfully";
-		}else {
-			return "Account is existed";
-		}
+	    try {
+	        User user = customer.getUser();
+	        if (userRepository.findByUserName(user.getUserName()).isEmpty()) {
+	            BankAccount bankAccount = new BankAccount(null, balance, bankName, lockStatus, customer, null);
+	            bankAccountRepository.save(bankAccount);
+	            return "Create account successfully";
+	        } else {
+	            return "Account already exists";
+	        }
+	    } catch (Exception e) {
+	        return "Error creating account: " + e.getMessage();
+	    }
 	}
 
 	@Override
@@ -139,8 +140,8 @@ public class ManagerServiceImpl implements IManagerService {
 	@Override
 	public Optional<BankAccount> findAccountByID(Long id) {
 		// TODO Auto-generated method stub
-		
-		return bankAccountRepository.findById(id);
+		return Optional.ofNullable(bankAccountRepository.findById(id)
+				.orElseThrow(()-> new ResourceAccessException("Cann't find bank account with ID = "+id)));
 	}
 	
 
