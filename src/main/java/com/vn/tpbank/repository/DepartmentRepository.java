@@ -1,6 +1,5 @@
 package com.vn.tpbank.repository;
 
-import java.util.Optional;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +11,6 @@ import com.vn.tpbank.entity.Transaction;
 
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
-	public Optional<Department> findByDepartmentId(Long departmentId);
 	public Department findByDepartmentId(Long departmentId);
 
 //	public List<Transaction> findAllById(Long customerId);

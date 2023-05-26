@@ -1,9 +1,9 @@
 package com.vn.tpbank.service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +15,6 @@ import com.vn.tpbank.entity.Customer;
 import com.vn.tpbank.entity.Department;
 import com.vn.tpbank.entity.Operator;
 import com.vn.tpbank.entity.SchedulePlan;
-import com.vn.tpbank.entity.Transaction;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.repository.BankAccountRepository;
 import com.vn.tpbank.repository.CustomerRepository;
@@ -61,10 +60,10 @@ public class ManagerServiceImpl implements IManagerService {
 		}
 		else {
 			User user = new User(null, username, password, "operator");
-			if (departmentRepository.findByDepartmentId(departmentId).isEmpty()) {
+			if (departmentRepository.findByDepartmentId(departmentId)==null) {
 				return "Department doesn't exist";
 			}
-			Optional<Department> department = departmentRepository.findByDepartmentId(departmentId);
+			Department department = departmentRepository.findByDepartmentId(departmentId);
 			userRepository.save(user);
 			Operator operator = new Operator(null, phoneNumber, address, email, name, userRepository.findByUserName(username).get(), "active", department.get());
 			operatorRepository.save(operator);
@@ -75,7 +74,7 @@ public class ManagerServiceImpl implements IManagerService {
 	@Override
 	public String editOperator(String username, String password, String phoneNumber, String address, String email, String name, String status, Long departmentId) {
 		Optional<User> dbUser = userRepository.findByUserName(username);
-		Optional<Department> department = departmentRepository.findByDepartmentId(departmentId);
+		Department department = departmentRepository.findByDepartmentId(departmentId);
 		if (dbUser.isPresent()) {
 			User user = dbUser.get();
 			Operator operator = operatorRepository.findByUser(user);
@@ -84,7 +83,7 @@ public class ManagerServiceImpl implements IManagerService {
 			operator.setEmail(email);
 			operator.setOperName(name);
 			operator.setOperatorStatus(status);
-			operator.setDepartment(department.get());
+			operator.setDepartment(department);
 			operator.setUser(user);
 			operatorRepository.save(operator);
 			return "Edit operator successfully";
