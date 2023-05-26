@@ -57,8 +57,10 @@ public class ManagerController {
 				bankAccount.getLockStatus(), bankAccount.getCustomer());
 	}
 	
+	
+	
 	@DeleteMapping("/deleteBankAccount/{id}")
-	public ResponseEntity<String> deleteUsers(@PathVariable Long id) {
+	public ResponseEntity<String> deleteBankAccount(@PathVariable Long id) {
 	    try {
 	        boolean deletionStatus = iManagerService.deleteAccount(id);
 	        if (deletionStatus) {
