@@ -65,7 +65,7 @@ public class ManagerServiceImpl implements IManagerService {
 			}
 			Department department = departmentRepository.findByDepartmentId(departmentId);
 			userRepository.save(user);
-			Operator operator = new Operator(null, phoneNumber, address, email, name, userRepository.findByUserName(username).get(), "active", department.get());
+			Operator operator = new Operator(null, phoneNumber, address, email, name, userRepository.findByUserName(username).get(), "active", department);
 			operatorRepository.save(operator);
 			return "Create operator successfully";
 		}
