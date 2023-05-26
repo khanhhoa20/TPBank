@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +21,13 @@ import com.vn.tpbank.entity.User;
 import com.vn.tpbank.repository.ManagerRepository;
 import com.vn.tpbank.service.IManagerService;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/tpbank/manager")
-@CrossOrigin
 public class ManagerController {
 	@Autowired
-	IManagerService iManagerService; 
+	IManagerService iManagerService;
+	
 	ManagerRepository managerRepo;
 	
 	@PostMapping("/login")
