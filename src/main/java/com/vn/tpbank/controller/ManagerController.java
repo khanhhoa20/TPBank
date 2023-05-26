@@ -18,10 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.ResourceAccessException;
 
 import com.vn.tpbank.entity.BankAccount;
+import com.vn.tpbank.entity.Department;
 import com.vn.tpbank.entity.Manager;
 import com.vn.tpbank.entity.Operator;
+import com.vn.tpbank.entity.SchedulePlan;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.repository.ManagerRepository;
+import com.vn.tpbank.repository.SchedulePlanRepository;
 import com.vn.tpbank.service.IManagerService;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -30,6 +33,8 @@ public class ManagerController {
 	@Autowired
 	IManagerService iManagerService; 
 	ManagerRepository managerRepo;
+	@Autowired
+	SchedulePlanRepository schedulePlanRepo;
 	
 	@PostMapping("/login")
 	public String login(@RequestBody User user) {
@@ -134,4 +139,30 @@ public class ManagerController {
 		else 
 			return false;
 	}
+	
+	//**** Department-controller ****
+		@GetMapping("/listDepartments")
+		public List<Department> getAllDepartments() {
+			return iManagerService.getAllDepartments();
+		}
+		@PostMapping("/addDepartment")
+		public Department addDepartment(@RequestBody Department d) {
+			return iManagerService.insertDepartment(d);
+		}
+		//**** Department-controller ****
+		
+		//**** SchedulePlan-controller ****
+		@GetMapping("/listSchedulePlans")
+		public List<SchedulePlan> getAllSchedulePlans() {
+			return iManagerService.getAllSchedulePlans();
+		}
+		@PostMapping("/addSchedulePlan")
+		public String addSchedulePlan(@RequestBody SchedulePlan s) {
+			return iManagerService.insertSchedulePlan(s, s.getDepartment().getDepartmentId());
+		}
+		@GetMapping("/schedulePlan/{id}")
+		public Optional<SchedulePlan> findSchedulePlanById(@PathVariable Long id) {
+			return schedulePlanRepo.findById(id);
+		}
+		//**** SchedulePlan-controller ****
 }

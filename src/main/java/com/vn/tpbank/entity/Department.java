@@ -3,6 +3,7 @@ package com.vn.tpbank.entity;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -30,6 +31,8 @@ public class Department {
 	@OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
 	private List<Operator> operatorList;
 
+//	@JsonBackReference
+	@JsonManagedReference
 	@OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
 	private List<SchedulePlan> schedulePlanList;
 

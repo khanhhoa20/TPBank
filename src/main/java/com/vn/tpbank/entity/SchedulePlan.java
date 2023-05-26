@@ -3,6 +3,9 @@ package com.vn.tpbank.entity;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,6 +50,8 @@ public class SchedulePlan {
 	@Temporal(TemporalType.DATE)
 	private Date createDate;
 
+//	@JsonManagedReference
+	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "department_id", referencedColumnName = "id")
 	private Department department;
@@ -59,6 +64,18 @@ public class SchedulePlan {
 			String scheduleplan_name, Date startDate, Date endDate, Date createDate, Department department) {
 		super();
 		this.id = id;
+		this.scheduleplandetail_info = scheduleplandetail_info;
+		this.scheduleplan_description = scheduleplan_description;
+		this.scheduleplan_name = scheduleplan_name;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.createDate = createDate;
+		this.department = department;
+	}
+
+	public SchedulePlan(String scheduleplandetail_info, String scheduleplan_description, String scheduleplan_name,
+			Date startDate, Date endDate, Date createDate, Department department) {
+		super();
 		this.scheduleplandetail_info = scheduleplandetail_info;
 		this.scheduleplan_description = scheduleplan_description;
 		this.scheduleplan_name = scheduleplan_name;

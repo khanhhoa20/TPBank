@@ -1,5 +1,9 @@
 package com.vn.tpbank.service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,12 +15,14 @@ import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
 import com.vn.tpbank.entity.Department;
 import com.vn.tpbank.entity.Operator;
+import com.vn.tpbank.entity.SchedulePlan;
 import com.vn.tpbank.entity.Transaction;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.repository.BankAccountRepository;
 import com.vn.tpbank.repository.CustomerRepository;
 import com.vn.tpbank.repository.DepartmentRepository;
 import com.vn.tpbank.repository.OperatorRepository;
+import com.vn.tpbank.repository.SchedulePlanRepository;
 import com.vn.tpbank.repository.UserRepository;
 
 @Service
@@ -31,6 +37,8 @@ public class ManagerServiceImpl implements IManagerService {
 	BankAccountRepository bankAccountRepository;
 	@Autowired
 	CustomerRepository customerRepository;
+	@Autowired
+	SchedulePlanRepository schedulePlanRepository;
 
 	@Override
 	public String login(String username, String password) {
@@ -143,6 +151,38 @@ public class ManagerServiceImpl implements IManagerService {
 		return Optional.ofNullable(bankAccountRepository.findById(id)
 				.orElseThrow(()-> new ResourceAccessException("Cann't find bank account with ID = "+id)));
 	}
-	
+
+	@Override
+	public List<Department> getAllDepartments() {
+		return departmentRepository.findAll();
+	}
+
+	@Override
+	public Department insertDepartment(Department d) {
+		Department findD = departmentRepository.findByDepartmentId(d.getDepartmentId());
+		if(d!=null && d.getDepartmentName()!=null && findD==null)
+			return departmentRepository.save(d);
+		return null;
+	}
+
+	@Override
+	public List<SchedulePlan> getAllSchedulePlans() {
+		return schedulePlanRepository.findAll();
+	}
+
+	//get current-date
+	Date createDate = Date.from((LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+	@Override
+	public String insertSchedulePlan(SchedulePlan s, Long departmentId) {
+		Department d = departmentRepository.findByDepartmentId(departmentId);
+		if(d==null)
+			return "Not found department to add scheduleplan!";
+		if(s.getCreateDate()==null) {				
+			schedulePlanRepository.save(new SchedulePlan(s.getScheduleplandetail_info(), s.getScheduleplan_description(), s.getScheduleplan_name(), 
+														s.getStartDate(), s.getEndDate(), createDate, d));
+		}
+		return "Add a schedule_plan successfully";
+	}
 
 }
