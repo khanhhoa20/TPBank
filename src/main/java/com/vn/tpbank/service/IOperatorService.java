@@ -1,8 +1,14 @@
 package com.vn.tpbank.service;
 
+
+import java.util.List;
+
 import java.util.Date;
 
+
 import com.vn.tpbank.entity.BankAccount;
+import com.vn.tpbank.entity.Customer;
+import com.vn.tpbank.entity.Transaction;
 
 
 public interface IOperatorService {
@@ -14,8 +20,12 @@ public interface IOperatorService {
 
 	public String createBankAccount(BankAccount account);
 	
-	public String viewCustomer(String customerPhone);
+	public List<BankAccount> viewCustomers();
+
 	
-	public boolean updateCustomer(String name,Date birth, String address,String phone);
+	public boolean updateCustomer(String email, String address,String phone);
+	
+	public String withdrawMoney(Transaction transaction);
+	public String depositMoney(Transaction transaction);
 
 }
