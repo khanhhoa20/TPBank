@@ -75,7 +75,7 @@ public class ManagerController {
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public boolean deleteUsers(@PathVariable Long id) {
+	public boolean deleteManager(@PathVariable Long id) {
 		if (managerRepo.existsById(id)) {
 			managerRepo.deleteById(id);
 			return true;
