@@ -1,5 +1,6 @@
 package com.vn.tpbank.service;
 
+import java.util.List;
 import java.util.Date;
 import java.util.Optional;
 
@@ -8,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
+import com.vn.tpbank.entity.Transaction;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.repository.BankAccountRepository;
 import com.vn.tpbank.repository.CustomerRepository;
+import com.vn.tpbank.repository.TransactionRepository;
 import com.vn.tpbank.repository.UserRepository;
 
 @Service
@@ -23,6 +26,9 @@ public class OperatorServiceImpl implements IOperatorService {
 
 	@Autowired
 	BankAccountRepository bankAccountRepository;
+	
+	@Autowired
+	TransactionRepository transactionRepository;
 
 	@Override
 	public String login(String username, String pass) {
@@ -79,7 +85,6 @@ public class OperatorServiceImpl implements IOperatorService {
 		customer = account.getCustomer();
 		customer = customerRepository.findByCustomerEmailAndCustomerNationalIdAndCustomerPhone(
 				customer.getCustomerEmail(), customer.getCustomerNationalId(), customer.getCustomerPhone());
-
 		Optional<User> user = userRepository.findByUserName(account.getCustomer().getUser().getUserName());
 		String check = null;
 		if (customer == null && user.isEmpty()) {
@@ -94,10 +99,15 @@ public class OperatorServiceImpl implements IOperatorService {
 	}
 
 	@Override
-	public boolean updateCustomer(String name, Date birth, String address, String phone) {
+	public List<BankAccount> viewCustomers() {
+		return bankAccountRepository.findAll();
+	}
+
+	public boolean updateCustomer(String email, String address, String phone) {
 		Customer cus = null;
 		cus = customerRepository.findByCustomerPhone(phone);
-		if (cus == null) {
+		Customer customer = customerRepository.findByCustomerEmail(email);
+		if (cus == null || customer != null) {
 			return false;
 		} else {
 			BankAccount account = null;
@@ -108,24 +118,65 @@ public class OperatorServiceImpl implements IOperatorService {
 				} else {
 
 					cus.setCustomerAddress(address);
-
-					cus.setCustomerDob(birth);
-
-					cus.setCustomerName(name);
+					cus.setCustomerEmail(email);
 					cus = customerRepository.save(cus);
-
 					return true;
+
 				}
 			} else {
 				return false;
 			}
 		}
 	}
+	
+	@Override
+	public String depositMoney(Transaction transaction) {
+		BankAccount account = bankAccountRepository.findByCustomer(
+				customerRepository.findByCustomerPhone(transaction.getBankAccount().getCustomer().getCustomerPhone()));
+		if (account == null)
+			return "Account not found.";
+		if (account.getLockStatus().equalsIgnoreCase("inactive"))
+			return "Your bank account is locked (INACTIVE).";
+		if (account != null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
+			transaction.setTransactionType("deposit");
+			transaction.setTransactionDate(new Date());
+			transaction.setBeforeTransaction(account.getBalance());
+			account.setBalance((account.getBalance() + transaction.getTransactionAmount()));
+			bankAccountRepository.save(account);
+			transaction.setAfterTransaction(account.getBalance());
+			transaction.setBankAccount(account);
+			transactionRepository.save(transaction);
+			return "Transaction has been made successfully.";
+		}
+
+		return "Account is not available.";
+	}
 
 	@Override
-	public String viewCustomer(String customerPhone) {
-		// TODO Auto-generated method stub
-		return null;
+	public String withdrawMoney(Transaction transaction) {
+		if (transaction.getTransactionAmount() <= 0)
+			return "Invalid input amount.";
+		BankAccount account = bankAccountRepository.findByCustomer(
+				customerRepository.findByCustomerPhone(transaction.getBankAccount().getCustomer().getCustomerPhone()));
+		if (account == null)
+			return "Account not found.";
+		if (account.getLockStatus().equalsIgnoreCase("inactive"))
+			return "Your bank account is locked (INACTIVE).";
+		if (account != null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
+			if (account.getBalance() < 50000 || (account.getBalance() - transaction.getTransactionAmount()) < 50000)
+				return "Balance is not enough for this transaction.";
+			transaction.setTransactionType("withdraw");
+			transaction.setTransactionDate(new Date());
+			transaction.setBeforeTransaction(account.getBalance());
+			long tempbalance = account.getBalance() - transaction.getTransactionAmount();
+			account.setBalance(tempbalance);
+			bankAccountRepository.save(account);
+			transaction.setAfterTransaction(account.getBalance());
+			transaction.setBankAccount(account);
+			transactionRepository.save(transaction);
+			return "Transaction has been made successfully.";
+		}
+		return "Account is not available.";
 	}
 
 }
