@@ -178,7 +178,7 @@ public class ManagerServiceImpl implements IManagerService {
 
 	//get current-date
 	Date createDate = Date.from((LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	@Override
 	public String insertSchedulePlan(SchedulePlan s, Long departmentId) {
 		Department d = departmentRepository.findByDepartmentId(departmentId);
@@ -191,11 +191,11 @@ public class ManagerServiceImpl implements IManagerService {
 		return "Add a schedule_plan successfully";
 	}
 
-	@Override
-	public Department getDepartment(Long departmentId) {
-		if (departmentRepository.findByDepartmentId(departmentId).isEmpty()) {
-			return null;
-		}
-		return departmentRepository.findByDepartmentId(departmentId).get();
-	}
+//	@Override
+//	public Department getDepartment(Long departmentId) {
+//		if (departmentRepository.findByDepartmentId(departmentId).isEmpty()) {
+//			return null;
+//		}
+//		return departmentRepository.findByDepartmentId(departmentId).get();
+//	}
 }
