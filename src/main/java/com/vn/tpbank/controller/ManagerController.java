@@ -85,7 +85,7 @@ public class ManagerController {
 		return operator;
 	}
 	
-	@GetMapping("/list")
+	@GetMapping
 	public List<Manager> getAllManager() {
 		return (List<Manager>) managerRepo.findAll();
 	}
