@@ -29,7 +29,7 @@ import com.vn.tpbank.service.IManagerService;
 public class ManagerController {
 	@Autowired
 	IManagerService iManagerService;
-	
+	@Autowired
 	ManagerRepository managerRepo;
 	@Autowired
 	SchedulePlanRepository schedulePlanRepo;
