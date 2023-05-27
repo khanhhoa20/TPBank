@@ -1,9 +1,9 @@
 package com.vn.tpbank.service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +15,6 @@ import com.vn.tpbank.entity.Customer;
 import com.vn.tpbank.entity.Department;
 import com.vn.tpbank.entity.Operator;
 import com.vn.tpbank.entity.SchedulePlan;
-import com.vn.tpbank.entity.Transaction;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.repository.BankAccountRepository;
 import com.vn.tpbank.repository.CustomerRepository;
@@ -50,18 +49,26 @@ public class ManagerServiceImpl implements IManagerService {
 
 	@Override
 	public String createOperator(String username, String password, String phoneNumber, String address, String email, String name, String status, Long departmentId) {
-		if (userRepository.findByUserName(username).isEmpty()) {
+		if (userRepository.findByUserName(username).isPresent()) {
+			return "Username is already existed";
+		}
+		else if (operatorRepository.findByEmail(email).isPresent()) {
+			return "Email already in use";
+		}
+		else if (operatorRepository.findByOperPhone(phoneNumber).isPresent()) {
+			return "Phone number already in use";
+		}
+		else {
 			User user = new User(null, username, password, "operator");
+			if (departmentRepository.findByDepartmentId(departmentId)==null) {
+				return "Department doesn't exist";
+			}
 			Department department = departmentRepository.findByDepartmentId(departmentId);
 			userRepository.save(user);
 			Operator operator = new Operator(null, phoneNumber, address, email, name, userRepository.findByUserName(username).get(), "active", department);
 			operatorRepository.save(operator);
 			return "Create operator successfully";
 		}
-		else {
-			return "Operator is existed";
-		}
-		
 	}
 
 	@Override
@@ -184,4 +191,11 @@ public class ManagerServiceImpl implements IManagerService {
 		return "Add a schedule_plan successfully";
 	}
 
+	@Override
+	public Department getDepartment(Long departmentId) {
+		if (departmentRepository.findByDepartmentId(departmentId).isEmpty()) {
+			return null;
+		}
+		return departmentRepository.findByDepartmentId(departmentId).get();
+	}
 }

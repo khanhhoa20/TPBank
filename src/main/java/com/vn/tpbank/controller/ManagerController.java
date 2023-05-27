@@ -28,7 +28,8 @@ import com.vn.tpbank.service.IManagerService;
 @RequestMapping("/tpbank/manager")
 public class ManagerController {
 	@Autowired
-	IManagerService iManagerService; 
+	IManagerService iManagerService;
+	
 	ManagerRepository managerRepo;
 	@Autowired
 	SchedulePlanRepository schedulePlanRepo;
@@ -108,7 +109,7 @@ public class ManagerController {
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public boolean deleteUsers(@PathVariable Long id) {
+	public boolean deleteManager(@PathVariable Long id) {
 		if (managerRepo.existsById(id)) {
 			managerRepo.deleteById(id);
 			return true;
@@ -117,6 +118,10 @@ public class ManagerController {
 			return false;
 	}
 	
+	@GetMapping("/showDepartment/{id}")
+	public Department getDepartment(@PathVariable Long id) {
+		return iManagerService.getDepartment(id);
+	}
 	//**** Department-controller ****
 		@GetMapping("/listDepartments")
 		public List<Department> getAllDepartments() {
