@@ -185,4 +185,23 @@ public class ManagerServiceImpl implements IManagerService {
 		return "Add a schedule_plan successfully";
 	}
 
+	@Override
+	public String updateBankAccount(Long id, Long balance, String bankName, String lockStatus, Customer customer) {
+		 try {
+		        Optional<BankAccount> optionalBankAccount = bankAccountRepository.findById(id);
+		        if (optionalBankAccount.isPresent()) {
+		            BankAccount bankAccount = optionalBankAccount.get();
+		            bankAccount.setBalance(balance);
+		            bankAccount.setBankName(bankName);
+		            bankAccount.setLockStatus(lockStatus);
+		            bankAccountRepository.save(bankAccount);
+		            return "Update account successfully";
+		        } else {
+		            return "Account not found";
+		        }
+		    } catch (Exception e) {
+		        return "Error updating account: " + e.getMessage();
+		    }
+	}
+
 }

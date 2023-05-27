@@ -96,6 +96,11 @@ public class ManagerController {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	    }
 	}
+	
+	@PutMapping("updateBankAccount")
+	public String updateBankAccount(@RequestBody BankAccount bankAccount) {
+		return iManagerService.updateBankAccount(bankAccount.getBankAccountId(), bankAccount.getBalance(), bankAccount.getBankName(), bankAccount.getLockStatus(), bankAccount.getCustomer());
+	}
 //	@GetMapping("/listAllOperator")
 //	public List<Operator> listAllOperator(){
 //		List<Operator> operator = (List<Operator>) iManagerService.listAllOperator();
