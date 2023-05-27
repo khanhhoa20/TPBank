@@ -18,7 +18,7 @@ public interface IManagerService {
 	public String editOperator(String username, String password, String phoneNumber, String address, String email, String name, String status, Long departmentId);
 	public String disableOperator(String usernam);
 	public List<Operator> listAllOperator();
-//	public Department getDepartment(Long departmentId);
+	public Department getDepartment(Long departmentId);
 	public String createAccount(Long balance, String bankName, String lockStatus, Customer customer);
 	public boolean deleteAccount(Long id);
 	public List<BankAccount> getAllBankAccount();

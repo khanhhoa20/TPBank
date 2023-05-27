@@ -118,10 +118,10 @@ public class ManagerController {
 			return false;
 	}
 	
-//	@GetMapping("/showDepartment/{id}")
-//	public Department getDepartment(@PathVariable Long id) {
-//		return iManagerService.getDepartment(id);
-//	}
+	@GetMapping("/showDepartment/{id}")
+	public Department getDepartment(@PathVariable Long id) {
+		return iManagerService.getDepartment(id);
+	}
 
 	//**** Department-controller ****
 	@GetMapping("/listAllDepartments")

@@ -191,11 +191,10 @@ public class ManagerServiceImpl implements IManagerService {
 		return "Add a schedule_plan successfully";
 	}
 
-//	@Override
-//	public Department getDepartment(Long departmentId) {
-//		if (departmentRepository.findByDepartmentId(departmentId).isEmpty()) {
-//			return null;
-//		}
-//		return departmentRepository.findByDepartmentId(departmentId).get();
-//	}
+	@Override
+	public Department getDepartment(Long departmentId) {
+		if (departmentRepository.findByDepartmentId(departmentId)!=null)
+			return departmentRepository.findByDepartmentId(departmentId);
+		return null;
+	}
 }
