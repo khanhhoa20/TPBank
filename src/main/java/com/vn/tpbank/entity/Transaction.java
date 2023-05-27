@@ -28,17 +28,17 @@ public class Transaction {
 	private String transactionType;
 
 	@Column(name = "transaction_amount")
-	private double transactionAmount;
+	private Long transactionAmount;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "transaction_date")
 	private Date transactionDate;
 
 	@Column(name = "before_transaction")
-	private double beforeTransaction;
+	private Long beforeTransaction;
 
 	@Column(name = "after_transaction")
-	private double afterTransaction;
+	private Long afterTransaction;
 
 	@ManyToOne(targetEntity = BankAccount.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "bank_account_id", referencedColumnName = "id")
@@ -48,8 +48,8 @@ public class Transaction {
 
 	}
 
-	public Transaction(Long transactionId, String transactionType, double transactionAmount, Date transactionDate,
-			double beforeTransaction, double afterTransaction, BankAccount bankAccount) {
+	public Transaction(Long transactionId, String transactionType, Long transactionAmount, Date transactionDate,
+			Long beforeTransaction, Long afterTransaction, BankAccount bankAccount) {
 		super();
 		this.transactionId = transactionId;
 		this.transactionType = transactionType;
@@ -76,12 +76,30 @@ public class Transaction {
 		this.transactionType = transactionType;
 	}
 
-	public double getTransactionAmount() {
+	
+
+	public Long getTransactionAmount() {
 		return transactionAmount;
 	}
 
-	public void setTransactionAmount(double transactionAmount) {
+	public void setTransactionAmount(Long transactionAmount) {
 		this.transactionAmount = transactionAmount;
+	}
+
+	public Long getBeforeTransaction() {
+		return beforeTransaction;
+	}
+
+	public void setBeforeTransaction(Long beforeTransaction) {
+		this.beforeTransaction = beforeTransaction;
+	}
+
+	public Long getAfterTransaction() {
+		return afterTransaction;
+	}
+
+	public void setAfterTransaction(Long afterTransaction) {
+		this.afterTransaction = afterTransaction;
 	}
 
 	public Date getTransactionDate() {
@@ -92,21 +110,7 @@ public class Transaction {
 		this.transactionDate = transactionDate;
 	}
 
-	public double getBeforeTransaction() {
-		return beforeTransaction;
-	}
-
-	public void setBeforeTransaction(double beforeTransaction) {
-		this.beforeTransaction = beforeTransaction;
-	}
-
-	public double getAfterTransaction() {
-		return afterTransaction;
-	}
-
-	public void setAfterTransaction(double afterTransaction) {
-		this.afterTransaction = afterTransaction;
-	}
+	
 
 	public BankAccount getBankAccount() {
 		return bankAccount;

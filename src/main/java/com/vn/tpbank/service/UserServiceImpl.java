@@ -12,16 +12,16 @@ import com.vn.tpbank.repository.OperatorRepository;
 import com.vn.tpbank.repository.UserRepository;
 
 @Service
-public class UserServiceImpl implements IUserService{
+public class UserServiceImpl implements IUserService {
 
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
 	OperatorRepository operatorRepository;
-	
+
 	@Override
 	public Optional<User> getUserForTest() {
-		return	userRepository.findById(1l);
+		return userRepository.findById(1l);
 	}
 
 	@Override
@@ -29,5 +29,4 @@ public class UserServiceImpl implements IUserService{
 		// TODO Auto-generated method stub
 		return operatorRepository.findAll();
 	}
-
 }
