@@ -3,14 +3,11 @@ package com.vn.tpbank.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.web.bind.annotation.PathVariable;
-
 import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
 import com.vn.tpbank.entity.Department;
 import com.vn.tpbank.entity.Operator;
 import com.vn.tpbank.entity.SchedulePlan;
-import com.vn.tpbank.entity.Transaction;
 
 public interface IManagerService {
 	public String login(String username, String password);

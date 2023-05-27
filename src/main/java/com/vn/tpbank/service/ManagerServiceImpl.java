@@ -120,7 +120,6 @@ public class ManagerServiceImpl implements IManagerService {
 	
 	@Override
 	public String createAccount(Long balance, String bankName, String lockStatus, Customer customer) {
-		// TODO Auto-generated method stub
 		User user = customer.getUser();
 //		Optional<User> user2 = userRepository.findByUserName(user.getUserName());
 		if(userRepository.findByUserName(user.getUserName()).isEmpty()) {
@@ -147,14 +146,11 @@ public class ManagerServiceImpl implements IManagerService {
 
 	@Override
 	public List<BankAccount> getAllBankAccount() {
-		// TODO Auto-generated method stub
 		return bankAccountRepository.findAll();
 	}
 
 	@Override
 	public Optional<BankAccount> findAccountByID(Long id) {
-		// TODO Auto-generated method stub
-		
 		return bankAccountRepository.findById(id);
 	}
 
@@ -193,9 +189,9 @@ public class ManagerServiceImpl implements IManagerService {
 
 	@Override
 	public Department getDepartment(Long departmentId) {
-		if (departmentRepository.findByDepartmentId(departmentId).isEmpty()) {
+		if (departmentRepository.findByDepartmentId(departmentId)==null) {
 			return null;
 		}
-		return departmentRepository.findByDepartmentId(departmentId).get();
+		return departmentRepository.findByDepartmentId(departmentId);
 	}
 }

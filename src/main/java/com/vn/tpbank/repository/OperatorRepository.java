@@ -8,9 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.vn.tpbank.entity.Operator;
 import com.vn.tpbank.entity.User;
 
-
-
-
 @Repository
 public interface OperatorRepository extends JpaRepository<Operator, Long>{
 	public Operator findByOperName(String operName);
