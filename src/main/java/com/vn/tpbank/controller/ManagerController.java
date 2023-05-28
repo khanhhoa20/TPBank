@@ -31,6 +31,7 @@ public class ManagerController {
 	IManagerService iManagerService;
 	
 	ManagerRepository managerRepo;
+	
 	@Autowired
 	SchedulePlanRepository schedulePlanRepo;
 	
@@ -49,8 +50,13 @@ public class ManagerController {
 		return iManagerService.editOperator(operator.getUser().getUserName(), operator.getUser().getUserPass(), operator.getOperPhone(), operator.getOperAddress(), operator.getEmail(), operator.getOperName(), operator.getOperatorStatus(), operator.getDepartment().getDepartmentId());
 	}
 	
+	@DeleteMapping("/delete-operator/{username}")
+	public String deleteOperator(@PathVariable("username") String username) {
+		return iManagerService.deleteOperator(username);
+	}
+	
 	@PostMapping("/disable-operator/{username}")
-	public String disableOperator(@PathVariable String username) {
+	public String disableOperator(@PathVariable("username") String username) {
 		return iManagerService.disableOperator(username);
 	}
 	

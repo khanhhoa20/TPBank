@@ -75,7 +75,7 @@ public class ManagerServiceImpl implements IManagerService {
 	public String editOperator(String username, String password, String phoneNumber, String address, String email, String name, String status, Long departmentId) {
 		Optional<User> dbUser = userRepository.findByUserName(username);
 		Department department = departmentRepository.findByDepartmentId(departmentId);
-		if (dbUser.isPresent()) {
+		if (dbUser.isPresent() && department!=null) {
 			User user = dbUser.get();
 			Operator operator = operatorRepository.findByUser(user);
 			operator.setOperPhone(phoneNumber);
@@ -94,6 +94,18 @@ public class ManagerServiceImpl implements IManagerService {
 		
 	}
 
+	@Override
+	public String deleteOperator(String username) {
+		Optional<User> dbUser = userRepository.findByUserName(username);
+		if (dbUser.isPresent()) {
+			User user = dbUser.get();
+			Operator operator = operatorRepository.findByUser(user);
+			operatorRepository.delete(operator);
+			return "Delete operator successfully";
+		}
+		return "Username does not exist";
+	}
+	
 	@Override
 	public String disableOperator(String username) {
 		Optional<User> dbUser = userRepository.findByUserName(username);
