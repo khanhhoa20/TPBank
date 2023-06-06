@@ -162,6 +162,13 @@ public class ManagerServiceImpl implements IManagerService {
 	public List<Department> getAllDepartments() {
 		return departmentRepository.findAll();
 	}
+	
+	@Override
+	public Department getDepartment(Long departmentId) {
+		if (departmentRepository.findByDepartmentId(departmentId)!=null)
+			return departmentRepository.findByDepartmentId(departmentId);
+		return null;
+	}
 
 	@Override
 	public Department insertDepartment(Department d) {
@@ -192,9 +199,14 @@ public class ManagerServiceImpl implements IManagerService {
 	}
 
 	@Override
-	public Department getDepartment(Long departmentId) {
-		if (departmentRepository.findByDepartmentId(departmentId)!=null)
-			return departmentRepository.findByDepartmentId(departmentId);
-		return null;
+	public String deleteSchedulePlan(long scheduleId) {
+		SchedulePlan findS = schedulePlanRepository.findById(scheduleId).orElse(null);
+		if(findS != null) {
+			Department d = findS.getDepartment();
+			findS.setDepartment(null);
+			schedulePlanRepository.delete(findS);
+			return "Delete schedule_plan by id is " +scheduleId +" successfully!";
+		}
+		else return "Not found schedule_plan to delete!";
 	}
 }

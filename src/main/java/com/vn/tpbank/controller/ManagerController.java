@@ -143,5 +143,9 @@ public class ManagerController {
 	public String addSchedulePlan(@RequestBody SchedulePlan s) {
 		return iManagerService.insertSchedulePlan(s, Long.valueOf(s.getDepartment().getDepartmentId()));
 	}
+	@DeleteMapping("/deleteSchedulePlan/{id}")
+	public String deleteSchedulePlan(@PathVariable long id) {
+		return iManagerService.deleteSchedulePlan(id);
+	}
 	// **** SchedulePlan-controller ****
 }
