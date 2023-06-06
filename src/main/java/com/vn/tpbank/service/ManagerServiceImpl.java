@@ -209,4 +209,21 @@ public class ManagerServiceImpl implements IManagerService {
 		}
 		else return "Not found schedule_plan to delete!";
 	}
+
+	@Override
+	public String updateSchedulePlan(SchedulePlan s, Long departmentId, long findScheduleId) {
+		SchedulePlan findS = schedulePlanRepository.findById(findScheduleId).orElse(null);
+		if(findS != null) {
+			Department d = departmentRepository.findByDepartmentId(departmentId);
+			findS.setScheduleplandetail_info(s.getScheduleplandetail_info());
+			findS.setScheduleplan_description(s.getScheduleplan_description());
+			findS.setScheduleplan_name(s.getScheduleplan_name());
+			findS.setStartDate(s.getStartDate());
+			findS.setEndDate(s.getEndDate());
+			findS.setDepartment(d);
+			schedulePlanRepository.save(findS);
+			return "Update schedule_plan by id is " +findScheduleId +" successfully!";
+		}
+		else return "Not found schedule_plan to update!";
+	}
 }

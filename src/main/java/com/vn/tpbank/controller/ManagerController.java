@@ -147,5 +147,9 @@ public class ManagerController {
 	public String deleteSchedulePlan(@PathVariable long id) {
 		return iManagerService.deleteSchedulePlan(id);
 	}
+	@PutMapping("/updateSchedulePlan/{id}")
+	public String updateSchedulePlan(@RequestBody SchedulePlan s, @PathVariable long id) {
+		return iManagerService.updateSchedulePlan(s, Long.valueOf(s.getDepartment().getDepartmentId()), id);
+	}
 	// **** SchedulePlan-controller ****
 }
