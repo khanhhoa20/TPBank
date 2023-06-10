@@ -29,7 +29,7 @@ import com.vn.tpbank.service.IManagerService;
 public class ManagerController {
 	@Autowired
 	IManagerService iManagerService;
-	
+	@Autowired
 	ManagerRepository managerRepo;
 	
 	@Autowired
@@ -91,7 +91,7 @@ public class ManagerController {
 		return operator;
 	}
 	
-	@GetMapping("/list")
+	@GetMapping
 	public List<Manager> getAllManager() {
 		return (List<Manager>) managerRepo.findAll();
 	}
@@ -128,29 +128,34 @@ public class ManagerController {
 	public Department getDepartment(@PathVariable Long id) {
 		return iManagerService.getDepartment(id);
 	}
+
 	//**** Department-controller ****
-		@GetMapping("/listDepartments")
-		public List<Department> getAllDepartments() {
-			return iManagerService.getAllDepartments();
-		}
-		@PostMapping("/addDepartment")
-		public Department addDepartment(@RequestBody Department d) {
-			return iManagerService.insertDepartment(d);
-		}
-		//**** Department-controller ****
+	@GetMapping("/listAllDepartments")
+	public List<Department> getAllDepartments() {
+		return iManagerService.getAllDepartments();
+	}
+	@PostMapping("/addDepartment")
+	public Department addDepartment(@RequestBody Department d) {
+		return iManagerService.insertDepartment(d);
+	}
+	//**** Department-controller ****
 		
-		//**** SchedulePlan-controller ****
-		@GetMapping("/listSchedulePlans")
-		public List<SchedulePlan> getAllSchedulePlans() {
-			return iManagerService.getAllSchedulePlans();
-		}
-		@PostMapping("/addSchedulePlan")
-		public String addSchedulePlan(@RequestBody SchedulePlan s) {
-			return iManagerService.insertSchedulePlan(s, s.getDepartment().getDepartmentId());
-		}
-		@GetMapping("/schedulePlan/{id}")
-		public Optional<SchedulePlan> findSchedulePlanById(@PathVariable Long id) {
-			return schedulePlanRepo.findById(id);
-		}
-		//**** SchedulePlan-controller ****
+	// **** SchedulePlan-controller ****
+	@GetMapping("/listAllSchedulePlans")
+	public List<SchedulePlan> getAllSchedulePlans() {
+		return iManagerService.getAllSchedulePlans();
+	}
+	@PostMapping("/addSchedulePlan")
+	public String addSchedulePlan(@RequestBody SchedulePlan s) {
+		return iManagerService.insertSchedulePlan(s, Long.valueOf(s.getDepartment().getDepartmentId()));
+	}
+	@DeleteMapping("/deleteSchedulePlan/{id}")
+	public String deleteSchedulePlan(@PathVariable long id) {
+		return iManagerService.deleteSchedulePlan(id);
+	}
+	@PutMapping("/updateSchedulePlan/{id}")
+	public String updateSchedulePlan(@RequestBody SchedulePlan s, @PathVariable long id) {
+		return iManagerService.updateSchedulePlan(s, Long.valueOf(s.getDepartment().getDepartmentId()), id);
+	}
+	// **** SchedulePlan-controller ****
 }

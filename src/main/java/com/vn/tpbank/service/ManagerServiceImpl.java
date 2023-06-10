@@ -170,6 +170,13 @@ public class ManagerServiceImpl implements IManagerService {
 	public List<Department> getAllDepartments() {
 		return departmentRepository.findAll();
 	}
+	
+	@Override
+	public Department getDepartment(Long departmentId) {
+		if (departmentRepository.findByDepartmentId(departmentId)!=null)
+			return departmentRepository.findByDepartmentId(departmentId);
+		return null;
+	}
 
 	@Override
 	public Department insertDepartment(Department d) {
@@ -186,7 +193,7 @@ public class ManagerServiceImpl implements IManagerService {
 
 	//get current-date
 	Date createDate = Date.from((LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	@Override
 	public String insertSchedulePlan(SchedulePlan s, Long departmentId) {
 		Department d = departmentRepository.findByDepartmentId(departmentId);
@@ -200,10 +207,31 @@ public class ManagerServiceImpl implements IManagerService {
 	}
 
 	@Override
-	public Department getDepartment(Long departmentId) {
-		if (departmentRepository.findByDepartmentId(departmentId)==null) {
-			return null;
+	public String deleteSchedulePlan(long scheduleId) {
+		SchedulePlan findS = schedulePlanRepository.findById(scheduleId).orElse(null);
+		if(findS != null) {
+			Department d = findS.getDepartment();
+			findS.setDepartment(null);
+			schedulePlanRepository.delete(findS);
+			return "Delete schedule_plan by id is " +scheduleId +" successfully!";
 		}
-		return departmentRepository.findByDepartmentId(departmentId);
+		else return "Not found schedule_plan to delete!";
+	}
+
+	@Override
+	public String updateSchedulePlan(SchedulePlan s, Long departmentId, long findScheduleId) {
+		SchedulePlan findS = schedulePlanRepository.findById(findScheduleId).orElse(null);
+		if(findS != null) {
+			Department d = departmentRepository.findByDepartmentId(departmentId);
+			findS.setScheduleplandetail_info(s.getScheduleplandetail_info());
+			findS.setScheduleplan_description(s.getScheduleplan_description());
+			findS.setScheduleplan_name(s.getScheduleplan_name());
+			findS.setStartDate(s.getStartDate());
+			findS.setEndDate(s.getEndDate());
+			findS.setDepartment(d);
+			schedulePlanRepository.save(findS);
+			return "Update schedule_plan by id is " +findScheduleId +" successfully!";
+		}
+		else return "Not found schedule_plan to update!";
 	}
 }

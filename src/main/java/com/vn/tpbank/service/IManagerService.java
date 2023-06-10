@@ -27,4 +27,6 @@ public interface IManagerService {
 	
 	public List<SchedulePlan> getAllSchedulePlans();
 	public String insertSchedulePlan(SchedulePlan s, Long departmentId);
+	public String deleteSchedulePlan(long scheduleId);
+	public String updateSchedulePlan(SchedulePlan s, Long departmentId, long findScheduleId);
 }
