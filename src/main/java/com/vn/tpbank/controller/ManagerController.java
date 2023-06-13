@@ -61,9 +61,7 @@ public class ManagerController {
 		return iManagerService.createAccount(bankAccount.getBalance(), bankAccount.getBankName(),
 				bankAccount.getLockStatus(), bankAccount.getCustomer());
 	}
-	
-	
-	
+		
 	@DeleteMapping("/deleteBankAccount/{id}")
 	public ResponseEntity<String> deleteBankAccount(@PathVariable Long id) {
 	    try {
