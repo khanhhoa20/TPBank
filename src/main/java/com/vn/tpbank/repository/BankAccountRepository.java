@@ -16,6 +16,7 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, Long>{
 
 	public BankAccount findByCustomer(Customer customer);
 	
+	
 //	@Modifying
 //	@Query("UPDATE BankAccount b SET b.lockStatus='inactive' WHERE b.customer.customerId=3")
 //	public void unlockBankAccount();
