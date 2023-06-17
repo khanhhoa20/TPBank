@@ -210,13 +210,13 @@ public class OperatorServiceImpl implements IOperatorService {
 					|| (senderAccount.getBalance() - sendTransaction.getTransactionAmount()) < 50000)
 				return "Sender's balance is not enough for this transaction.";
 			
-			sendTransaction.setTransactionType("send");
+			sendTransaction.setTransactionType("send"+recieverAccount.getCustomer().getCustomerPhone());
 			sendTransaction.setTransactionDate(new Date());
 			sendTransaction.setBeforeTransaction(senderAccount.getBalance());
 			long tempbalance = senderAccount.getBalance() - sendTransaction.getTransactionAmount();
 			senderAccount.setBalance(tempbalance);
 
-			recieveTransaction.setTransactionType("recieve");
+			recieveTransaction.setTransactionType("recieve"+senderAccount.getCustomer().getCustomerPhone());
 			recieveTransaction.setTransactionDate(new Date());
 			recieveTransaction.setBeforeTransaction(recieverAccount.getBalance());
 			long temprecievebalance = recieverAccount.getBalance()+recieveTransaction.getTransactionAmount();
@@ -234,5 +234,19 @@ public class OperatorServiceImpl implements IOperatorService {
 		}
 		return "Account is not available.";
 	}
+
+	@Override
+	public BankAccount findBankAccountThroughTransaction(Transaction transaction) {
+		String type=transaction.getTransactionType();
+		if(type.contains("send")) {
+			String num=type.substring(4);
+			return bankAccountRepository.findByCustomer(customerRepository.findByCustomerPhone(num));
+		} else if(type.contains("recieve")) {
+			String num=type.substring(7);
+			return bankAccountRepository.findByCustomer(customerRepository.findByCustomerPhone(num));
+		}
+		return null;
+	}
+	
 
 }

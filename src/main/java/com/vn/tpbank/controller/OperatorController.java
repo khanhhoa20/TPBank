@@ -138,4 +138,9 @@ public class OperatorController {
 	public List<Transaction> findTransactionsByPhone(@RequestBody String phoneNumber){
 		return iOperatorService.findTransactionByPhone(phoneNumber);
 	}
+	
+	@PutMapping(value="/find-sender-and-reciever")
+	public BankAccount findBankAccountThroughTransaction(Transaction transaction) {
+		return iOperatorService.findBankAccountThroughTransaction(transaction);
+	}
 }

@@ -31,4 +31,6 @@ public interface IOperatorService {
 	public List<Transaction> findTransactionByPhone(String phoneNumber);
 
 	public String transferMoney(Transaction sendTransaction, Transaction recieveTransaction);
+	
+	public BankAccount findBankAccountThroughTransaction(Transaction transaction);
 }
