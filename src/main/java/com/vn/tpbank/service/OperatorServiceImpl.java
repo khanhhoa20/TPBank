@@ -26,7 +26,7 @@ public class OperatorServiceImpl implements IOperatorService {
 
 	@Autowired
 	BankAccountRepository bankAccountRepository;
-	
+
 	@Autowired
 	TransactionRepository transactionRepository;
 
@@ -128,7 +128,7 @@ public class OperatorServiceImpl implements IOperatorService {
 			}
 		}
 	}
-	
+
 	@Override
 	public String depositMoney(Transaction transaction) {
 		BankAccount account = bankAccountRepository.findByCustomer(
@@ -165,7 +165,7 @@ public class OperatorServiceImpl implements IOperatorService {
 		if (account != null && !account.getLockStatus().equalsIgnoreCase("inactive")) {
 			if (account.getBalance() < 50000 || (account.getBalance() - transaction.getTransactionAmount()) < 50000)
 				return "Balance is not enough for this transaction.";
-			transaction.setTransactionType("Deposit");
+			transaction.setTransactionType("withdraw");
 			transaction.setTransactionDate(new Date());
 			transaction.setBeforeTransaction(account.getBalance());
 			long tempbalance = account.getBalance() - transaction.getTransactionAmount();
@@ -174,6 +174,62 @@ public class OperatorServiceImpl implements IOperatorService {
 			transaction.setAfterTransaction(account.getBalance());
 			transaction.setBankAccount(account);
 			transactionRepository.save(transaction);
+			return "Transaction has been made successfully.";
+		}
+		return "Account is not available.";
+	}
+
+	@Override
+	public List<Transaction> findTransactionByPhone(String phoneNumber) {
+		List<Transaction> transactions = transactionRepository.findAll();
+		for (Transaction transaction : transactions) {
+			if (!transaction.getBankAccount().getCustomer().getCustomerPhone().equals(phoneNumber))
+				transactions.remove(transaction);
+		}
+		return transactions;
+	}
+
+	@Override
+	public String transferMoney(Transaction sendTransaction, Transaction recieveTransaction) {
+		if (sendTransaction.getTransactionAmount() <= 0)
+			return "Invalid input amount.";
+		BankAccount senderAccount = bankAccountRepository.findByCustomer(customerRepository
+				.findByCustomerPhone(sendTransaction.getBankAccount().getCustomer().getCustomerPhone()));
+		BankAccount recieverAccount = bankAccountRepository.findByCustomer(customerRepository
+				.findByCustomerPhone(recieveTransaction.getBankAccount().getCustomer().getCustomerPhone()));
+		if (senderAccount == null)
+			return "Sender account not found.";
+		if(recieverAccount==null)
+			return "Reciever account not found.";
+		if (recieverAccount.getLockStatus().equalsIgnoreCase("inactive"))
+			return "Reciever bank account is locked (INACTIVE).";
+		if (senderAccount.getLockStatus().equalsIgnoreCase("inactive"))
+			return "Your bank account is locked (INACTIVE).";
+		if (senderAccount != null && !senderAccount.getLockStatus().equalsIgnoreCase("inactive")) {
+			if (senderAccount.getBalance() < 50000
+					|| (senderAccount.getBalance() - sendTransaction.getTransactionAmount()) < 50000)
+				return "Sender's balance is not enough for this transaction.";
+			
+			sendTransaction.setTransactionType("send");
+			sendTransaction.setTransactionDate(new Date());
+			sendTransaction.setBeforeTransaction(senderAccount.getBalance());
+			long tempbalance = senderAccount.getBalance() - sendTransaction.getTransactionAmount();
+			senderAccount.setBalance(tempbalance);
+
+			recieveTransaction.setTransactionType("recieve");
+			recieveTransaction.setTransactionDate(new Date());
+			recieveTransaction.setBeforeTransaction(recieverAccount.getBalance());
+			long temprecievebalance = recieverAccount.getBalance()+recieveTransaction.getTransactionAmount();
+			recieverAccount.setBalance(temprecievebalance);
+			
+			bankAccountRepository.save(senderAccount);
+			bankAccountRepository.save(recieverAccount);
+			sendTransaction.setAfterTransaction(senderAccount.getBalance());
+			sendTransaction.setBankAccount(senderAccount);
+			recieveTransaction.setAfterTransaction(recieverAccount.getBalance());
+			recieveTransaction.setBankAccount(recieverAccount);
+			transactionRepository.save(sendTransaction);
+			transactionRepository.save(recieveTransaction);
 			return "Transaction has been made successfully.";
 		}
 		return "Account is not available.";

@@ -128,4 +128,14 @@ public class OperatorController {
 	public String withdrawMoney(@RequestBody Transaction transaction) {
 		return iOperatorService.withdrawMoney(transaction);
 	}
+	
+	@PutMapping(value="/transfer")
+	public String transferMoney(@RequestBody Transaction senderTransaction, Transaction recieveTransaction) {
+		return iOperatorService.transferMoney(senderTransaction, recieveTransaction);
+	}
+	
+	@GetMapping(value = "/view-transactions")
+	public List<Transaction> findTransactionsByPhone(@RequestBody String phoneNumber){
+		return iOperatorService.findTransactionByPhone(phoneNumber);
+	}
 }

@@ -27,5 +27,8 @@ public interface IOperatorService {
 	
 	public String withdrawMoney(Transaction transaction);
 	public String depositMoney(Transaction transaction);
+	
+	public List<Transaction> findTransactionByPhone(String phoneNumber);
 
+	public String transferMoney(Transaction sendTransaction, Transaction recieveTransaction);
 }
