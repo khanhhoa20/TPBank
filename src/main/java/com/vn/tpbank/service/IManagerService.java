@@ -29,4 +29,13 @@ public interface IManagerService {
 	public String insertSchedulePlan(SchedulePlan s, Long departmentId);
 	public String deleteSchedulePlan(long scheduleId);
 	public String updateSchedulePlan(SchedulePlan s, Long departmentId, long findScheduleId);
+
+	public List<Manager> getAllManager();
+	public Optional<Manager> getManagerById(Long id);
+	public Manager addManager(Manager manager);
+	public Manager updateManager(Long id, Manager manager);
+	public boolean disableManager(Long id);
+	public boolean deleteManager(Long id);
+	public List<User> userHaveNotBeenChosen();
+	public List<Department> departmentHaveNotBeenChosen();
 }
