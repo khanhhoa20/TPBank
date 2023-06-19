@@ -13,12 +13,14 @@ import org.springframework.stereotype.Service;
 import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
 import com.vn.tpbank.entity.Department;
+import com.vn.tpbank.entity.Manager;
 import com.vn.tpbank.entity.Operator;
 import com.vn.tpbank.entity.SchedulePlan;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.repository.BankAccountRepository;
 import com.vn.tpbank.repository.CustomerRepository;
 import com.vn.tpbank.repository.DepartmentRepository;
+import com.vn.tpbank.repository.ManagerRepository;
 import com.vn.tpbank.repository.OperatorRepository;
 import com.vn.tpbank.repository.SchedulePlanRepository;
 import com.vn.tpbank.repository.UserRepository;
@@ -37,6 +39,8 @@ public class ManagerServiceImpl implements IManagerService {
 	CustomerRepository customerRepository;
 	@Autowired
 	SchedulePlanRepository schedulePlanRepository;
+	@Autowired
+	ManagerRepository managerRepository;
 
 	@Override
 	public String login(String username, String password) {
@@ -280,4 +284,12 @@ public class ManagerServiceImpl implements IManagerService {
 		// TODO Auto-generated method stub
 		return managerRepository.departmentHaveNotBeenChosen();
 	}
+
+	@Override
+	public User getUserByUsername(String username) {
+		// TODO Auto-generated method stub
+		return userRepository.findByUserName(username).get();
+	}
+	
+	
 }
