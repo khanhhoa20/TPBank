@@ -1,6 +1,7 @@
 package com.vn.tpbank.service;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class OperatorServiceImpl implements IOperatorService {
 
 	@Autowired
 	BankAccountRepository bankAccountRepository;
-	
+
 	@Autowired
 	TransactionRepository transactionRepository;
 
@@ -128,7 +129,7 @@ public class OperatorServiceImpl implements IOperatorService {
 			}
 		}
 	}
-	
+
 	@Override
 	public String depositMoney(Transaction transaction) {
 		BankAccount account = bankAccountRepository.findByCustomer(
@@ -178,5 +179,53 @@ public class OperatorServiceImpl implements IOperatorService {
 		}
 		return "Account is not available.";
 	}
+
+	@Override
+	public List<Transaction> viewTransactions(String transactionType) {
+		List<Transaction> transactions = new ArrayList<>();
+		transactions = transactionRepository.findByTransactionType(transactionType);
+		return transactions;
+	}
+
+	@Override
+	public String deleteCustomer(long cusId) {
+		Customer customer = customerRepository.findByCustomerId(cusId);
+
+		String check = null;
+		if (customer == null) {
+			check = "Customer Doesn't Exits";
+
+		} else {
+			BankAccount account = bankAccountRepository.findByCustomer(customer);
+			bankAccountRepository.deleteById(account.getBankAccountId());
+			check = "Delete Success";
+
+			customerRepository.deleteById(cusId);
+		}
+		return check;
+	}
+
+	@Override
+	public String updateCustomer(String phone, String name, String address, String pass) {
+		Customer customer2 = customerRepository.findByCustomerPhone(phone);
+		if (customer2 == null) {
+			return "Customer Doesn't Exits";
+		} else {
+			BankAccount account = bankAccountRepository.findByCustomer(customer2);
+			if (account.getLockStatus().equals("inactive")) {
+				return "Sorry your Account has been Locked, You can't update anything";
+			} else {
+				customer2.setCustomerPhone(phone);
+				customer2.setCustomerName(name);
+				customer2.setCustomerAddress(address);
+				customer2.getUser().setUserPass(pass);
+				customerRepository.save(customer2);
+				return "Update Succesful";
+			}
+
+		}
+
+	}
+
 
 }

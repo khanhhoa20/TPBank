@@ -22,10 +22,10 @@ public interface IOperatorService {
 	
 	public List<BankAccount> viewCustomers();
 
-	
-	public boolean updateCustomer(String email, String address,String phone);
+	public String updateCustomer(String phone, String name, String address, String pass);
 	
 	public String withdrawMoney(Transaction transaction);
 	public String depositMoney(Transaction transaction);
-
+	public List<Transaction> viewTransactions (String transistonType);
+	public String deleteCustomer(long cusId);
 }
