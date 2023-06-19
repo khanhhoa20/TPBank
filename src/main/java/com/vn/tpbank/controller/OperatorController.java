@@ -134,7 +134,7 @@ public class OperatorController {
 		return iOperatorService.transferMoney(senderTransaction, recieveTransaction);
 	}
 	
-	@GetMapping(value = "/view-transactions")
+	@PutMapping(value = "/view-transactions")
 	public List<Transaction> findTransactionsByPhone(@RequestBody String phoneNumber){
 		return iOperatorService.findTransactionByPhone(phoneNumber);
 	}
