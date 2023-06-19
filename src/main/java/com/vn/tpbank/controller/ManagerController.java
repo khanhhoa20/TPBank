@@ -22,7 +22,6 @@ import com.vn.tpbank.entity.SchedulePlan;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.repository.ManagerRepository;
 import com.vn.tpbank.repository.SchedulePlanRepository;
-import com.vn.tpbank.repository.UserRepository;
 import com.vn.tpbank.service.IManagerService;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -32,8 +31,6 @@ public class ManagerController {
 	IManagerService iManagerService;
 	@Autowired
 	SchedulePlanRepository schedulePlanRepo;
-	@Autowired
-	UserRepository userRepo;
 	
 	@PostMapping("/login")
 	public String login(@RequestBody User user) {
@@ -127,8 +124,8 @@ public class ManagerController {
 	}
 	
 	@GetMapping("/showUser/{username}")
-	public Optional<User> getUserByUsername(@PathVariable String username) {
-		return userRepo.findByUserName(username);
+	public User getUserByUsername(@PathVariable String username) {
+		return iManagerService.getUserByUsername(username);
 	}
 	
 	@GetMapping("/showDepartment/{id}")
@@ -136,10 +133,6 @@ public class ManagerController {
 		return iManagerService.getDepartment(id);
 	}
 	
-	@GetMapping("/listAllUsers")
-	public List<User> getAllUser() {
-		return userRepo.findAll();
-	}
 
 	//**** Department-controller ****
 	@GetMapping("/listAllDepartments")
