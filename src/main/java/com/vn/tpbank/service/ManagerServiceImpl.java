@@ -38,6 +38,9 @@ public class ManagerServiceImpl implements IManagerService {
 	@Autowired
 	SchedulePlanRepository schedulePlanRepository;
 
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@Override
 	public String login(String username, String password) {
 		User user = userRepository.findByUserNameAndUserPass(username, password);
@@ -46,12 +49,15 @@ public class ManagerServiceImpl implements IManagerService {
 		}
 		return "Wrong username or password";
 	}
-
+	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@Override
 	public String createOperator(String username, String password, String phoneNumber, String address, String email, String name, String status, Long departmentId) {
 		if (userRepository.findByUserName(username).isPresent()) {
 			return "Username is already existed";
-		}
+		}	
 		else if (operatorRepository.findByEmail(email).isPresent()) {
 			return "Email already in use";
 		}
@@ -71,6 +77,9 @@ public class ManagerServiceImpl implements IManagerService {
 		}
 	}
 
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@Override
 	public String editOperator(String username, String password, String phoneNumber, String address, String email, String name, String status, Long departmentId) {
 		Optional<User> dbUser = userRepository.findByUserName(username);
@@ -94,6 +103,9 @@ public class ManagerServiceImpl implements IManagerService {
 		
 	}
 
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@Override
 	public String deleteOperator(String username) {
 		Optional<User> dbUser = userRepository.findByUserName(username);
@@ -106,6 +118,9 @@ public class ManagerServiceImpl implements IManagerService {
 		return "Username does not exist";
 	}
 	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@Override
 	public String disableOperator(String username) {
 		Optional<User> dbUser = userRepository.findByUserName(username);
@@ -123,6 +138,9 @@ public class ManagerServiceImpl implements IManagerService {
 		return "User does not exist";
 	}
 	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@Override
 	public List<Operator> listAllOperator() {
 		List<Operator> listOperator = (List<Operator>) operatorRepository.findAll();

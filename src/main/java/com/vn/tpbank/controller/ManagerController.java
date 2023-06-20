@@ -29,32 +29,48 @@ import com.vn.tpbank.service.IManagerService;
 public class ManagerController {
 	@Autowired
 	IManagerService iManagerService;
+	
 	@Autowired
 	ManagerRepository managerRepo;
 	
 	@Autowired
 	SchedulePlanRepository schedulePlanRepo;
 	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@PostMapping("/login")
 	public String login(@RequestBody User user) {
 		return iManagerService.login(user.getUserName(), user.getUserPass());
 	}
 	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@PostMapping("/create-operator")
 	public String createOperator(@RequestBody Operator operator) {
 		return iManagerService.createOperator(operator.getUser().getUserName(), operator.getUser().getUserPass(), operator.getOperPhone(), operator.getOperAddress(), operator.getEmail(), operator.getOperName(), operator.getOperatorStatus(), operator.getDepartment().getDepartmentId());
 	}
 	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@PostMapping("/edit-operator")
 	public String editOperator(@RequestBody Operator operator) {
 		return iManagerService.editOperator(operator.getUser().getUserName(), operator.getUser().getUserPass(), operator.getOperPhone(), operator.getOperAddress(), operator.getEmail(), operator.getOperName(), operator.getOperatorStatus(), operator.getDepartment().getDepartmentId());
 	}
 	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@DeleteMapping("/delete-operator/{username}")
 	public String deleteOperator(@PathVariable("username") String username) {
 		return iManagerService.deleteOperator(username);
 	}
 	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@PostMapping("/disable-operator/{username}")
 	public String disableOperator(@PathVariable("username") String username) {
 		return iManagerService.disableOperator(username);
