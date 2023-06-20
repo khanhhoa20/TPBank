@@ -50,11 +50,11 @@ public class BankAccount {
 			List<Transaction> listTransactions) {
 		super();
 		this.bankAccountId = bankAccountId;
-		this.balance = balance;
 		this.bankName = bankName;
+		this.balance = balance;
+		this.listTransactions = listTransactions;
 		this.lockStatus = lockStatus;
 		this.customer = customer;
-		this.listTransactions = listTransactions;
 	}
 
 	public Long getBankAccountId() {
