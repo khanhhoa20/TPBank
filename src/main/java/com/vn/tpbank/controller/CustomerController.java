@@ -50,9 +50,9 @@ public class CustomerController {
 		
 	}
 	
-	@PutMapping("/cusupdate")
-	public String updateNewCustomer(@RequestBody Customer customer )
-	{
-		return iCustomerService.editCustomer(customer.getCustomerId(), customer.getCustomerPhone(), customer.getCustomerEmail(), customer.getCustomerAddress(), customer.getUser().getUserPass(), customer.getUser().getUserName());
-	}
+	// @PutMapping("/cusupdate")
+	// public String updateNewCustomer(@RequestBody Customer customer )
+	// {
+	// 	return iCustomerService.editCustomer(customer.getCustomerId(), customer.getCustomerPhone(), customer.getCustomerEmail(), customer.getCustomerAddress(), customer.getUser().getUserPass(), customer.getUser().getUserName());
+	// }
 }

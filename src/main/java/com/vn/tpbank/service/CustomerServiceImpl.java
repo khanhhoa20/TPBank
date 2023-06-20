@@ -56,26 +56,26 @@ public class CustomerServiceImpl implements ICustomerService{
 		return bankAccountRepository.findByCustomer(customer);
 	}
 	
-	@Override
-	public String editCustomer(Long customerId, String cusPhone, String cusEmail, String cusAddress, String userPass, String userName) {
-		// TODO Auto-generated method stub
-		Customer customer = customerRepository.findByCustomerId(customerId);
-		User user = userRepository.findByUserName(userName);
+	// @Override
+	// public String editCustomer(Long customerId, String cusPhone, String cusEmail, String cusAddress, String userPass, String userName) {
+	// 	// TODO Auto-generated method stub
+	// 	Customer customer = customerRepository.findByCustomerId(customerId);
+	// 	User user = userRepository.findByUserName(userName);
 		
-		if (user != null && customer != null ){
-			customer.setCustomerPhone(cusPhone);
-			customer.setCustomerEmail(cusEmail);
-			customer.setCustomerAddress(cusAddress);
-			user.setUserPass(userPass);
-			customer.setUser(user);
-			customerRepository.save(customer);
+	// 	if (user != null && customer != null ){
+	// 		customer.setCustomerPhone(cusPhone);
+	// 		customer.setCustomerEmail(cusEmail);
+	// 		customer.setCustomerAddress(cusAddress);
+	// 		user.setUserPass(userPass);
+	// 		customer.setUser(user);
+	// 		customerRepository.save(customer);
 			
-			return "Update successfully !!!";
-		}
-		else {
-			return "Update failed !!!";
-		}
-	}
+	// 		return "Update successfully !!!";
+	// 	}
+	// 	else {
+	// 		return "Update failed !!!";
+	// 	}
+	// }
 
 	@Override
 	public User getUser(Long UserId) {
