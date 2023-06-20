@@ -45,7 +45,8 @@ public class Customer {
 	@Temporal(TemporalType.DATE)
 	private Date customerDob;
 	
-	@OneToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+	@OneToOne(targetEntity = User.class, orphanRemoval = true,
+		    cascade = CascadeType.ALL)
 	@JoinColumn(name="user_id",referencedColumnName = "id")
 	private User user;
 

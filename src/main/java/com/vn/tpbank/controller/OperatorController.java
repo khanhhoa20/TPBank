@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -105,6 +106,11 @@ public class OperatorController {
 	{
 		return iOperatorService.viewCustomers();
 	}
+	@DeleteMapping("delete-customer/{id}")
+	public String deleteCustomer (@PathVariable long id)
+	{
+		return  iOperatorService.deleteCustomer(id);
+	}
 	
 	/**
 	 * @URL http://localhost:9090/tpbank/operator/update-customer
@@ -113,10 +119,9 @@ public class OperatorController {
 	 * @author Phuoc Sang
 	 */
 	@PutMapping("/update-customer")
-	public boolean updateNewCustomer(@RequestBody Customer customer )
+	public String updateNewCustomer(@RequestBody Customer customer )
 	{
-		return iOperatorService.updateCustomer(customer.getCustomerEmail(),customer.getCustomerAddress(),customer.getCustomerPhone());
-	}
+		return iOperatorService.updateCustomer(customer.getCustomerPhone(), customer.getCustomerName(), customer.getCustomerAddress(), customer.getUser().getUserPass());	}
 
 	
 	@PutMapping(value="/deposit")
