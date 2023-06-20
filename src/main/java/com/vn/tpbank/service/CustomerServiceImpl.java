@@ -18,7 +18,7 @@ import com.vn.tpbank.request.RegisterBankAccountRequest;
 import com.vn.tpbank.request.UpdateInformationRequest;
 
 @Service
-public class CustomerServiceImpl implements ICustomerService {
+public class CustomerServiceImpl implements ICustomerService{
     @Autowired
     UserRepository userRepository;
 
@@ -30,7 +30,6 @@ public class CustomerServiceImpl implements ICustomerService {
 
     @Autowired
     TransactionRepository transactionRepository;
-
     @Override
     public String login(String username, String pass) {
         User user = userRepository.findByUserNameAndUserPass(username, pass);
@@ -38,53 +37,6 @@ public class CustomerServiceImpl implements ICustomerService {
             return "Login successfully. Role: " + user.getRole();
         }
         return "Wrong username or password!";
-    }
-
-    @Override
-    public String RegisterCreateBankAccount(RegisterBankAccountRequest request) {
-        Customer customer = customerRepository.findById(request.getCustomerId()).get();
-        if (customer == null) {
-            return "Customer not found";
-        }
-
-        BankAccount account = new BankAccount();
-        account.setBankAccountId(0l);
-        account.setBankName(request.getBankName());
-        account.setBalance(0l);
-        account.setLockStatus("active");
-        account.setCustomer(customer);
-
-        bankAccountRepository.save(account);
-        return "Create bank account successfully";
-    }
-
-    @Override
-    public String changePassword(String userName, String userPass, String newUserPass) {
-        User user = userRepository.findByUserNameAndUserPass(userName, userPass);
-        if (user == null) {
-            return "Wrong username or password!";
-        }
-
-        user.setUserPass(newUserPass);
-        userRepository.save(user);
-        return "Change password successfully.";
-    }
-
-    @Override
-    public List<BankAccount> getAllAccount(Long customerId) {
-        return bankAccountRepository.findByCustomerId(customerId);
-    }
-
-    @Override
-    public String deposit(Long accountNumber, Long amount) {
-        BankAccount account = bankAccountRepository.findById(accountNumber).get();
-        if (account == null) {
-            return "Account not found";
-        }
-
-        account.setBalance(account.getBalance() + amount);
-        bankAccountRepository.save(account);
-        return "Deposit successfully";
     }
 
     @Override
