@@ -29,7 +29,6 @@ public class CustomerController {
 	@Autowired
 	ICustomerService iCustomerService;
 	
-	
 	@PostMapping("/login")
 	public ResponseEntity<?>login(@RequestBody User user) {
 		return ResponseEntity.ok(iCustomerService.login(user.getUserName(), user.getUserPass()));
@@ -50,7 +49,7 @@ public class CustomerController {
 	@PutMapping("/cusupdate")
 	public String updateNewCustomer(@RequestBody Customer customer )
 	{
-		return iCustomerService.editCustomer( customer.getCustomerPhone(), customer.getCustomerEmail(), customer.getCustomerAddress(), customer.getUser().getUserName());
+		return iCustomerService.editCustomer(customer.getCustomerPhone(), customer.getCustomerEmail(), customer.getCustomerAddress(), customer.getUser().getUserName());
 	}
     @Autowired
     ICustomerService iCustomerService;

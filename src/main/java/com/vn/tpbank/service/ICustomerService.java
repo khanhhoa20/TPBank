@@ -8,8 +8,7 @@ import com.vn.tpbank.request.UpdateInformationRequest;
 
 public interface ICustomerService{
 	
-	public LoginResponse login(String username, String password);
-	
+	public String login(String username, String password);
 	public Customer getCustomer(Long CustomerId);
 	
 	public BankAccount getBankAccount(Long customerId);
@@ -23,7 +22,7 @@ public interface ICustomerService{
     /**
      * @author: Cong thanh
      */
-    String login(String userName, String userPass);
+    // String login(String userName, String userPass);
 
     String RegisterCreateBankAccount(RegisterBankAccountRequest request);
 

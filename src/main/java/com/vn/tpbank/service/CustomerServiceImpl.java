@@ -31,14 +31,14 @@ public class CustomerServiceImpl implements ICustomerService {
     @Autowired
     TransactionRepository transactionRepository;
 
-    @Override
-    public String login(String username, String pass) {
-        User user = userRepository.findByUserNameAndUserPass(username, pass);
-        if (user != null) {
-            return "Login successfully. Role: " + user.getRole();
-        }
-        return "Wrong username or password!";
-    }
+    // @Override
+    // public String login(String username, String pass) {
+    //     User user = userRepository.findByUserNameAndUserPass(username, pass);
+    //     if (user != null) {
+    //         return "Login successfully. Role: " + user.getRole();
+    //     }
+    //     return "Wrong username or password!";
+    // }
 
     @Override
     public String RegisterCreateBankAccount(RegisterBankAccountRequest request) {
@@ -58,6 +58,29 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
 	@Override
+	public String login(String username, String password) {
+
+		User user = userRepository.findByUserNameAndUserPass(username, password);
+		if(user!=null && user.getRole().equalsIgnoreCase("customer")) {
+			return "customer";
+		}
+		//		return new LoginResponse("Login failed", null);
+		return "Login failed";
+
+	}
+
+	//	show information of customer
+	@Override
+	public Customer getCustomer(Long CustomerId) {
+		// TODO Auto-generated method stub
+		if (customerRepository.findByCustomerId(CustomerId)==null) {
+			return null;
+		}
+		return customerRepository.findByCustomerId(CustomerId);
+	}
+
+	//	get bank account information 
+	@Override
 	public BankAccount getBankAccount(Long customerId) {
 		// TODO Auto-generated method stub
 		Customer customer = customerRepository.findByCustomerId(customerId);
@@ -66,7 +89,8 @@ public class CustomerServiceImpl implements ICustomerService {
 		}
 		return bankAccountRepository.findByCustomer(customer);
 	}
-	
+
+	//	edit customer information 
 	@Override
 	public String editCustomer(String cusPhone, String cusEmail, String cusAddress, String userName) {
 		// TODO Auto-generated method stub
