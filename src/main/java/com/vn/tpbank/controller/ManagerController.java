@@ -213,30 +213,67 @@ public class ManagerController {
 	}
 	
 
-	//**** Department-controller ****
+	/**
+	 * @URL http://localhost:9090/tpbank/manager/listAllDepartments
+	 * @param
+	 * @return list all departments
+	 * @author Dinh Quang Tuan
+	 */
 	@GetMapping("/listAllDepartments")
 	public List<Department> getAllDepartments() {
 		return iManagerService.getAllDepartments();
 	}
+	
+	/**
+	 * @URL http://localhost:9090/tpbank/manager/addDepartment
+	 * @param d
+	 * @return inserted a department
+	 * @author Dinh Quang Tuan
+	 */
 	@PostMapping("/addDepartment")
 	public Department addDepartment(@RequestBody Department d) {
 		return iManagerService.insertDepartment(d);
 	}
-	//**** Department-controller ****
 		
-	// **** SchedulePlan-controller ****
+	/**
+	 * @URL http://localhost:9090/tpbank/manager/listAllSchedulePlans
+	 * @param
+	 * @return list all scheduleplans
+	 * @author Dinh Quang Tuan
+	 */
 	@GetMapping("/listAllSchedulePlans")
 	public List<SchedulePlan> getAllSchedulePlans() {
 		return iManagerService.getAllSchedulePlans();
 	}
+	
+	/**
+	 * @URL http://localhost:9090/tpbank/manager/addSchedulePlan
+	 * @param s
+	 * @return notification string
+	 * @author Dinh Quang Tuan
+	 */
 	@PostMapping("/addSchedulePlan")
 	public String addSchedulePlan(@RequestBody SchedulePlan s) {
 		return iManagerService.insertSchedulePlan(s, Long.valueOf(s.getDepartment().getDepartmentId()));
 	}
+	
+	/**
+	 * @URL http://localhost:9090/tpbank/manager/deleteSchedulePlan/{id}
+	 * @param id
+	 * @return notification string
+	 * @author Dinh Quang Tuan
+	 */
 	@DeleteMapping("/deleteSchedulePlan/{id}")
 	public String deleteSchedulePlan(@PathVariable long id) {
 		return iManagerService.deleteSchedulePlan(id);
 	}
+	
+	/**
+	 * @URL http://localhost:9090/tpbank/manager/updateSchedulePlan/{id}
+	 * @param s, departmentId, scheduleId
+	 * @return notification string
+	 * @author Dinh Quang Tuan
+	 */
 	@PutMapping("/updateSchedulePlan/{id}")
 	public String updateSchedulePlan(@RequestBody SchedulePlan s, @PathVariable long id) {
 		return iManagerService.updateSchedulePlan(s, Long.valueOf(s.getDepartment().getDepartmentId()), id);
