@@ -7,10 +7,10 @@ import com.vn.tpbank.response.LoginResponse;
 
 public interface ICustomerService{
 	
-	public LoginResponse login(String username, String password);
+	public String login(String username, String password);
 	public Customer getCustomer(Long CustomerId);
 	public BankAccount getBankAccount(Long customerId);
-	public String editCustomer(Long customerId, String cusPhone, String cusEmail, String cusAddress, String userPass, String userName);
+	public String editCustomer(String cusPhone, String cusEmail, String cusAddress, String userName);
 
 	
 	public User getUser(Long UserId);

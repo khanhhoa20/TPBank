@@ -21,22 +21,20 @@ public class CustomerServiceImpl implements ICustomerService{
 
 	@Autowired
 	CustomerRepository customerRepository;
-	//	
-	//	@Autowired
-	//	BankAccountRepository bankAccountRepository;
 
 	@Override
-	public LoginResponse login(String username, String password) {
+	public String login(String username, String password) {
 
 		User user = userRepository.findByUserNameAndUserPass(username, password);
 		if(user!=null && user.getRole().equalsIgnoreCase("customer")) {
-			return new LoginResponse("", user);
+			return "customer";
 		}
-		return new LoginResponse("Login failed", null);
-	
+		//		return new LoginResponse("Login failed", null);
+		return "Login failed";
+
 	}
 
-
+	//	show information of customer
 	@Override
 	public Customer getCustomer(Long CustomerId) {
 		// TODO Auto-generated method stub
@@ -46,6 +44,7 @@ public class CustomerServiceImpl implements ICustomerService{
 		return customerRepository.findByCustomerId(CustomerId);
 	}
 
+	//	get bank account information 
 	@Override
 	public BankAccount getBankAccount(Long customerId) {
 		// TODO Auto-generated method stub
@@ -55,21 +54,22 @@ public class CustomerServiceImpl implements ICustomerService{
 		}
 		return bankAccountRepository.findByCustomer(customer);
 	}
-	
+
+	//	edit customer information 
 	@Override
-	public String editCustomer(Long customerId, String cusPhone, String cusEmail, String cusAddress, String userPass, String userName) {
+	public String editCustomer(String cusPhone, String cusEmail, String cusAddress, String userName) {
 		// TODO Auto-generated method stub
-		Customer customer = customerRepository.findByCustomerId(customerId);
 		User user = userRepository.findByUserName(userName);
-		
-		if (user != null && customer != null ){
+		Customer customer = customerRepository.findByUser(user);
+
+		if (user!=null && customer != null ){
 			customer.setCustomerPhone(cusPhone);
 			customer.setCustomerEmail(cusEmail);
 			customer.setCustomerAddress(cusAddress);
-			user.setUserPass(userPass);
-			customer.setUser(user);
+			//			user.setUserPass(userPass);
+			//			customer.setUser(user);
 			customerRepository.save(customer);
-			
+
 			return "Update successfully !!!";
 		}
 		else {
@@ -89,32 +89,7 @@ public class CustomerServiceImpl implements ICustomerService{
 		return null;
 	}
 
-//	@Override
-//	public Boolean editCustomer(String cusPhone, String cusEmail, String cusAddress) {
-//		Customer cus = null;
-//		cus = customerRepository.findByCustomerPhone(cusPhone);
-//		Customer customer = customerRepository.findByCustomerEmail(cusEmail);
-//		if (cus == null || customer != null) {
-//			return false;
-//		} else {
-//			BankAccount account = null;
-//			account = bankAccountRepository.findByCustomer(cus);
-//			if (account != null) {
-//				if (account.getLockStatus().equalsIgnoreCase("Inactive")) {
-//					return false;
-//				} else {
-//
-//					cus.setCustomerAddress(cusAddress);
-//					cus.setCustomerEmail(cusEmail);
-//					cus = customerRepository.save(cus);
-//					return true;
-//
-//				}
-//			} else {
-//				return false;
-//			}
-//		}
-//	}
+	//	
 
 
 

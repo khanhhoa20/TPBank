@@ -26,25 +26,18 @@ public class CustomerController {
 	@Autowired
 	ICustomerService iCustomerService;
 	
-	CustomerRepository customerRepository;
-	
-	@Autowired
-	UserRepository userRepository;
-	@Autowired
-	BankAccountRepository bankAccountRepository;
-	
 	@PostMapping("/login")
 	public ResponseEntity<?>login(@RequestBody User user) {
 		return ResponseEntity.ok(iCustomerService.login(user.getUserName(), user.getUserPass()));
 	}
 	
-	@GetMapping("/cusdetail")
+	@PutMapping("/cusdetail")
 	public Customer getCustomer(@RequestBody Customer customer) {
 		return iCustomerService.getCustomer(customer.getCustomerId());
 		
 	}
 	
-	@GetMapping("/accdetail")
+	@PutMapping("/accdetail")
 	public BankAccount getBankAccount(@RequestBody  Customer customer) {
 		return iCustomerService.getBankAccount(customer.getCustomerId());
 		
@@ -53,6 +46,6 @@ public class CustomerController {
 	@PutMapping("/cusupdate")
 	public String updateNewCustomer(@RequestBody Customer customer )
 	{
-		return iCustomerService.editCustomer(customer.getCustomerId(), customer.getCustomerPhone(), customer.getCustomerEmail(), customer.getCustomerAddress(), customer.getUser().getUserPass(), customer.getUser().getUserName());
+		return iCustomerService.editCustomer(customer.getCustomerPhone(), customer.getCustomerEmail(), customer.getCustomerAddress(), customer.getUser().getUserName());
 	}
 }
