@@ -20,13 +20,11 @@ import com.vn.tpbank.entity.Manager;
 import com.vn.tpbank.entity.Operator;
 import com.vn.tpbank.entity.SchedulePlan;
 import com.vn.tpbank.entity.User;
-import com.vn.tpbank.repository.ManagerRepository;
 import com.vn.tpbank.repository.SchedulePlanRepository;
 import com.vn.tpbank.service.IManagerService;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/tpbank/manager")
-@CrossOrigin(origins = "http://localhost:4200/")
 public class ManagerController {
 	@Autowired
 	IManagerService iManagerService;
