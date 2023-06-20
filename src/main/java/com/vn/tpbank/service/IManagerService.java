@@ -3,11 +3,17 @@ package com.vn.tpbank.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
 import com.vn.tpbank.entity.Department;
+import com.vn.tpbank.entity.Manager;
 import com.vn.tpbank.entity.Operator;
 import com.vn.tpbank.entity.SchedulePlan;
+import com.vn.tpbank.entity.Transaction;
+import com.vn.tpbank.entity.User;
 
 public interface IManagerService {
 	public String login(String username, String password);
@@ -30,12 +36,15 @@ public interface IManagerService {
 	public String deleteSchedulePlan(long scheduleId);
 	public String updateSchedulePlan(SchedulePlan s, Long departmentId, long findScheduleId);
 
+	
 	public List<Manager> getAllManager();
 	public Optional<Manager> getManagerById(Long id);
 	public Manager addManager(Manager manager);
 	public Manager updateManager(Long id, Manager manager);
+	public User getUserByUsername(String username);
 	public boolean disableManager(Long id);
 	public boolean deleteManager(Long id);
 	public List<User> userHaveNotBeenChosen();
 	public List<Department> departmentHaveNotBeenChosen();
+	
 }

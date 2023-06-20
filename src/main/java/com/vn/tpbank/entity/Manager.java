@@ -39,7 +39,7 @@ public class Manager {
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 
-	@OneToOne(cascade ={CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "department_id", referencedColumnName = "id")
 	private Department department;
 
