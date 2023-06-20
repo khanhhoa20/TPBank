@@ -26,6 +26,9 @@ public interface IOperatorService {
 
 	public String createBankAccount(BankAccount account);
 	
+	/**
+	 * @author Khánh Hòa
+	 */
 	public List<BankAccount> viewCustomers();
 
 	public String updateCustomer(String phone, String name, String address, String pass);
