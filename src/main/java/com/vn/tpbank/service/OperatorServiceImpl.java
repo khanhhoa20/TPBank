@@ -12,6 +12,8 @@ import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
 import com.vn.tpbank.entity.Transaction;
 import com.vn.tpbank.entity.User;
+import com.vn.tpbank.exception.LoginException;
+import com.vn.tpbank.exception.LoginFailException;
 import com.vn.tpbank.repository.BankAccountRepository;
 import com.vn.tpbank.repository.CustomerRepository;
 import com.vn.tpbank.repository.TransactionRepository;
@@ -31,7 +33,6 @@ public class OperatorServiceImpl implements IOperatorService {
 	@Autowired
 	TransactionRepository transactionRepository;
 
-	
 	/**
 	 * @author Khánh Hòa
 	 */
@@ -42,6 +43,18 @@ public class OperatorServiceImpl implements IOperatorService {
 			return "Login successfully. Role: " + user.getRole();
 		}
 		return "Wrong username or password!";
+	}
+
+	/**
+	 * @author Khánh Hòa
+	 */
+	@Override
+	public String dangNhap(String username, String pass) {
+		User user = userRepository.findByUserNameAndUserPass(username, pass);
+		if (user != null) {
+			return "Login successfully. Role: " + user.getRole();
+		}
+		throw new LoginException("Login Fail!. Wrong username or password!");
 	}
 
 	/**
@@ -236,6 +249,5 @@ public class OperatorServiceImpl implements IOperatorService {
 		}
 
 	}
-
 
 }
