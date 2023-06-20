@@ -39,6 +39,18 @@ public class OperatorController {
 		return iOperatorService.login(user.getUserName(), user.getUserPass());
 
 	}
+	
+	/**
+	 * @URL http://localhost:9090/tpbank/operator/dang-nhap
+	 * @param userName, userPass
+	 * @return message login success or not
+	 * @author khánh hòa
+	 */
+	@PostMapping("dang-nhap")
+	public String dangNhap(@RequestBody User user) {
+		return iOperatorService.dangNhap(user.getUserName(), user.getUserPass());
+
+	}
 
 	/**
 	 * @URL http://localhost:9090/tpbank/operator/unlock-bank-account

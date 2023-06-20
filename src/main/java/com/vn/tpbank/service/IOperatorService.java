@@ -37,4 +37,9 @@ public interface IOperatorService {
 	public String depositMoney(Transaction transaction);
 	public List<Transaction> viewTransactions (String transistonType);
 	public String deleteCustomer(long cusId);
+
+	/**
+	 * @author Khánh Hòa
+	 */
+	String dangNhap(String username, String pass);
 }
