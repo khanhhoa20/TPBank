@@ -14,12 +14,14 @@ import org.springframework.web.client.ResourceAccessException;
 import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
 import com.vn.tpbank.entity.Department;
+import com.vn.tpbank.entity.Manager;
 import com.vn.tpbank.entity.Operator;
 import com.vn.tpbank.entity.SchedulePlan;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.repository.BankAccountRepository;
 import com.vn.tpbank.repository.CustomerRepository;
 import com.vn.tpbank.repository.DepartmentRepository;
+import com.vn.tpbank.repository.ManagerRepository;
 import com.vn.tpbank.repository.OperatorRepository;
 import com.vn.tpbank.repository.SchedulePlanRepository;
 import com.vn.tpbank.repository.UserRepository;
@@ -38,7 +40,12 @@ public class ManagerServiceImpl implements IManagerService {
 	CustomerRepository customerRepository;
 	@Autowired
 	SchedulePlanRepository schedulePlanRepository;
+	@Autowired
+	ManagerRepository managerRepository;
 
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@Override
 	public String login(String username, String password) {
 		User user = userRepository.findByUserNameAndUserPass(username, password);
@@ -47,12 +54,15 @@ public class ManagerServiceImpl implements IManagerService {
 		}
 		return "Wrong username or password";
 	}
-
+	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@Override
 	public String createOperator(String username, String password, String phoneNumber, String address, String email, String name, String status, Long departmentId) {
 		if (userRepository.findByUserName(username).isPresent()) {
 			return "Username is already existed";
-		}
+		}	
 		else if (operatorRepository.findByEmail(email).isPresent()) {
 			return "Email already in use";
 		}
@@ -72,11 +82,14 @@ public class ManagerServiceImpl implements IManagerService {
 		}
 	}
 
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@Override
 	public String editOperator(String username, String password, String phoneNumber, String address, String email, String name, String status, Long departmentId) {
 		Optional<User> dbUser = userRepository.findByUserName(username);
 		Department department = departmentRepository.findByDepartmentId(departmentId);
-		if (dbUser.isPresent()) {
+		if (dbUser.isPresent() && department!=null) {
 			User user = dbUser.get();
 			Operator operator = operatorRepository.findByUser(user);
 			operator.setOperPhone(phoneNumber);
@@ -95,6 +108,24 @@ public class ManagerServiceImpl implements IManagerService {
 		
 	}
 
+	/**
+	 * @author Truong Huu Tai
+	 */
+	@Override
+	public String deleteOperator(String username) {
+		Optional<User> dbUser = userRepository.findByUserName(username);
+		if (dbUser.isPresent()) {
+			User user = dbUser.get();
+			Operator operator = operatorRepository.findByUser(user);
+			operatorRepository.delete(operator);
+			return "Delete operator successfully";
+		}
+		return "Username does not exist";
+	}
+	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@Override
 	public String disableOperator(String username) {
 		Optional<User> dbUser = userRepository.findByUserName(username);
@@ -112,6 +143,9 @@ public class ManagerServiceImpl implements IManagerService {
 		return "User does not exist";
 	}
 	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@Override
 	public List<Operator> listAllOperator() {
 		List<Operator> listOperator = (List<Operator>) operatorRepository.findAll();
@@ -131,19 +165,18 @@ public class ManagerServiceImpl implements IManagerService {
 	 */
 	@Override
 	public String createAccount(Long balance, String bankName, String lockStatus, Customer customer) {
-		// TODO Auto-generated method stub
-	    try {
-	        User user = customer.getUser();
-	        if (userRepository.findByUserName(user.getUserName()).isEmpty()) {
-	            BankAccount bankAccount = new BankAccount(null, balance, bankName, lockStatus, customer, null);
-	            bankAccountRepository.save(bankAccount);
-	            return "Create account successfully";
-	        } else {
-	            return "Account already exists";
-	        }
-	    } catch (Exception e) {
-	        return "Error creating account: " + e.getMessage();
-	    }
+		User user = customer.getUser();
+//		Optional<User> user2 = userRepository.findByUserName(user.getUserName());
+		if(userRepository.findByUserName(user.getUserName()).isEmpty()) {
+			userRepository.save(user);
+			customerRepository.save(customer);
+			BankAccount bankAccount = new BankAccount(null, balance, bankName, lockStatus, customer,
+					null);
+			bankAccountRepository.save(bankAccount);
+			return "Create account successfully";
+		}else {
+			return "Account is existed";
+		}
 	}
 	/**
 	 * Deletes a bank account by ID.
@@ -170,7 +203,6 @@ public class ManagerServiceImpl implements IManagerService {
 	 */
 	@Override
 	public List<BankAccount> getAllBankAccount() {
-		// TODO Auto-generated method stub
 		return bankAccountRepository.findAll();
 	}
 
@@ -287,4 +319,94 @@ public class ManagerServiceImpl implements IManagerService {
 		else return "Not found schedule_plan to update!";
 	}
 
+	@Override
+	public List<Manager> getAllManager() {
+		// TODO Auto-generated method stub
+		return managerRepository.findAll();
+	}
+
+	@Override
+	public Optional<Manager> getManagerById(Long id) {
+		// TODO Auto-generated method stub
+		if (managerRepository.findById(id)!=null)
+			return managerRepository.findById(id);
+		return null;
+	}
+
+	@Override
+	public Manager addManager(Manager manager) {
+		// TODO Auto-generated method stub
+		System.out.println(manager.getUser().getUserPass());
+		return managerRepository.save(manager);
+	}
+
+	@Override
+	public Manager updateManager(Long id, Manager managerDetails) {
+		// TODO Auto-generated method stub
+		Optional<Manager> updateManager = managerRepository.findById(id);
+		if (updateManager != null) {
+			Manager updated = updateManager.get();
+			updated.setManagerPhone(managerDetails.getManagerPhone());
+			updated.setManagerAddress(managerDetails.getManagerAddress());
+			updated.setManagerEmail(managerDetails.getManagerEmail());
+			updated.setManagerName(managerDetails.getManagerName());
+			updated.setUser(managerDetails.getUser());
+			updated.setDepartment(managerDetails.getDepartment());
+			updated.setManagerStatus(managerDetails.getManagerStatus());
+			
+			Manager updatedManager = managerRepository.save(updated);
+			return updatedManager;
+		}
+		else
+			return null;
+	}
+
+	@Override
+	public boolean disableManager(Long id) {
+		// TODO Auto-generated method stub
+		Optional<Manager> managerTmp = managerRepository.findById(id);
+		if ( managerTmp != null) {
+			Manager manager = managerTmp.get();
+			if (manager.getManagerStatus().equals("Inactive")) {
+				return false;
+			}
+			else {
+				manager.setManagerStatus("Inactive");
+				managerRepository.save(manager);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean deleteManager(Long id) {
+		// TODO Auto-generated method stub
+		if (managerRepository.existsById(id)) {
+			managerRepository.deleteById(id);
+			return true;
+		}	
+		else 
+			return false;
+	}
+
+	@Override
+	public List<User> userHaveNotBeenChosen() {
+		// TODO Auto-generated method stub
+		return managerRepository.userHaveNotBeenChosen();
+	}
+
+	@Override
+	public List<Department> departmentHaveNotBeenChosen() {
+		// TODO Auto-generated method stub
+		return managerRepository.departmentHaveNotBeenChosen();
+	}
+
+	@Override
+	public User getUserByUsername(String username) {
+		// TODO Auto-generated method stub
+		return userRepository.findByUserName(username).get();
+	}
+	
+	
 }

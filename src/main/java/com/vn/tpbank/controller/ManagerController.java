@@ -32,28 +32,47 @@ import com.vn.tpbank.service.IManagerService;
 public class ManagerController {
 	@Autowired
 	IManagerService iManagerService;
-	@Autowired
-	ManagerRepository managerRepo;
+	
 	@Autowired
 	SchedulePlanRepository schedulePlanRepo;
 	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@PostMapping("/login")
 	public String login(@RequestBody User user) {
 		return iManagerService.login(user.getUserName(), user.getUserPass());
 	}
 	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@PostMapping("/create-operator")
 	public String createOperator(@RequestBody Operator operator) {
 		return iManagerService.createOperator(operator.getUser().getUserName(), operator.getUser().getUserPass(), operator.getOperPhone(), operator.getOperAddress(), operator.getEmail(), operator.getOperName(), operator.getOperatorStatus(), operator.getDepartment().getDepartmentId());
 	}
 	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@PostMapping("/edit-operator")
 	public String editOperator(@RequestBody Operator operator) {
 		return iManagerService.editOperator(operator.getUser().getUserName(), operator.getUser().getUserPass(), operator.getOperPhone(), operator.getOperAddress(), operator.getEmail(), operator.getOperName(), operator.getOperatorStatus(), operator.getDepartment().getDepartmentId());
 	}
 	
+	/**
+	 * @author Truong Huu Tai
+	 */
+	@DeleteMapping("/delete-operator/{username}")
+	public String deleteOperator(@PathVariable("username") String username) {
+		return iManagerService.deleteOperator(username);
+	}
+	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@PostMapping("/disable-operator/{username}")
-	public String disableOperator(@PathVariable String username) {
+	public String disableOperator(@PathVariable("username") String username) {
 		return iManagerService.disableOperator(username);
 	}
 	
@@ -146,41 +165,54 @@ public class ManagerController {
 	
 	@GetMapping
 	public List<Manager> getAllManager() {
-		return (List<Manager>) managerRepo.findAll();
+		return iManagerService.getAllManager();
 	}
 	
 	@GetMapping("/{id}")
 	public Optional<Manager> getManagerById(@PathVariable Long id) {
-		return managerRepo.findById(id);
+		return iManagerService.getManagerById(id);
 	}
 	
-	@PostMapping("/add")
+	@PostMapping("/add-manager")
 	public Manager addManager(@RequestBody Manager manager) {
-		return managerRepo.save(manager);
+		return iManagerService.addManager(manager);
 	}
 	
-	@PutMapping("/update/{id}")
+	@PutMapping("/update-manager/{id}")
 	public Manager updateManager(@PathVariable Long id, @RequestBody Manager manager) {
-		if (managerRepo.existsById(id))
-			return managerRepo.save(manager);
-		else 
-			return null;
+		return iManagerService.updateManager(id, manager);
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@PutMapping("/disable-manager/{id}")
+	public boolean disableManager(@PathVariable Long id) {
+		return iManagerService.disableManager(id);
+	}
+	
+	@DeleteMapping("/delete-manager/{id}")
 	public boolean deleteManager(@PathVariable Long id) {
-		if (managerRepo.existsById(id)) {
-			managerRepo.deleteById(id);
-			return true;
-		}	
-		else 
-			return false;
+		return iManagerService.deleteManager(id);
+	}
+	
+	@GetMapping("/user-have-not-been-chosen")
+	public List<User> userHaveNotBeenChosen() {
+		return iManagerService.userHaveNotBeenChosen();
+	}
+	
+	@GetMapping("/department-have-not-been-chosen")
+	public List<Department> departmentHaveNotBeenChosen() {
+		return iManagerService.departmentHaveNotBeenChosen();
+	}
+	
+	@GetMapping("/showUser/{username}")
+	public User getUserByUsername(@PathVariable String username) {
+		return iManagerService.getUserByUsername(username);
 	}
 	
 	@GetMapping("/showDepartment/{id}")
 	public Department getDepartment(@PathVariable Long id) {
 		return iManagerService.getDepartment(id);
 	}
+	
 
 	//**** Department-controller ****
 	@GetMapping("/listAllDepartments")
