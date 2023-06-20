@@ -27,6 +27,7 @@ public interface IManagerService {
 	public boolean deleteAccount(Long id);
 	public List<BankAccount> getAllBankAccount();
 	public Optional<BankAccount> findAccountByID(Long id);
+	public String updateBankAccount(Long id, Long balance, String bankName, String lockStatus, Customer customer);
 	
 	public List<Department> getAllDepartments();
 	public Department insertDepartment(Department d);
