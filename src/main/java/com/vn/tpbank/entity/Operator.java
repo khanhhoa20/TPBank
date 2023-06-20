@@ -16,9 +16,9 @@ import jakarta.persistence.Table;
 @Table(name = "operator")
 public class Operator {
 	@Id
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "OPERATOR_SEQ")
 	@SequenceGenerator(name = "OPERATOR_SEQ", sequenceName = "OPERATOR_SEQ", allocationSize = 1)
-	@Column(name = "id")
 	private Long operatorID;
 
 	@Column(name = "oper_phone")
@@ -40,8 +40,9 @@ public class Operator {
 	@OneToOne(targetEntity = User.class, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
-
-	@ManyToOne(targetEntity = Department.class, cascade = CascadeType.ALL)
+	
+//	@JsonManagedReference
+	@ManyToOne(targetEntity = Department.class, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "department_id", referencedColumnName = "id")
 	private Department department;
 
@@ -116,6 +117,14 @@ public class Operator {
 
 	public void setOperatorStatus(String operatorStatus) {
 		this.operatorStatus = operatorStatus;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

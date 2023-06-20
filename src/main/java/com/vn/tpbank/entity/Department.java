@@ -2,6 +2,9 @@ package com.vn.tpbank.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,7 +12,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -25,9 +27,12 @@ public class Department {
 	@Column(name = "department_name")
 	private String departmentName;
 
+	@JsonBackReference
 	@OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
 	private List<Operator> operatorList;
 
+//	@JsonBackReference
+	@JsonManagedReference
 	@OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
 	private List<SchedulePlan> schedulePlanList;
 
