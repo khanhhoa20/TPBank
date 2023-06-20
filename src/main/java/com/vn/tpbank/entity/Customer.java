@@ -58,13 +58,13 @@ public class Customer {
 			String customerEmail, Long customerNationalId, Date customerDob, User user) {
 		super();
 		this.customerId = customerId;
+		this.customerNationalId = customerNationalId;
+		this.user = user;
 		this.customerName = customerName;
 		this.customerAddress = customerAddress;
 		this.customerPhone = customerPhone;
 		this.customerEmail = customerEmail;
-		this.customerNationalId = customerNationalId;
 		this.customerDob = customerDob;
-		this.user = user;
 	}
 
 	public Long getCustomerId() {
