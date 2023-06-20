@@ -106,6 +106,9 @@ public class OperatorServiceImpl implements IOperatorService {
 
 	}
 
+	/**
+	 * @author Khánh Hòa
+	 */
 	@Override
 	public List<BankAccount> viewCustomers() {
 		return bankAccountRepository.findAll();
