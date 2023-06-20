@@ -31,6 +31,10 @@ public class OperatorServiceImpl implements IOperatorService {
 	@Autowired
 	TransactionRepository transactionRepository;
 
+	
+	/**
+	 * @author Khánh Hòa
+	 */
 	@Override
 	public String login(String username, String pass) {
 		User user = userRepository.findByUserNameAndUserPass(username, pass);
@@ -40,6 +44,9 @@ public class OperatorServiceImpl implements IOperatorService {
 		return "Wrong username or password!";
 	}
 
+	/**
+	 * @author Khánh Hòa
+	 */
 	@Override
 	public String unlockBankAccount(String cusPhone) {
 		Customer cus = customerRepository.findByCustomerPhone(cusPhone);

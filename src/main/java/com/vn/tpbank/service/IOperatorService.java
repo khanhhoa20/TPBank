@@ -12,8 +12,14 @@ import com.vn.tpbank.entity.Transaction;
 
 
 public interface IOperatorService {
+	/**
+	 * @author Khánh Hòa
+	 */
 	public String login(String username, String pass);
 
+	/**
+	 * @author Khánh Hòa
+	 */
 	public String unlockBankAccount(String cusPhone);
 
 	public String lockBankAccount(String cusPhone);
