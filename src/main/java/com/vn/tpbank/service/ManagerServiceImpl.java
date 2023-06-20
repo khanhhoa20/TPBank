@@ -13,12 +13,14 @@ import org.springframework.stereotype.Service;
 import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
 import com.vn.tpbank.entity.Department;
+import com.vn.tpbank.entity.Manager;
 import com.vn.tpbank.entity.Operator;
 import com.vn.tpbank.entity.SchedulePlan;
 import com.vn.tpbank.entity.User;
 import com.vn.tpbank.repository.BankAccountRepository;
 import com.vn.tpbank.repository.CustomerRepository;
 import com.vn.tpbank.repository.DepartmentRepository;
+import com.vn.tpbank.repository.ManagerRepository;
 import com.vn.tpbank.repository.OperatorRepository;
 import com.vn.tpbank.repository.SchedulePlanRepository;
 import com.vn.tpbank.repository.UserRepository;
@@ -37,6 +39,8 @@ public class ManagerServiceImpl implements IManagerService {
 	CustomerRepository customerRepository;
 	@Autowired
 	SchedulePlanRepository schedulePlanRepository;
+	@Autowired
+	ManagerRepository managerRepository;
 
 	/**
 	 * @author Truong Huu Tai
@@ -252,4 +256,95 @@ public class ManagerServiceImpl implements IManagerService {
 		}
 		else return "Not found schedule_plan to update!";
 	}
+
+	@Override
+	public List<Manager> getAllManager() {
+		// TODO Auto-generated method stub
+		return managerRepository.findAll();
+	}
+
+	@Override
+	public Optional<Manager> getManagerById(Long id) {
+		// TODO Auto-generated method stub
+		if (managerRepository.findById(id)!=null)
+			return managerRepository.findById(id);
+		return null;
+	}
+
+	@Override
+	public Manager addManager(Manager manager) {
+		// TODO Auto-generated method stub
+		System.out.println(manager.getUser().getUserPass());
+		return managerRepository.save(manager);
+	}
+
+	@Override
+	public Manager updateManager(Long id, Manager managerDetails) {
+		// TODO Auto-generated method stub
+		Optional<Manager> updateManager = managerRepository.findById(id);
+		if (updateManager != null) {
+			Manager updated = updateManager.get();
+			updated.setManagerPhone(managerDetails.getManagerPhone());
+			updated.setManagerAddress(managerDetails.getManagerAddress());
+			updated.setManagerEmail(managerDetails.getManagerEmail());
+			updated.setManagerName(managerDetails.getManagerName());
+			updated.setUser(managerDetails.getUser());
+			updated.setDepartment(managerDetails.getDepartment());
+			updated.setManagerStatus(managerDetails.getManagerStatus());
+			
+			Manager updatedManager = managerRepository.save(updated);
+			return updatedManager;
+		}
+		else
+			return null;
+	}
+
+	@Override
+	public boolean disableManager(Long id) {
+		// TODO Auto-generated method stub
+		Optional<Manager> managerTmp = managerRepository.findById(id);
+		if ( managerTmp != null) {
+			Manager manager = managerTmp.get();
+			if (manager.getManagerStatus().equals("Inactive")) {
+				return false;
+			}
+			else {
+				manager.setManagerStatus("Inactive");
+				managerRepository.save(manager);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean deleteManager(Long id) {
+		// TODO Auto-generated method stub
+		if (managerRepository.existsById(id)) {
+			managerRepository.deleteById(id);
+			return true;
+		}	
+		else 
+			return false;
+	}
+
+	@Override
+	public List<User> userHaveNotBeenChosen() {
+		// TODO Auto-generated method stub
+		return managerRepository.userHaveNotBeenChosen();
+	}
+
+	@Override
+	public List<Department> departmentHaveNotBeenChosen() {
+		// TODO Auto-generated method stub
+		return managerRepository.departmentHaveNotBeenChosen();
+	}
+
+	@Override
+	public User getUserByUsername(String username) {
+		// TODO Auto-generated method stub
+		return userRepository.findByUserName(username).get();
+	}
+	
+	
 }
