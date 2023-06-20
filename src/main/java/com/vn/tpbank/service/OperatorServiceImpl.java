@@ -83,12 +83,14 @@ public class OperatorServiceImpl implements IOperatorService {
 	@Override
 	public String createBankAccount(BankAccount account) {
 		Customer customer = null;
-		customer = account.getCustomer();
+		
 		customer = customerRepository.findByCustomerEmailAndCustomerNationalIdAndCustomerPhone(
-				customer.getCustomerEmail(), customer.getCustomerNationalId(), customer.getCustomerPhone());
+				account.getCustomer().getCustomerEmail(), account.getCustomer().getCustomerNationalId(), account.getCustomer().getCustomerPhone());
 		Optional<User> user = userRepository.findByUserName(account.getCustomer().getUser().getUserName());
 		String check = null;
 		if (customer == null && user.isEmpty()) {
+			account.getCustomer().getUser().setRole("customer");
+			account.setLockStatus("active");
 			bankAccountRepository.save(account);
 			check = "Bank Account Create Susscess";
 		} else {
