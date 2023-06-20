@@ -15,6 +15,8 @@ import com.vn.tpbank.entity.Customer;
 public interface BankAccountRepository extends JpaRepository<BankAccount, Long>{
 
 	public BankAccount findByCustomer(Customer customer);
+	@Query ("Delete FROM BankAccount b where b.customer.customerId =:customerId ")
+	public void deleteByCustomerId(@Param("customerId") long customerId);
 //	@Modifying
 //	@Query("UPDATE BankAccount b SET b.lockStatus='inactive' WHERE b.customer.customerId=3")
 //	public void unlockBankAccount();

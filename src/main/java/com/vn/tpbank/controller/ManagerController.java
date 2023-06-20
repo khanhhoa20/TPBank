@@ -26,6 +26,7 @@ import com.vn.tpbank.service.IManagerService;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/tpbank/manager")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class ManagerController {
 	@Autowired
 	IManagerService iManagerService;
