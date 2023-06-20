@@ -31,7 +31,8 @@ import com.vn.tpbank.service.IManagerService;
 @RequestMapping("/tpbank/manager")
 public class ManagerController {
 	@Autowired
-	IManagerService iManagerService; 
+	IManagerService iManagerService;
+	@Autowired
 	ManagerRepository managerRepo;
 	@Autowired
 	SchedulePlanRepository schedulePlanRepo;
@@ -56,12 +57,26 @@ public class ManagerController {
 		return iManagerService.disableOperator(username);
 	}
 	
-	@PostMapping("createBankAccount")
+	/**
+	 * @param bankAccount
+	 * 
+	 * @return message Create account successfully or not
+	 * @author ThanhPhuc
+	 */
+	@PostMapping("/createBankAccount")
 	public String CreateAccount(@RequestBody BankAccount bankAccount) {
 		return iManagerService.createAccount(bankAccount.getBalance(), bankAccount.getBankName(),
 				bankAccount.getLockStatus(), bankAccount.getCustomer());
 	}
 		
+	/**
+	 * Deletes a bank account based on the provided ID.
+	 *
+	 * @param id the ID of the bank account to delete
+	 * @return a ResponseEntity indicating the status of the deletion
+	 * @author ThanhPhuc
+	 */
+
 	@DeleteMapping("/deleteBankAccount/{id}")
 	public ResponseEntity<String> deleteBankAccount(@PathVariable Long id) {
 	    try {
@@ -76,11 +91,24 @@ public class ManagerController {
 	    }
 	}
 	
+	/**
+	 * Retrieves all bank accounts.
+	 *
+	 * @return a list of all bank accounts
+	 * @author ThanhPhuc
+	 */
 	@GetMapping("getAllBankAccount")
 	public List<BankAccount> getAllBankAccount() {
 		return iManagerService.getAllBankAccount();
 	}
 	
+	/**
+	 * Retrieves a bank account by ID.
+	 *
+	 * @param id the ID of the bank account to retrieve
+	 * @return a ResponseEntity containing the bank account if found, or a not found response if not found
+	 * @author ThanhPhuc
+	 */
 	@GetMapping("findAccountById/{id}")
 	public ResponseEntity<BankAccount> findBankAccountById(@PathVariable Long id) {
 	    try {
@@ -95,7 +123,13 @@ public class ManagerController {
 	    }
 	}
 	
-	@PutMapping("updateBankAccount")
+	/**
+	 * Updates a bank account.
+	 *
+	 * @param bankAccount the bank account object containing the updated information
+	 * @return a String indicating the status of the update operation
+	 */
+	@PutMapping("/updateBankAccount")
 	public String updateBankAccount(@RequestBody BankAccount bankAccount) {
 		return iManagerService.updateBankAccount(bankAccount.getBankAccountId(), bankAccount.getBalance(), bankAccount.getBankName(), bankAccount.getLockStatus(), bankAccount.getCustomer());
 	}
@@ -110,7 +144,7 @@ public class ManagerController {
 		return operator;
 	}
 	
-	@GetMapping("/list")
+	@GetMapping
 	public List<Manager> getAllManager() {
 		return (List<Manager>) managerRepo.findAll();
 	}
@@ -134,7 +168,7 @@ public class ManagerController {
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public boolean deleteUsers(@PathVariable Long id) {
+	public boolean deleteManager(@PathVariable Long id) {
 		if (managerRepo.existsById(id)) {
 			managerRepo.deleteById(id);
 			return true;
@@ -143,29 +177,38 @@ public class ManagerController {
 			return false;
 	}
 	
+	@GetMapping("/showDepartment/{id}")
+	public Department getDepartment(@PathVariable Long id) {
+		return iManagerService.getDepartment(id);
+	}
+
 	//**** Department-controller ****
-		@GetMapping("/listDepartments")
-		public List<Department> getAllDepartments() {
-			return iManagerService.getAllDepartments();
-		}
-		@PostMapping("/addDepartment")
-		public Department addDepartment(@RequestBody Department d) {
-			return iManagerService.insertDepartment(d);
-		}
-		//**** Department-controller ****
+	@GetMapping("/listAllDepartments")
+	public List<Department> getAllDepartments() {
+		return iManagerService.getAllDepartments();
+	}
+	@PostMapping("/addDepartment")
+	public Department addDepartment(@RequestBody Department d) {
+		return iManagerService.insertDepartment(d);
+	}
+	//**** Department-controller ****
 		
-		//**** SchedulePlan-controller ****
-		@GetMapping("/listSchedulePlans")
-		public List<SchedulePlan> getAllSchedulePlans() {
-			return iManagerService.getAllSchedulePlans();
-		}
-		@PostMapping("/addSchedulePlan")
-		public String addSchedulePlan(@RequestBody SchedulePlan s) {
-			return iManagerService.insertSchedulePlan(s, s.getDepartment().getDepartmentId());
-		}
-		@GetMapping("/schedulePlan/{id}")
-		public Optional<SchedulePlan> findSchedulePlanById(@PathVariable Long id) {
-			return schedulePlanRepo.findById(id);
-		}
-		//**** SchedulePlan-controller ****
+	// **** SchedulePlan-controller ****
+	@GetMapping("/listAllSchedulePlans")
+	public List<SchedulePlan> getAllSchedulePlans() {
+		return iManagerService.getAllSchedulePlans();
+	}
+	@PostMapping("/addSchedulePlan")
+	public String addSchedulePlan(@RequestBody SchedulePlan s) {
+		return iManagerService.insertSchedulePlan(s, Long.valueOf(s.getDepartment().getDepartmentId()));
+	}
+	@DeleteMapping("/deleteSchedulePlan/{id}")
+	public String deleteSchedulePlan(@PathVariable long id) {
+		return iManagerService.deleteSchedulePlan(id);
+	}
+	@PutMapping("/updateSchedulePlan/{id}")
+	public String updateSchedulePlan(@RequestBody SchedulePlan s, @PathVariable long id) {
+		return iManagerService.updateSchedulePlan(s, Long.valueOf(s.getDepartment().getDepartmentId()), id);
+	}
+	// **** SchedulePlan-controller ****
 }
