@@ -23,7 +23,6 @@ import com.vn.tpbank.entity.Manager;
 import com.vn.tpbank.entity.Operator;
 import com.vn.tpbank.entity.SchedulePlan;
 import com.vn.tpbank.entity.User;
-import com.vn.tpbank.repository.SchedulePlanRepository;
 import com.vn.tpbank.service.IManagerService;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -31,9 +30,6 @@ import com.vn.tpbank.service.IManagerService;
 public class ManagerController {
 	@Autowired
 	IManagerService iManagerService;
-	
-	@Autowired
-	SchedulePlanRepository schedulePlanRepo;
 	
 	/**
 	 * @author Truong Huu Tai
