@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +39,18 @@ public class OperatorController {
 		return iOperatorService.login(user.getUserName(), user.getUserPass());
 
 	}
+	
+	/**
+	 * @URL http://localhost:9090/tpbank/operator/dang-nhap
+	 * @param userName, userPass
+	 * @return message login success or not
+	 * @author khánh hòa
+	 */
+	@PostMapping("dang-nhap")
+	public String dangNhap(@RequestBody User user) {
+		return iOperatorService.dangNhap(user.getUserName(), user.getUserPass());
+
+	}
 
 	/**
 	 * @URL http://localhost:9090/tpbank/operator/unlock-bank-account
@@ -63,12 +76,12 @@ public class OperatorController {
 	 *                    "customerPhone":"9152224",
 	 *                    "customerEmail":"1224@gmail.com",
 	 *                    "customerNationalId":602254,
-	 *                    "customerDob": null,
+	 *                    "customerDob": "2023-05-25",
 	 *                    "user": {
 	 * 
-	 *                    "userName":"du43",
-	 *                    "userPass":"1234",
-	 *                    "role" :"user"
+	 *                    "userName":"9152224",
+	 *                    "userPass":"123",
+	 *                    "role" :"customer"
 	 *                    }
 	 *                    }
 	 * 
@@ -105,6 +118,11 @@ public class OperatorController {
 	{
 		return iOperatorService.viewCustomers();
 	}
+	@DeleteMapping("delete-customer/{id}")
+	public String deleteCustomer (@PathVariable long id)
+	{
+		return  iOperatorService.deleteCustomer(id);
+	}
 	
 	/**
 	 * @URL http://localhost:9090/tpbank/operator/update-customer
@@ -113,10 +131,9 @@ public class OperatorController {
 	 * @author Phuoc Sang
 	 */
 	@PutMapping("/update-customer")
-	public boolean updateNewCustomer(@RequestBody Customer customer )
+	public String updateNewCustomer(@RequestBody Customer customer )
 	{
-		return iOperatorService.updateCustomer(customer.getCustomerEmail(),customer.getCustomerAddress(),customer.getCustomerPhone());
-	}
+		return iOperatorService.updateCustomer(customer.getCustomerPhone(), customer.getCustomerName(), customer.getCustomerAddress(), customer.getUser().getUserPass());	}
 
 	
 	@PutMapping(value="/deposit")

@@ -42,7 +42,7 @@ public class Operator {
 	private User user;
 	
 //	@JsonManagedReference
-	@ManyToOne(targetEntity = Department.class, cascade = CascadeType.ALL)
+	@ManyToOne(targetEntity = Department.class, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "department_id", referencedColumnName = "id")
 	private Department department;
 

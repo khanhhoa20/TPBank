@@ -12,25 +12,34 @@ import com.vn.tpbank.entity.Transaction;
 
 
 public interface IOperatorService {
+	/**
+	 * @author Khánh Hòa
+	 */
 	public String login(String username, String pass);
 
+	/**
+	 * @author Khánh Hòa
+	 */
 	public String unlockBankAccount(String cusPhone);
 
 	public String lockBankAccount(String cusPhone);
 
 	public String createBankAccount(BankAccount account);
 	
+	/**
+	 * @author Khánh Hòa
+	 */
 	public List<BankAccount> viewCustomers();
 
-	
-	public boolean updateCustomer(String email, String address,String phone);
+	public String updateCustomer(String phone, String name, String address, String pass);
 	
 	public String withdrawMoney(Transaction transaction);
 	public String depositMoney(Transaction transaction);
-	
-	public List<Transaction> findTransactionByPhone(String phoneNumber);
+	public List<Transaction> viewTransactions (String transistonType);
+	public String deleteCustomer(long cusId);
 
-	public String transferMoney(Transaction sendTransaction, Transaction recieveTransaction);
-	
-	public BankAccount findBankAccountThroughTransaction(Transaction transaction);
+	/**
+	 * @author Khánh Hòa
+	 */
+	String dangNhap(String username, String pass);
 }

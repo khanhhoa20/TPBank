@@ -45,7 +45,8 @@ public class Customer {
 	@Temporal(TemporalType.DATE)
 	private Date customerDob;
 	
-	@OneToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+	@OneToOne(targetEntity = User.class, orphanRemoval = true,
+		    cascade = CascadeType.ALL)
 	@JoinColumn(name="user_id",referencedColumnName = "id")
 	private User user;
 
@@ -57,13 +58,13 @@ public class Customer {
 			String customerEmail, Long customerNationalId, Date customerDob, User user) {
 		super();
 		this.customerId = customerId;
+		this.customerNationalId = customerNationalId;
+		this.user = user;
 		this.customerName = customerName;
 		this.customerAddress = customerAddress;
 		this.customerPhone = customerPhone;
 		this.customerEmail = customerEmail;
-		this.customerNationalId = customerNationalId;
 		this.customerDob = customerDob;
-		this.user = user;
 	}
 
 	public Long getCustomerId() {
