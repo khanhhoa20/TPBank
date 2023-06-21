@@ -10,6 +10,9 @@ import com.vn.tpbank.entity.Department;
 import com.vn.tpbank.entity.Manager;
 import com.vn.tpbank.entity.User;
 
+/**
+	* @author Nguyen Manh Hai
+*/
 @Repository
 public interface ManagerRepository extends JpaRepository<Manager, Long> {
 	@Query("Select u from User u WHERE userID NOT IN (SELECT m.user.userID from Manager m where u.userID = m.user.userID)")
