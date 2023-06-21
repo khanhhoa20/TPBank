@@ -3,12 +3,28 @@ package com.vn.tpbank.service;
 import java.util.List;
 
 import com.vn.tpbank.entity.BankAccount;
+import com.vn.tpbank.entity.Customer;
+import com.vn.tpbank.entity.User;
 import com.vn.tpbank.request.RegisterBankAccountRequest;
 import com.vn.tpbank.request.UpdateInformationRequest;
 
-public interface ICustomerService {
+public interface ICustomerService{
+	
+	public String login(String username, String password);
+	public Customer getCustomer(Long CustomerId);
+	
+	public BankAccount getBankAccount(Long customerId);
+	
+	public String editCustomer(String cusPhone, String cusEmail, String cusAddress, String userName);
 
-    String login(String userName, String userPass);
+	
+	public User getUser(Long UserId);
+	
+
+    /**
+     * @author: Cong thanh
+     */
+    // String login(String userName, String userPass);
 
     String RegisterCreateBankAccount(RegisterBankAccountRequest request);
 
