@@ -161,52 +161,83 @@ public class ManagerController {
 		List<Operator> operator = (List<Operator>) iManagerService.listAllOperator();
 		return operator;
 	}
+
 	
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@GetMapping
 	public List<Manager> getAllManager() {
 		return iManagerService.getAllManager();
 	}
-	
+
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@GetMapping("/{id}")
 	public Optional<Manager> getManagerById(@PathVariable Long id) {
 		return iManagerService.getManagerById(id);
 	}
-	
+
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@PostMapping("/add-manager")
 	public Manager addManager(@RequestBody Manager manager) {
 		return iManagerService.addManager(manager);
 	}
-	
+
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@PutMapping("/update-manager/{id}")
 	public Manager updateManager(@PathVariable Long id, @RequestBody Manager manager) {
 		return iManagerService.updateManager(id, manager);
 	}
-	
+
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@PutMapping("/disable-manager/{id}")
 	public boolean disableManager(@PathVariable Long id) {
 		return iManagerService.disableManager(id);
 	}
-	
+
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@DeleteMapping("/delete-manager/{id}")
 	public boolean deleteManager(@PathVariable Long id) {
 		return iManagerService.deleteManager(id);
 	}
-	
+
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@GetMapping("/user-have-not-been-chosen")
 	public List<User> userHaveNotBeenChosen() {
 		return iManagerService.userHaveNotBeenChosen();
 	}
-	
+
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@GetMapping("/department-have-not-been-chosen")
 	public List<Department> departmentHaveNotBeenChosen() {
 		return iManagerService.departmentHaveNotBeenChosen();
 	}
-	
+
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@GetMapping("/showUser/{username}")
 	public User getUserByUsername(@PathVariable String username) {
 		return iManagerService.getUserByUsername(username);
 	}
-	
+
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@GetMapping("/showDepartment/{id}")
 	public Department getDepartment(@PathVariable Long id) {
 		return iManagerService.getDepartment(id);
