@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
 import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
@@ -42,6 +43,9 @@ public class ManagerServiceImpl implements IManagerService {
 	@Autowired
 	ManagerRepository managerRepository;
 
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@Override
 	public String login(String username, String password) {
 		User user = userRepository.findByUserNameAndUserPass(username, password);
@@ -50,12 +54,15 @@ public class ManagerServiceImpl implements IManagerService {
 		}
 		return "Wrong username or password";
 	}
-
+	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@Override
 	public String createOperator(String username, String password, String phoneNumber, String address, String email, String name, String status, Long departmentId) {
 		if (userRepository.findByUserName(username).isPresent()) {
 			return "Username is already existed";
-		}
+		}	
 		else if (operatorRepository.findByEmail(email).isPresent()) {
 			return "Email already in use";
 		}
@@ -75,11 +82,14 @@ public class ManagerServiceImpl implements IManagerService {
 		}
 	}
 
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@Override
 	public String editOperator(String username, String password, String phoneNumber, String address, String email, String name, String status, Long departmentId) {
 		Optional<User> dbUser = userRepository.findByUserName(username);
 		Department department = departmentRepository.findByDepartmentId(departmentId);
-		if (dbUser.isPresent()) {
+		if (dbUser.isPresent() && department!=null) {
 			User user = dbUser.get();
 			Operator operator = operatorRepository.findByUser(user);
 			operator.setOperPhone(phoneNumber);
@@ -98,6 +108,24 @@ public class ManagerServiceImpl implements IManagerService {
 		
 	}
 
+	/**
+	 * @author Truong Huu Tai
+	 */
+	@Override
+	public String deleteOperator(String username) {
+		Optional<User> dbUser = userRepository.findByUserName(username);
+		if (dbUser.isPresent()) {
+			User user = dbUser.get();
+			Operator operator = operatorRepository.findByUser(user);
+			operatorRepository.delete(operator);
+			return "Delete operator successfully";
+		}
+		return "Username does not exist";
+	}
+	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@Override
 	public String disableOperator(String username) {
 		Optional<User> dbUser = userRepository.findByUserName(username);
@@ -115,6 +143,9 @@ public class ManagerServiceImpl implements IManagerService {
 		return "User does not exist";
 	}
 	
+	/**
+	 * @author Truong Huu Tai
+	 */
 	@Override
 	public List<Operator> listAllOperator() {
 		List<Operator> listOperator = (List<Operator>) operatorRepository.findAll();
@@ -122,9 +153,18 @@ public class ManagerServiceImpl implements IManagerService {
 		return listOperator;
 	}
 	
+	/**
+	 * Creates a new bank account.
+	 *
+	 * @param balance    the initial balance of the account
+	 * @param bankName   the name of the bank associated with the account
+	 * @param lockStatus the lock status of the account
+	 * @param customer   the customer associated with the account
+	 * @return a String indicating the status of the account creation
+	 * @author ThanhPhuc
+	 */
 	@Override
 	public String createAccount(Long balance, String bankName, String lockStatus, Customer customer) {
-		// TODO Auto-generated method stub
 		User user = customer.getUser();
 //		Optional<User> user2 = userRepository.findByUserName(user.getUserName());
 		if(userRepository.findByUserName(user.getUserName()).isEmpty()) {
@@ -138,7 +178,13 @@ public class ManagerServiceImpl implements IManagerService {
 			return "Account is existed";
 		}
 	}
-
+	/**
+	 * Deletes a bank account by ID.
+	 *
+	 * @param id the ID of the bank account to delete
+	 * @return true if the account is successfully deleted, false otherwise
+	 * @author ThanhPhuc
+	 */
 	@Override
 	public boolean deleteAccount(Long id) {
 		if (bankAccountRepository.existsById(id)) {
@@ -149,22 +195,71 @@ public class ManagerServiceImpl implements IManagerService {
 			return false;
 	}
 
+	/**
+	 * Retrieves all bank accounts.
+	 *
+	 * @return a list of all bank accounts
+	 * @author ThanhPhuc
+	 */
 	@Override
 	public List<BankAccount> getAllBankAccount() {
-		// TODO Auto-generated method stub
 		return bankAccountRepository.findAll();
 	}
 
+	/**
+	 * Finds a bank account by ID.
+	 *
+	 * @param id the ID of the bank account to find
+	 * @return an Optional containing the bank account if found, or an empty Optional if not found
+	 * @throws ResourceAccessException if the bank account with the given ID is not found
+	 * @author ThanhPhuc
+	 */
 	@Override
 	public Optional<BankAccount> findAccountByID(Long id) {
 		// TODO Auto-generated method stub
-		
-		return bankAccountRepository.findById(id);
+		return Optional.ofNullable(bankAccountRepository.findById(id)
+				.orElseThrow(()-> new ResourceAccessException("Cann't find bank account with ID = "+id)));
 	}
-
+	/**
+	 * Updates a bank account.
+	 *
+	 * @param id          the ID of the bank account to update
+	 * @param balance     the updated balance
+	 * @param bankName    the updated bank name
+	 * @param lockStatus  the updated lock status
+	 * @param customer    the updated customer
+	 * @return a String indicating the status of the update operation
+	 * @author ThanhPhuc
+	 */
+	@Override
+	public String updateBankAccount(Long id, Long balance, String bankName, String lockStatus, Customer customer) {
+		 try {
+		        Optional<BankAccount> optionalBankAccount = bankAccountRepository.findById(id);
+		        if (optionalBankAccount.isPresent()) {
+		            BankAccount bankAccount = optionalBankAccount.get();
+		            bankAccount.setBalance(balance);
+		            bankAccount.setBankName(bankName);
+		            bankAccount.setLockStatus(lockStatus);
+		            bankAccountRepository.save(bankAccount);
+		            return "Update account successfully";
+		        } else {
+		            return "Account not found";
+		        }
+		    } catch (Exception e) {
+		        return "Error updating account: " + e.getMessage();
+		    }
+	}
+//--------------------------
 	@Override
 	public List<Department> getAllDepartments() {
 		return departmentRepository.findAll();
+	}
+	
+	@Override
+	public Department getDepartment(Long departmentId) {
+		if (departmentRepository.findByDepartmentId(departmentId)!=null)
+			return departmentRepository.findByDepartmentId(departmentId);
+		return null;
 	}
 
 	@Override
@@ -196,10 +291,32 @@ public class ManagerServiceImpl implements IManagerService {
 	}
 
 	@Override
-	public Department getDepartment(Long departmentId) {
-		if (departmentRepository.findByDepartmentId(departmentId)!=null)
-			return departmentRepository.findByDepartmentId(departmentId);
-		return null;
+	public String deleteSchedulePlan(long scheduleId) {
+		SchedulePlan findS = schedulePlanRepository.findById(scheduleId).orElse(null);
+		if(findS != null) {
+			Department d = findS.getDepartment();
+			findS.setDepartment(null);
+			schedulePlanRepository.delete(findS);
+			return "Delete schedule_plan by id is " +scheduleId +" successfully!";
+		}
+		else return "Not found schedule_plan to delete!";
+	}
+
+	@Override
+	public String updateSchedulePlan(SchedulePlan s, Long departmentId, long findScheduleId) {
+		SchedulePlan findS = schedulePlanRepository.findById(findScheduleId).orElse(null);
+		if(findS != null) {
+			Department d = departmentRepository.findByDepartmentId(departmentId);
+			findS.setScheduleplandetail_info(s.getScheduleplandetail_info());
+			findS.setScheduleplan_description(s.getScheduleplan_description());
+			findS.setScheduleplan_name(s.getScheduleplan_name());
+			findS.setStartDate(s.getStartDate());
+			findS.setEndDate(s.getEndDate());
+			findS.setDepartment(d);
+			schedulePlanRepository.save(findS);
+			return "Update schedule_plan by id is " +findScheduleId +" successfully!";
+		}
+		else return "Not found schedule_plan to update!";
 	}
 
 	@Override

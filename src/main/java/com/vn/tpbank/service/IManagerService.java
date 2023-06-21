@@ -19,19 +19,24 @@ public interface IManagerService {
 	public String login(String username, String password);
 	public String createOperator(String username, String password, String phoneNumber, String address, String email, String name, String status, Long departmentId);
 	public String editOperator(String username, String password, String phoneNumber, String address, String email, String name, String status, Long departmentId);
-	public String disableOperator(String usernam);
+	public String disableOperator(String username);
+	public String deleteOperator(String username);
 	public List<Operator> listAllOperator();
 	public Department getDepartment(Long departmentId);
 	public String createAccount(Long balance, String bankName, String lockStatus, Customer customer);
 	public boolean deleteAccount(Long id);
 	public List<BankAccount> getAllBankAccount();
 	public Optional<BankAccount> findAccountByID(Long id);
+	public String updateBankAccount(Long id, Long balance, String bankName, String lockStatus, Customer customer);
 	
 	public List<Department> getAllDepartments();
 	public Department insertDepartment(Department d);
 	
 	public List<SchedulePlan> getAllSchedulePlans();
 	public String insertSchedulePlan(SchedulePlan s, Long departmentId);
+	public String deleteSchedulePlan(long scheduleId);
+	public String updateSchedulePlan(SchedulePlan s, Long departmentId, long findScheduleId);
+
 	
 	public List<Manager> getAllManager();
 	public Optional<Manager> getManagerById(Long id);
