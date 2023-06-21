@@ -53,10 +53,40 @@ public class CustomerServiceImpl implements ICustomerService {
         account.setBalance(0l);
         account.setLockStatus("active");
         account.setCustomer(customer);
-
         bankAccountRepository.save(account);
         return "Create bank account successfully";
     }
+
+	@Override
+	public BankAccount getBankAccount(Long customerId) {
+		// TODO Auto-generated method stub
+		Customer customer = customerRepository.findByCustomerId(customerId);
+		if (bankAccountRepository.findByCustomer(customer)==null) {
+			return null;
+		}
+		return bankAccountRepository.findByCustomer(customer);
+	}
+	
+	@Override
+	public String editCustomer(String cusPhone, String cusEmail, String cusAddress, String userName) {
+		// TODO Auto-generated method stub
+		User user = userRepository.findByUserName(userName);
+		Customer customer = customerRepository.findByUser(user);
+
+		if (user!=null && customer != null ){
+			customer.setCustomerPhone(cusPhone);
+			customer.setCustomerEmail(cusEmail);
+			customer.setCustomerAddress(cusAddress);
+			//			user.setUserPass(userPass);
+			//			customer.setUser(user);
+			customerRepository.save(customer);
+
+			return "Update successfully !!!";
+		}
+		else {
+			return "Update failed !!!";
+		}
+	}
 
     @Override
     public String changePassword(String userName, String userPass, String newUserPass) {
@@ -64,7 +94,6 @@ public class CustomerServiceImpl implements ICustomerService {
         if (user == null) {
             return "Wrong username or password!";
         }
-
         user.setUserPass(newUserPass);
         userRepository.save(user);
         return "Change password successfully.";

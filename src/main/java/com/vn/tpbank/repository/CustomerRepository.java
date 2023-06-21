@@ -12,7 +12,6 @@ import com.vn.tpbank.entity.User;
 public interface CustomerRepository extends JpaRepository<Customer, Long>{
 	
 	public Customer findByCustomerName(String name);
-//	public Optional<Customer> findByCustomerId(Long id);
 	public Customer findByCustomerId(Long id);
 	
 	public Customer findByUser(User user);
