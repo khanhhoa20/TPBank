@@ -30,8 +30,8 @@ public class CustomerController {
 	ICustomerService iCustomerService;
 	
 	@PostMapping("/login")
-	public ResponseEntity<?>login(@RequestBody User user) {
-		return ResponseEntity.ok(iCustomerService.login(user.getUserName(), user.getUserPass()));
+	public String login(@RequestBody User user) {
+		return iCustomerService.login(user.getUserName(), user.getUserPass());
 	}
 	
 	@PutMapping("/cusdetail")
@@ -51,17 +51,17 @@ public class CustomerController {
 	{
 		return iCustomerService.editCustomer(customer.getCustomerPhone(), customer.getCustomerEmail(), customer.getCustomerAddress(), customer.getUser().getUserName());
 	}
-    @Autowired
-    ICustomerService iCustomerService;
+    
 
-    // @PostMapping("login")
-    // public String login(@RequestBody User user) {
-    //     return iCustomerService.login(user.getUserName(), user.getUserPass());
-    // }
+//     @PostMapping("/login")
+//     public String login(@RequestBody User user) {
+//         return iCustomerService.login(user.getUserName(), user.getUserPass());
+//     }
 
     @PutMapping("change-password")
     public String changePassword(@RequestBody ChangePasswordRequest request) {
-        return iCustomerService.changePassword(request.getUserName(), request.getUserPass(), request.getNewUserPass());
+//        return iCustomerService.changePassword(request.getUserName(), request.getUserPass(), request.getNewUserPass());
+    	return null;
     }
 
     @GetMapping("/{id}/get-all-account")
@@ -79,37 +79,41 @@ public class CustomerController {
 
     @PutMapping("/deposit")
     public String deposit(@RequestBody TransactionRequest request) {
-        return iCustomerService.deposit(request.getAccountNumber(), request.getAmount());
+//        return iCustomerService.deposit(request.getAccountNumber(), request.getAmount());
+    	return null;
     }
 
     @PutMapping("/withdraw")
     public String withdraw(@RequestBody TransactionRequest request) {
-        return iCustomerService.withdraw(request.getAccountNumber(), request.getAmount());
+//        return iCustomerService.withdraw(request.getAccountNumber(), request.getAmount());
+        return null;
     }
 
     @PutMapping("/transfer")
     public String transfer(@RequestBody TransactionRequest request) {
-        return iCustomerService.transfer(request.getAccountNumber(), request.getAccountNumber2(), request.getAmount());
+//        return iCustomerService.transfer(request.getAccountNumber(), request.getAccountNumber2(), request.getAmount());
+    	return null;
     }
 
     @PutMapping("/update-information")
     public String updateInformation(@RequestBody UpdateInformationRequest customer) {
-        if (customer.getCustomerName() == null || customer.getCustomerName().isEmpty()) {
-            return "The name is empty";
-        }
-        if (customer.getCustomerAddress() == null || customer.getCustomerAddress().isEmpty()) {
-            return "The address is empty";
-        }
-        if (customer.getCustomerPhone() == null || customer.getCustomerPhone().isEmpty()) {
-            return "The phone is empty";
-        }
-        if (customer.getCustomerEmail() == null || customer.getCustomerEmail().isEmpty()) {
-            return "The email is empty";
-        }
-        if (customer.getCustomerDob() == null) {
-            return "The dob is empty";
-        }
-        return iCustomerService.updateInformation(customer);
+//        if (customer.getCustomerName() == null || customer.getCustomerName().isEmpty()) {
+//            return "The name is empty";
+//        }
+//        if (customer.getCustomerAddress() == null || customer.getCustomerAddress().isEmpty()) {
+//            return "The address is empty";
+//        }
+//        if (customer.getCustomerPhone() == null || customer.getCustomerPhone().isEmpty()) {
+//            return "The phone is empty";
+//        }
+//        if (customer.getCustomerEmail() == null || customer.getCustomerEmail().isEmpty()) {
+//            return "The email is empty";
+//        }
+//        if (customer.getCustomerDob() == null) {
+//            return "The dob is empty";
+//        }
+//        return iCustomerService.updateInformation(customer);
+    	return null;
     }
 
     // @GetMapping("/cusdetail")

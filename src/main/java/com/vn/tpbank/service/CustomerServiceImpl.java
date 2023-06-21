@@ -42,18 +42,18 @@ public class CustomerServiceImpl implements ICustomerService {
 
     @Override
     public String RegisterCreateBankAccount(RegisterBankAccountRequest request) {
-        Customer customer = customerRepository.findById(request.getCustomerId()).get();
-        if (customer == null) {
-            return "Customer not found";
-        }
-
-        BankAccount account = new BankAccount();
-        account.setBankAccountId(0l);
-        account.setBankName(request.getBankName());
-        account.setBalance(0l);
-        account.setLockStatus("active");
-        account.setCustomer(customer);
-        bankAccountRepository.save(account);
+//        Customer customer = customerRepository.findById(request.getCustomerId()).get();
+//        if (customer == null) {
+//            return "Customer not found";
+//        }
+//
+//        BankAccount account = new BankAccount();
+//        account.setBankAccountId(0l);
+//        account.setBankName(request.getBankName());
+//        account.setBalance(0l);
+//        account.setLockStatus("active");
+//        account.setCustomer(customer);
+//        bankAccountRepository.save(account);
         return "Create bank account successfully";
     }
 
@@ -93,11 +93,10 @@ public class CustomerServiceImpl implements ICustomerService {
 	//	edit customer information 
 	@Override
 	public String editCustomer(String cusPhone, String cusEmail, String cusAddress, String userName) {
-		// TODO Auto-generated method stub
-		User user = userRepository.findByUserName(userName);
-		Customer customer = customerRepository.findByUser(user);
+		Optional<User> user = userRepository.findByUserName(userName);
+		Customer customer = customerRepository.findByUser(user.get());
 
-		if (user!=null && customer != null ){
+		if (user.isPresent() && customer != null ){
 			customer.setCustomerPhone(cusPhone);
 			customer.setCustomerEmail(cusEmail);
 			customer.setCustomerAddress(cusAddress);
@@ -176,25 +175,31 @@ public class CustomerServiceImpl implements ICustomerService {
 
     @Override
     public String updateInformation(UpdateInformationRequest request) {
-        BankAccount account = bankAccountRepository.findById(request.getBankAccountId()).get();
-        if (account == null) {
-            return "Account not found";
-        }
-        account.setLockStatus(request.getLockStatus());
-
-        Customer customer = customerRepository.findById(account.getCustomer().getCustomerId()).get();
-        if (customer == null) {
-            return "Customer not found";
-        }
-        customer.setCustomerName(request.getCustomerName());
-        customer.setCustomerAddress(request.getCustomerAddress());
-        customer.setCustomerPhone(request.getCustomerPhone());
-        customer.setCustomerEmail(request.getCustomerEmail());
-        customer.setCustomerDob(request.getCustomerDob());
-
-        bankAccountRepository.save(account);
-        customerRepository.save(customer);
+//        BankAccount account = bankAccountRepository.findById(request.getBankAccountId()).get();
+//        if (account == null) {
+//            return "Account not found";
+//        }
+//        account.setLockStatus(request.getLockStatus());
+//
+//        Customer customer = customerRepository.findById(account.getCustomer().getCustomerId()).get();
+//        if (customer == null) {
+//            return "Customer not found";
+//        }
+//        customer.setCustomerName(request.getCustomerName());
+//        customer.setCustomerAddress(request.getCustomerAddress());
+//        customer.setCustomerPhone(request.getCustomerPhone());
+//        customer.setCustomerEmail(request.getCustomerEmail());
+//        customer.setCustomerDob(request.getCustomerDob());
+//
+//        bankAccountRepository.save(account);
+//        customerRepository.save(customer);
 
         return "Update information successfully";
     }
+
+	@Override
+	public User getUser(Long UserId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

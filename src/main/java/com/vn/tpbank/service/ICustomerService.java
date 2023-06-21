@@ -3,6 +3,8 @@ package com.vn.tpbank.service;
 import java.util.List;
 
 import com.vn.tpbank.entity.BankAccount;
+import com.vn.tpbank.entity.Customer;
+import com.vn.tpbank.entity.User;
 import com.vn.tpbank.request.RegisterBankAccountRequest;
 import com.vn.tpbank.request.UpdateInformationRequest;
 
