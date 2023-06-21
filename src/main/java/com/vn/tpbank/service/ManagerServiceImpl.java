@@ -318,13 +318,19 @@ public class ManagerServiceImpl implements IManagerService {
 		}
 		else return "Not found schedule_plan to update!";
 	}
-
+	
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@Override
 	public List<Manager> getAllManager() {
 		// TODO Auto-generated method stub
 		return managerRepository.findAll();
 	}
 
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@Override
 	public Optional<Manager> getManagerById(Long id) {
 		// TODO Auto-generated method stub
@@ -333,6 +339,9 @@ public class ManagerServiceImpl implements IManagerService {
 		return null;
 	}
 
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@Override
 	public Manager addManager(Manager manager) {
 		// TODO Auto-generated method stub
@@ -340,6 +349,9 @@ public class ManagerServiceImpl implements IManagerService {
 		return managerRepository.save(manager);
 	}
 
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@Override
 	public Manager updateManager(Long id, Manager managerDetails) {
 		// TODO Auto-generated method stub
@@ -361,6 +373,9 @@ public class ManagerServiceImpl implements IManagerService {
 			return null;
 	}
 
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@Override
 	public boolean disableManager(Long id) {
 		// TODO Auto-generated method stub
@@ -379,6 +394,9 @@ public class ManagerServiceImpl implements IManagerService {
 		return false;
 	}
 
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@Override
 	public boolean deleteManager(Long id) {
 		// TODO Auto-generated method stub
@@ -390,18 +408,27 @@ public class ManagerServiceImpl implements IManagerService {
 			return false;
 	}
 
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@Override
 	public List<User> userHaveNotBeenChosen() {
 		// TODO Auto-generated method stub
 		return managerRepository.userHaveNotBeenChosen();
 	}
 
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@Override
 	public List<Department> departmentHaveNotBeenChosen() {
 		// TODO Auto-generated method stub
 		return managerRepository.departmentHaveNotBeenChosen();
 	}
 
+	/**
+	 * @author Nguyen Manh Hai
+	 */
 	@Override
 	public User getUserByUsername(String username) {
 		// TODO Auto-generated method stub
