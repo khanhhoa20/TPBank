@@ -26,38 +26,37 @@ import com.vn.tpbank.service.ICustomerService;
 @RestController
 @RequestMapping("/tpbank/customer")
 public class CustomerController {
-	@Autowired
-	ICustomerService iCustomerService;
-	
-	
-	@PostMapping("/login")
-	public ResponseEntity<?>login(@RequestBody User user) {
-		return ResponseEntity.ok(iCustomerService.login(user.getUserName(), user.getUserPass()));
-	}
-	
-	@PutMapping("/cusdetail")
-	public Customer getCustomer(@RequestBody Customer customer) {
-		return iCustomerService.getCustomer(customer.getCustomerId());
-		
-	}
-	
-	@PutMapping("/accdetail")
-	public BankAccount getBankAccount(@RequestBody  Customer customer) {
-		return iCustomerService.getBankAccount(customer.getCustomerId());
-		
-	}
-	
-	@PutMapping("/cusupdate")
-	public String updateNewCustomer(@RequestBody Customer customer )
-	{
-		return iCustomerService.editCustomer( customer.getCustomerPhone(), customer.getCustomerEmail(), customer.getCustomerAddress(), customer.getUser().getUserName());
-	}
     @Autowired
     ICustomerService iCustomerService;
 
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody User user) {
+        return ResponseEntity.ok(iCustomerService.login(user.getUserName(), user.getUserPass()));
+    }
+
+    @PutMapping("/cusdetail")
+    public Customer getCustomer(@RequestBody Customer customer) {
+        return iCustomerService.getCustomer(customer.getCustomerId());
+
+    }
+
+    @PutMapping("/accdetail")
+    public BankAccount getBankAccount(@RequestBody Customer customer) {
+        return iCustomerService.getBankAccount(customer.getCustomerId());
+
+    }
+
+    @PutMapping("/cusupdate")
+    public String updateNewCustomer(@RequestBody Customer customer) {
+        return iCustomerService.editCustomer(customer.getCustomerPhone(), customer.getCustomerEmail(),
+                customer.getCustomerAddress(), customer.getUser().getUserName());
+    }
+    // @Autowired
+    // ICustomerService iCustomerService;
+
     // @PostMapping("login")
     // public String login(@RequestBody User user) {
-    //     return iCustomerService.login(user.getUserName(), user.getUserPass());
+    // return iCustomerService.login(user.getUserName(), user.getUserPass());
     // }
 
     @PutMapping("change-password")
