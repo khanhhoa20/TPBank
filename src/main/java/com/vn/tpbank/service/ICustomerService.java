@@ -1,6 +1,7 @@
 package com.vn.tpbank.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.vn.tpbank.entity.BankAccount;
 import com.vn.tpbank.entity.Customer;
@@ -15,10 +16,11 @@ public interface ICustomerService{
 	
 	public BankAccount getBankAccount(Long customerId);
 	
+	public Optional<User> getUser(Long UserId);
+	
 	public String editCustomer(String cusPhone, String cusEmail, String cusAddress, String userName);
 
-	
-	public User getUser(Long UserId);
+	public String editPass(Long userID, String userPass);
 	
 
     /**
