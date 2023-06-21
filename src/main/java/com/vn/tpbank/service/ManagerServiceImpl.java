@@ -249,12 +249,18 @@ public class ManagerServiceImpl implements IManagerService {
 		        return "Error updating account: " + e.getMessage();
 		    }
 	}
-//--------------------------
+
+	/**
+	 * @author Dinh Quang Tuan
+	 */
 	@Override
 	public List<Department> getAllDepartments() {
 		return departmentRepository.findAll();
 	}
 	
+	/**
+	 * @author Dinh Quang Tuan
+	 */
 	@Override
 	public Department getDepartment(Long departmentId) {
 		if (departmentRepository.findByDepartmentId(departmentId)!=null)
@@ -262,6 +268,9 @@ public class ManagerServiceImpl implements IManagerService {
 		return null;
 	}
 
+	/**
+	 * @author Dinh Quang Tuan
+	 */
 	@Override
 	public Department insertDepartment(Department d) {
 		Department findD = departmentRepository.findByDepartmentId(d.getDepartmentId());
@@ -270,13 +279,18 @@ public class ManagerServiceImpl implements IManagerService {
 		return null;
 	}
 
+	/**
+	 * @author Dinh Quang Tuan
+	 */
 	@Override
 	public List<SchedulePlan> getAllSchedulePlans() {
 		return schedulePlanRepository.findAll();
 	}
 
-	//get current-date
-	Date createDate = Date.from((LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+	/**
+	 * @author Dinh Quang Tuan
+	 */
+	Date createDate = Date.from((LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant())); //get current-date
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	@Override
 	public String insertSchedulePlan(SchedulePlan s, Long departmentId) {
@@ -290,6 +304,9 @@ public class ManagerServiceImpl implements IManagerService {
 		return "Add a schedule_plan successfully";
 	}
 
+	/**
+	 * @author Dinh Quang Tuan
+	 */
 	@Override
 	public String deleteSchedulePlan(long scheduleId) {
 		SchedulePlan findS = schedulePlanRepository.findById(scheduleId).orElse(null);
@@ -302,6 +319,9 @@ public class ManagerServiceImpl implements IManagerService {
 		else return "Not found schedule_plan to delete!";
 	}
 
+	/**
+	 * @author Dinh Quang Tuan
+	 */
 	@Override
 	public String updateSchedulePlan(SchedulePlan s, Long departmentId, long findScheduleId) {
 		SchedulePlan findS = schedulePlanRepository.findById(findScheduleId).orElse(null);

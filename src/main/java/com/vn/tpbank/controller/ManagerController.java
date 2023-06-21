@@ -309,5 +309,4 @@ public class ManagerController {
 	public String updateSchedulePlan(@RequestBody SchedulePlan s, @PathVariable long id) {
 		return iManagerService.updateSchedulePlan(s, Long.valueOf(s.getDepartment().getDepartmentId()), id);
 	}
-	// **** SchedulePlan-controller ****
 }
