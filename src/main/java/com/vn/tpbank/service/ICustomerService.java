@@ -20,7 +20,11 @@ public interface ICustomerService{
 	
 	public String editCustomer(String cusPhone, String cusEmail, String cusAddress, String userName);
 
-	public String editPass(Long userID, String userPass);
+	public String editPass(String userName, String userPass);
+	
+	public BankAccount getPartners(String cusPhone);
+
+	public String transferMoney(String transferPhone, String receiverPhone, Long money);
 	
 
     /**

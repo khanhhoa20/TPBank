@@ -79,7 +79,7 @@ public class CustomerServiceImpl implements ICustomerService {
 
 	}
 
-	
+
 	/**
 	 * show information of customer
 	 * @author Thieu Sy Manh
@@ -134,8 +134,8 @@ public class CustomerServiceImpl implements ICustomerService {
 			customer.setCustomerPhone(cusPhone);
 			customer.setCustomerEmail(cusEmail);
 			customer.setCustomerAddress(cusAddress);
-//						user.setUserPass(userPass);
-//						customer.setUser(user);
+			//						user.setUserPass(userPass);
+			//						customer.setUser(user);
 			customerRepository.save(customer);
 
 			return "Update successfully !!!";
@@ -150,12 +150,12 @@ public class CustomerServiceImpl implements ICustomerService {
 	 * @author Thieu Sy Manh
 	 */
 	@Override
-	public String editPass(Long userID, String userPass) {
-		Optional<User> user = userRepository.findById(userID);
+	public String editPass(String userName, String userPass) {
+		Optional<User> user = userRepository.findByUserName(userName);
 
 		if (user.isPresent()){
 			User userget = user.get();
-			
+
 			userget.setUserPass(userPass);
 			userRepository.save(userget);
 
@@ -163,6 +163,38 @@ public class CustomerServiceImpl implements ICustomerService {
 		}
 		else {
 			return "Change failed !!!";
+		}
+	}
+
+
+	@Override
+	public BankAccount getPartners(String cusPhone) {
+		// TODO Auto-generated method stub
+		Customer customer = customerRepository.findByCustomerPhone(cusPhone);
+		if (bankAccountRepository.findByCustomer(customer)==null) {
+			return null;
+		}
+		return bankAccountRepository.findByCustomer(customer);
+	}
+
+	@Override
+	public String transferMoney(String transferPhone, String receiverPhone, Long money) {
+		// TODO Auto-generated method stub
+		Customer customer = customerRepository.findByCustomerPhone(transferPhone);
+		Customer customer2 = customerRepository.findByCustomerPhone(receiverPhone);
+		BankAccount bankAccount = bankAccountRepository.findByCustomer(customer);
+		BankAccount bankAccount2 = bankAccountRepository.findByCustomer(customer2);
+//		System.out.println(transferPhone);
+		if((bankAccount.getBalance() < money) || (money <= 0)) {
+			return "Invalid balance, try again";
+		}
+		else {
+			bankAccount.setBalance(bankAccount.getBalance()-money);
+			bankAccount2.setBalance(bankAccount2.getBalance()+money);
+
+			bankAccountRepository.save(bankAccount);
+			bankAccountRepository.save(bankAccount2);
+			return "Transfer successfully !!!";
 		}
 	}
 
@@ -271,5 +303,7 @@ public class CustomerServiceImpl implements ICustomerService {
 
 		return "Update information successfully";
 	}
+
+
 
 }

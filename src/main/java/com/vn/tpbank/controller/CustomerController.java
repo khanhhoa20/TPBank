@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vn.tpbank.entity.BankAccount;
@@ -92,10 +94,34 @@ public class CustomerController {
 	@PutMapping("/passupdate")
 	public String updateNewPassword(@RequestBody User user )
 	{
-		return iCustomerService.editPass(user.getUserID(), user.getUserPass());
+		return iCustomerService.editPass(user.getUserName(), user.getUserPass());
+	}
+	
+
+	/**
+	 * @author Thieu Sy Manh
+	 * @param customer
+	 * @return partners information
+	 */
+	@PutMapping("/partnersdetail")
+	public BankAccount getPartners(@RequestBody Customer customer) {
+		return iCustomerService.getPartners(customer.getCustomerPhone());
+	}
+	
+	/**
+	 * @author Thieu Sy Manh
+	 * @param customer1
+	 * @param customer2
+	 * @param money
+	 * @return string transfer successfully
+	 */
+	@PutMapping("/transfermoney")
+	public String transferMoney(@RequestBody Map<String, String> map)
+	{
+		return iCustomerService.transferMoney(map.get("transferPhone"), map.get("receiverPhone"), Long.parseLong(map.get("money")));
 	}
     
-
+	
 //     @PostMapping("/login")
 //     public String login(@RequestBody User user) {
 //         return iCustomerService.login(user.getUserName(), user.getUserPass());
