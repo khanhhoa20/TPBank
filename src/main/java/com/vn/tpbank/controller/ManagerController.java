@@ -146,6 +146,7 @@ public class ManagerController {
 	 *
 	 * @param bankAccount the bank account object containing the updated information
 	 * @return a String indicating the status of the update operation
+	 * @author ThanhPhuc
 	 */
 	@PutMapping("/updateBankAccount")
 	public String updateBankAccount(@RequestBody BankAccount bankAccount) {
