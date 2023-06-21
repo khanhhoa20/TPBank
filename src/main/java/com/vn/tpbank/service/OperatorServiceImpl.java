@@ -257,5 +257,73 @@ public class OperatorServiceImpl implements IOperatorService {
 		}
 
 	}
+	@Override
+	public List<Transaction> findTransactionByPhone(String phoneNumber) {
+		List<Transaction> transactions = transactionRepository.findAll();
+		for (Transaction transaction : transactions) {
+			if (!transaction.getBankAccount().getCustomer().getCustomerPhone().equals(phoneNumber))
+				transactions.remove(transaction);
+		}
+		return transactions;
+	}
+
+	@Override
+	public String transferMoney(Transaction sendTransaction, Transaction recieveTransaction) {
+		if (sendTransaction.getTransactionAmount() <= 0)
+			return "Invalid input amount.";
+		BankAccount senderAccount = bankAccountRepository.findByCustomer(customerRepository
+				.findByCustomerPhone(sendTransaction.getBankAccount().getCustomer().getCustomerPhone()));
+		BankAccount recieverAccount = bankAccountRepository.findByCustomer(customerRepository
+				.findByCustomerPhone(recieveTransaction.getBankAccount().getCustomer().getCustomerPhone()));
+		if (senderAccount == null)
+			return "Sender account not found.";
+		if(recieverAccount==null)
+			return "Reciever account not found.";
+		if (recieverAccount.getLockStatus().equalsIgnoreCase("inactive"))
+			return "Reciever bank account is locked (INACTIVE).";
+		if (senderAccount.getLockStatus().equalsIgnoreCase("inactive"))
+			return "Your bank account is locked (INACTIVE).";
+		if (senderAccount != null && !senderAccount.getLockStatus().equalsIgnoreCase("inactive")) {
+			if (senderAccount.getBalance() < 50000
+					|| (senderAccount.getBalance() - sendTransaction.getTransactionAmount()) < 50000)
+				return "Sender's balance is not enough for this transaction.";
+			
+			sendTransaction.setTransactionType("send"+recieverAccount.getCustomer().getCustomerPhone());
+			sendTransaction.setTransactionDate(new Date());
+			sendTransaction.setBeforeTransaction(senderAccount.getBalance());
+			long tempbalance = senderAccount.getBalance() - sendTransaction.getTransactionAmount();
+			senderAccount.setBalance(tempbalance);
+
+			recieveTransaction.setTransactionType("recieve"+senderAccount.getCustomer().getCustomerPhone());
+			recieveTransaction.setTransactionDate(new Date());
+			recieveTransaction.setBeforeTransaction(recieverAccount.getBalance());
+			long temprecievebalance = recieverAccount.getBalance()+recieveTransaction.getTransactionAmount();
+			recieverAccount.setBalance(temprecievebalance);
+			
+			bankAccountRepository.save(senderAccount);
+			bankAccountRepository.save(recieverAccount);
+			sendTransaction.setAfterTransaction(senderAccount.getBalance());
+			sendTransaction.setBankAccount(senderAccount);
+			recieveTransaction.setAfterTransaction(recieverAccount.getBalance());
+			recieveTransaction.setBankAccount(recieverAccount);
+			transactionRepository.save(sendTransaction);
+			transactionRepository.save(recieveTransaction);
+			return "Transaction has been made successfully.";
+		}
+		return "Account is not available.";
+	}
+
+	@Override
+	public BankAccount findBankAccountThroughTransaction(Transaction transaction) {
+		String type=transaction.getTransactionType();
+		if(type.contains("send")) {
+			String num=type.substring(4);
+			return bankAccountRepository.findByCustomer(customerRepository.findByCustomerPhone(num));
+		} else if(type.contains("recieve")) {
+			String num=type.substring(7);
+			return bankAccountRepository.findByCustomer(customerRepository.findByCustomerPhone(num));
+		}
+		return null;
+	}
 
 }

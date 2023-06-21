@@ -42,4 +42,10 @@ public interface IOperatorService {
 	 * @author Khánh Hòa
 	 */
 	String dangNhap(String username, String pass);
+
+	List<Transaction> findTransactionByPhone(String phoneNumber);
+
+	BankAccount findBankAccountThroughTransaction(Transaction transaction);
+
+	String transferMoney(Transaction sendTransaction, Transaction recieveTransaction);
 }

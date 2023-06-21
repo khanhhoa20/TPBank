@@ -135,26 +135,60 @@ public class OperatorController {
 	{
 		return iOperatorService.updateCustomer(customer.getCustomerPhone(), customer.getCustomerName(), customer.getCustomerAddress(), customer.getUser().getUserPass());	}
 
+/**
+ * @URL http://localhost:9090/tpbank/operator/deposit
+ * @param transaction
+ * @return result string
+ * @author ngoc huan
+ * */	
 	
 	@PutMapping(value="/deposit")
 	public String depositMoney(@RequestBody Transaction transaction) {
 		return iOperatorService.depositMoney(transaction);
 	}
+
+	/**
+	 * @URL http://localhost:9090/tpbank/operator/withdraw
+	 * @param transaction
+	 * @return result string
+	 * @author ngoc huan
+	 * */
 	
 	@PutMapping(value="/withdraw")
 	public String withdrawMoney(@RequestBody Transaction transaction) {
 		return iOperatorService.withdrawMoney(transaction);
 	}
 	
+	/**
+	 * @URL http://localhost:9090/tpbank/operator/transfer
+	 * @param senderTransaction, recieveTransaction
+	 * @return result string
+	 * @author ngoc huan
+	 * */
+	
 	@PutMapping(value="/transfer")
 	public String transferMoney(@RequestBody Transaction senderTransaction, Transaction recieveTransaction) {
 		return iOperatorService.transferMoney(senderTransaction, recieveTransaction);
 	}
 	
+	/**
+	 * @URL http://localhost:9090/tpbank/operator/view-transaction
+	 * @param phoneNumber
+	 * @return transaction list
+	 * @author ngoc huan
+	 * */
+	
 	@PutMapping(value = "/view-transactions")
 	public List<Transaction> findTransactionsByPhone(@RequestBody String phoneNumber){
 		return iOperatorService.findTransactionByPhone(phoneNumber);
 	}
+	
+	/**
+	 * @URL http://localhost:9090/tpbank/operator/find-sender-and-reciever
+	 * @param transaction
+	 * @return sender/reciever bankaccount detail
+	 * @author ngoc huan
+	 * */
 	
 	@PutMapping(value="/find-sender-and-reciever")
 	public BankAccount findBankAccountThroughTransaction(Transaction transaction) {
